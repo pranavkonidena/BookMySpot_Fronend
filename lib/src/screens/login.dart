@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
+import '../services/storageManager.dart';
 
 final dio = Dio();
 final email_Provider = StateProvider<String>((ref) => "default");
@@ -20,6 +21,11 @@ class LoginScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var email = ref.watch(email_Provider);
     var password = ref.watch(password_Provider);
+    String? token = getToken();
+    if (token != "null") {
+      context.go("/");
+    }
+
     print("Email entered is : " + email);
     print("Password entered is :  " + password);
     return Scaffold(

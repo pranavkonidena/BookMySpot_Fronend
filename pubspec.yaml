@@ -42,6 +42,8 @@ dependencies:
   webview_flutter: ^4.4.1
   url_launcher: ^6.1.14
   flutter_inappwebview: ^5.8.0
+  flutter_secure_storage: ^9.0.0
+  get_storage: ^2.1.1
 
 dev_dependencies:
   flutter_test:
