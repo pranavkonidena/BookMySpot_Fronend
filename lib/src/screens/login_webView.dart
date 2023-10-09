@@ -18,37 +18,41 @@ class WebViewLogin extends ConsumerStatefulWidget {
 }
 
 class _WebViewLoginState extends ConsumerState<WebViewLogin> {
+  bool visited = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: InAppWebView(
-        initialUrlRequest: URLRequest(
-          url: Uri.parse(omniportURL),
-        ),
-        onUpdateVisitedHistory: (_, uri, __) async {
-          if (uri != null) {
-            if (!uri.toString().contains("channeli")) {
-              print(uri.toString());
-              await closeInAppWebView();
-              if (uri.toString().contains("state")) {
-                var response = await http.get(uri);
-                if (response.statusCode == 200) {
-                  dynamic data = jsonDecode(response.body);
-                  if (data.toString() != "Error") {
-                    saveToken(data);
-                    print(data);
-                    context.go('/');
-                  } else {
-                    context.go("/loading");
+      body: visited
+          ? CircularProgressIndicator()
+          : InAppWebView(
+              initialUrlRequest: URLRequest(
+                url: Uri.parse(omniportURL),
+              ),
+              onUpdateVisitedHistory: (_, uri, __) async {
+                if (uri != null) {
+                  if (!uri.toString().contains("channeli")) {
+                    setState(() {
+                      visited = true;
+                    });
+                    if (uri.toString().contains("state")) {
+                      var response = await http.get(uri);
+                      if (response.statusCode == 200) {
+                        dynamic data = jsonDecode(response.body);
+                        if (data.toString() != "Error") {
+                          saveToken(data);
+                          print(data);
+                          context.go('/');
+                        } else {
+                          context.go("/loading");
+                        }
+                      }
+                    } else {
+                      context.go("/loading");
+                    }
                   }
                 }
-              } else {
-                context.go("/loading");
-              }
-            }
-          }
-        },
-      ),
+              },
+            ),
     );
   }
 }
