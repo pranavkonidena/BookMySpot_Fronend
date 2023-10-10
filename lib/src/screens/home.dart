@@ -22,8 +22,8 @@ class HomeScreen extends ConsumerWidget {
           SizedBox(height: 30,),
           ElevatedButton(
               onPressed: () {
-                context.go("/login");
                 deleteToken();
+                context.go("/login");
               },
               child: Text(token))
         ]),

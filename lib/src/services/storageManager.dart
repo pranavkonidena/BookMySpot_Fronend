@@ -1,11 +1,15 @@
 import 'package:get_storage/get_storage.dart';
 
-Future<void> deleteToken() async {
+void deleteToken() {
   final box = GetStorage();
-  box.remove("token");
+  box.write("token", null);
+  String? token = box.read("token");
+  if (token == null) {
+    print("TOKEN IS NULL");
+  }
 }
 
-Future<void> saveToken(token) async {
+void saveToken(token) async {
   final box = GetStorage();
   box.write("token", token);
 }
