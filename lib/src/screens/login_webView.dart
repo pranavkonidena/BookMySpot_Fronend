@@ -9,6 +9,10 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 
+final countProvider = StateProvider<int>((ref) {
+  return 0;
+});
+
 const snackBar = SnackBar(
   content: Text('Error while logging u in, please try later'),
 );
@@ -46,22 +50,25 @@ class WebViewLogin extends ConsumerStatefulWidget {
 
 class _WebViewLoginState extends ConsumerState<WebViewLogin> {
   initState() {
-      ref.refresh(statusProvider);
-      ref.refresh(dataProvider);
-      ref.refresh(uriProvider);
-      print("REFRESHED");
-    } 
+    ref.refresh(statusProvider);
+    ref.refresh(dataProvider);
+    ref.refresh(uriProvider);
+    print("REFRESHED");
+  }
+
   @override
   Widget build(BuildContext context) {
-    
     final status = ref.watch(statusProvider);
     final uri = ref.watch(uriProvider);
     var uri_as_string = uri.toString();
+    print(uri_as_string);
     // print(uri.toString());
 
     AsyncValue<String> token = ref.watch(dataProvider);
     token.when(loading: () {
-      return const CircularProgressIndicator();
+      return Center(
+        child: CircularProgressIndicator(),
+      );
     }, error: (err, stack) {
       return Text("Error occoured");
     }, data: (token) {
@@ -90,6 +97,7 @@ class _WebViewLoginState extends ConsumerState<WebViewLogin> {
                 if (uri != null) {
                   if (!uri.toString().contains("channeli")) {
                     ref.read(uriProvider.notifier).state = uri;
+                    ref.read(countProvider.notifier).state++;
                   }
                 }
               },

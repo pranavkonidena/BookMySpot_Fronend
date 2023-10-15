@@ -44,6 +44,7 @@ dependencies:
   flutter_inappwebview: ^5.8.0
   flutter_secure_storage: ^9.0.0
   get_storage: ^2.1.1
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
@@ -96,6 +97,10 @@ flutter:
     - family: Poppins
       fonts:
         - asset: fonts/Poppins-Bold.ttf
+    
+    - family: Thasadith
+      fonts:
+        - asset: fonts/Thasadith-Regular.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #

@@ -6,6 +6,3 @@ void main() async{
   await GetStorage.init();
   runApp(ProviderScope(child: const MyApp()));
 }
-
-
-// localhost:8000/api/user/auth/redirect
