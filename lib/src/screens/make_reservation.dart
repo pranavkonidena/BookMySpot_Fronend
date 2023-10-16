@@ -8,7 +8,6 @@ class MakeReservationPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Text("Make reservation page"),
-      bottomNavigationBar: BottomNavBar(),
     );
   }
 }

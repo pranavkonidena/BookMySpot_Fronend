@@ -14,11 +14,10 @@ class ProfileScreen extends ConsumerWidget {
         child: ElevatedButton(
             onPressed: () {
               deleteToken();
-              context.go("/");
+              context.go("/login");
             },
             child: Text("Logout")),
       ),
-      bottomNavigationBar: BottomNavBar(),
     );
   }
 }

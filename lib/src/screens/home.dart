@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'package:book_my_spot_frontend/src/screens/login_webView.dart';
+import 'package:book_my_spot_frontend/src/screens/make_reservation.dart';
+import 'package:book_my_spot_frontend/src/screens/profile_page.dart';
+import 'package:book_my_spot_frontend/src/screens/teams_page.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 
@@ -42,7 +45,42 @@ class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final widgetsProvider = Provider<List<Widget>>((ref) {
+      List<Widget> l = [];
+      l.add(
+        SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, top: 48, right: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Today's Bookings",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 35,
+                    fontFamily: 'Thasadith',
+                    fontWeight: FontWeight.w400,
+                    height: 0.03,
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 32,
+                ),
+                BookingsListView(),
+              ],
+            ),
+          ),
+        ),
+      );
+      l.add(MakeReservationPage());
+      l.add(TeamScreen());
+      l.add(ProfileScreen());
+      return l;
+    });
     final date = ref.watch(dateProvider);
+    final current_index = ref.watch(currentIndexProvider);
     String token = getToken();
     if (token == "null") {
       return LoginScreen();
@@ -94,31 +132,7 @@ class HomeScreen extends ConsumerWidget {
             )
           ],
         ),
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20.0, top: 48, right: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Today's Bookings",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 35,
-                    fontFamily: 'Thasadith',
-                    fontWeight: FontWeight.w400,
-                    height: 0.03,
-                  ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 32,
-                ),
-                BookingsListView(),
-              ],
-            ),
-          ),
-        ),
+        body: ref.read(widgetsProvider)[current_index],
         bottomNavigationBar: BottomNavBar(),
       );
     }
@@ -274,19 +288,18 @@ class _BottomNavBarState extends ConsumerState<BottomNavBar> {
         unselectedItemColor: Color.fromRGBO(113, 111, 111, 1),
         onTap: (value) {
           ref.read(currentIndexProvider.notifier).state = value;
-          switch (value) {
-            case 0:
-              context.go("/");
-              break;
-            case 1:
-              context.go("/new");
-              break;
-            case 2:
-              context.go("/team");
-            case 3:
-              context.go("/profile");
-            default:
-          }
+          // switch (value) {
+          //   case 0:
+          //     context.go("/");
+          //     break;
+          //   case 1:
+          //     context.go("/new");
+          //     break;
+          //   case 2:
+          //     context.go("/team");
+          //   case 3:
+          //     context.go("/profile");
+          // }
         },
         items: const [
           BottomNavigationBarItem(

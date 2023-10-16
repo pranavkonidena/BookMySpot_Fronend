@@ -8,7 +8,6 @@ class TeamScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Text("This is the teams page"),
-      bottomNavigationBar: BottomNavBar(),
     );
   }
 }
