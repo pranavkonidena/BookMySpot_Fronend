@@ -1,13 +1,16 @@
 import 'dart:convert';
+import 'package:book_my_spot_frontend/src/screens/login_webView.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:go_router/go_router.dart';
+
 import '../models/user.dart';
 import 'package:book_my_spot_frontend/src/screens/login.dart';
-import 'package:book_my_spot_frontend/src/screens/login_webView.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import '../constants/constants.dart';
 import '../services/storageManager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import '../services/string_extension.dart';
 
 class Date {
   String? date;
@@ -37,7 +40,6 @@ final userProvider = FutureProvider<String>((ref) async {
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final date = ref.watch(dateProvider);
@@ -112,11 +114,12 @@ class HomeScreen extends ConsumerWidget {
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 32,
                 ),
-                BookingsListView()
+                BookingsListView(),
               ],
             ),
           ),
         ),
+        bottomNavigationBar: BottomNavBar(),
       );
     }
   }
@@ -143,6 +146,7 @@ class BookingsListView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(dataProvider);
     return data.when(data: (value) {
+      print(value);
       if ((value as List).isEmpty) {
         return const Padding(
           padding: EdgeInsets.only(top: 18.0),
@@ -156,7 +160,12 @@ class BookingsListView extends ConsumerWidget {
           ),
         );
       } else {
-        return ListView.builder(
+        return ListView.separated(
+          separatorBuilder: (BuildContext context, int index) {
+            return SizedBox(
+              height: 30,
+            );
+          },
           shrinkWrap: true,
           itemCount: value.length,
           itemBuilder: (context, index) {
@@ -169,7 +178,12 @@ class BookingsListView extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Column(
-                    children: [Text("IMG HERE")],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.network(
+                          "https://github-production-user-asset-6210df.s3.amazonaws.com/122373207/275466089-4e5a891c-8afd-4e9b-a0da-04ff0c39687c.png",
+                          height: 30)
+                    ],
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -211,8 +225,8 @@ class BookingsListView extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        value[index]["type"],
-                        style: TextStyle(
+                        value[index]["type"].toString().capitalize(),
+                        style: const TextStyle(
                           color: Color(0xFF606C5D),
                           fontSize: 25,
                           fontFamily: 'Thasadith',
@@ -220,7 +234,7 @@ class BookingsListView extends ConsumerWidget {
                         ),
                       )
                     ],
-                  )
+                  ),
                 ],
               ),
             );
@@ -232,5 +246,64 @@ class BookingsListView extends ConsumerWidget {
     }, loading: () {
       return const CircularProgressIndicator();
     });
+  }
+}
+
+class BottomNavBar extends ConsumerStatefulWidget {
+  const BottomNavBar({super.key});
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _BottomNavBarState();
+}
+
+final currentIndexProvider = StateProvider<int>((ref) {
+  return 0;
+});
+
+class _BottomNavBarState extends ConsumerState<BottomNavBar> {
+  @override
+  Widget build(BuildContext context) {
+    final current_index = ref.watch(currentIndexProvider);
+    print(current_index);
+    return Theme(
+      data: Theme.of(context).copyWith(canvasColor: Color(0xFFF6F1F1)),
+      child: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: current_index,
+        selectedItemColor: Color.fromRGBO(33, 42, 62, 1),
+        selectedFontSize: 0,
+        unselectedItemColor: Color.fromRGBO(113, 111, 111, 1),
+        onTap: (value) {
+          ref.read(currentIndexProvider.notifier).state = value;
+          switch (value) {
+            case 0:
+              context.go("/");
+              break;
+            case 1:
+              context.go("/new");
+              break;
+            case 2:
+              context.go("/team");
+            case 3:
+              context.go("/profile");
+            default:
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                // color: Color.fromRGBO(113, 111, 111, 1),
+              ),
+              label: ""),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.add_rounded,
+              ),
+              label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.groups), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "")
+        ],
+      ),
+    );
   }
 }
