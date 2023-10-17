@@ -5,7 +5,7 @@ import 'package:book_my_spot_frontend/src/screens/profile_page.dart';
 import 'package:book_my_spot_frontend/src/screens/teams_page.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:table_calendar/table_calendar.dart';
 import '../models/user.dart';
 import 'package:book_my_spot_frontend/src/screens/login.dart';
 import 'package:flutter/material.dart';
@@ -15,13 +15,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import '../services/string_extension.dart';
 
+final calendarStateProvider = StateProvider<bool>((ref) {
+  return false;
+});
+
+final selectedProvider = StateProvider<DateTime?>((ref) {
+  DateTime? _selectedDay;
+  return _selectedDay;
+});
+
+final focusedProvider = StateProvider<DateTime>((ref) {
+  DateTime _focusedDay = DateTime.now();
+  return _focusedDay;
+});
+
 class Date {
   String? date;
   String? day;
 }
 
 final dateProvider = Provider<Date>((ref) {
-  final now = DateTime.now();
+  final now = ref.watch(focusedProvider);
   String year = "";
   year += "${now.year % 100}";
 
@@ -30,6 +44,7 @@ final dateProvider = Provider<Date>((ref) {
   _date.day = days[now.weekday];
   return _date;
 });
+
 final tokenProvider = Provider<String>((ref) {
   String token = getToken();
   return token;
@@ -42,10 +57,12 @@ final userProvider = FutureProvider<String>((ref) async {
 });
 
 class HomeScreen extends ConsumerWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final widgetsProvider = Provider<List<Widget>>((ref) {
+    DateTime _focusedDay = ref.watch(focusedProvider);
+    DateTime? _selectedDay = ref.watch(selectedProvider);
+    final bodywidgetsProvider = Provider<List<Widget>>((ref) {
       List<Widget> l = [];
       l.add(
         SingleChildScrollView(
@@ -68,19 +85,39 @@ class HomeScreen extends ConsumerWidget {
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 32,
                 ),
-                BookingsListView(),
+                Visibility(
+                  child: TableCalendar(
+                    focusedDay: DateTime.now(),
+                    firstDay: DateTime(2023, 10, 1),
+                    lastDay: DateTime(2023, 11, 1),
+                    selectedDayPredicate: (day) {
+                      return isSameDay(_selectedDay, day);
+                    },
+                    onDaySelected: (selectedDay, focusedDay) {
+                      if (!isSameDay(_selectedDay, selectedDay)) {
+                        ref.read(focusedProvider.notifier).state = focusedDay;
+                        ref.read(selectedProvider.notifier).state = selectedDay;
+
+                        ref.read(calendarStateProvider.notifier).state = false;
+                      }
+                    },
+                  ),
+                  visible: ref.watch(calendarStateProvider),
+                ),
+                const BookingsListView(),
               ],
             ),
           ),
         ),
       );
-      l.add(MakeReservationPage());
-      l.add(TeamScreen());
-      l.add(ProfileScreen());
+      l.add(const MakeReservationPage());
+      l.add(const TeamScreen());
+      l.add(const ProfileScreen());
       return l;
     });
     final date = ref.watch(dateProvider);
     final current_index = ref.watch(currentIndexProvider);
+    final calendarStatus = ref.watch(calendarStateProvider);
     String token = getToken();
     if (token == "null") {
       return LoginScreen();
@@ -123,8 +160,11 @@ class HomeScreen extends ConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.only(right: 18.0),
                   child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.calendar_month_outlined),
+                      onPressed: () {
+                        ref.read(calendarStateProvider.notifier).state =
+                            !calendarStatus;
+                      },
+                      icon: const Icon(Icons.calendar_month_outlined),
                       iconSize: 30,
                       color: Colors.grey.shade700),
                 )
@@ -132,8 +172,8 @@ class HomeScreen extends ConsumerWidget {
             )
           ],
         ),
-        body: ref.read(widgetsProvider)[current_index],
-        bottomNavigationBar: BottomNavBar(),
+        body: ref.read(bodywidgetsProvider)[current_index],
+        bottomNavigationBar: const BottomNavBar(),
       );
     }
   }
@@ -141,8 +181,13 @@ class HomeScreen extends ConsumerWidget {
 
 final dataProvider = FutureProvider<dynamic>((ref) async {
   String token = getToken();
+  final date = ref.watch(focusedProvider);
+  var post_body = {
+    "id": token,
+    "date": "${date.year}-${date.month}-${date.day}"
+  };
   dynamic response = await http
-      .get(Uri.parse(base_url_IITR_WIFI + "user/getBooking?id=${token}"));
+      .post(Uri.parse(base_url_IITR_WIFI + "user/getBooking"), body: post_body);
   dynamic data = jsonDecode(response.body);
   for (int i = 0; i < data.length; i++) {
     data[i] = jsonDecode(data[i].toString());
@@ -277,7 +322,6 @@ class _BottomNavBarState extends ConsumerState<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     final current_index = ref.watch(currentIndexProvider);
-    print(current_index);
     return Theme(
       data: Theme.of(context).copyWith(canvasColor: Color(0xFFF6F1F1)),
       child: BottomNavigationBar(
@@ -288,18 +332,6 @@ class _BottomNavBarState extends ConsumerState<BottomNavBar> {
         unselectedItemColor: Color.fromRGBO(113, 111, 111, 1),
         onTap: (value) {
           ref.read(currentIndexProvider.notifier).state = value;
-          // switch (value) {
-          //   case 0:
-          //     context.go("/");
-          //     break;
-          //   case 1:
-          //     context.go("/new");
-          //     break;
-          //   case 2:
-          //     context.go("/team");
-          //   case 3:
-          //     context.go("/profile");
-          // }
         },
         items: const [
           BottomNavigationBarItem(

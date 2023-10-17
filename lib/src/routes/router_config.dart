@@ -9,7 +9,7 @@ import '../screens/login_webView.dart';
 
 final router = GoRouter(routes: [
   GoRoute(
-      name: "home", path: "/", builder: (context, state) => const HomeScreen()),
+      name: "home", path: "/", builder: (context, state) =>  HomeScreen()),
   GoRoute(
       name: "login",
       path: "/login",
