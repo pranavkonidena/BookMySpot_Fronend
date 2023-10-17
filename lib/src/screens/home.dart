@@ -62,6 +62,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     DateTime _focusedDay = ref.watch(focusedProvider);
     DateTime? _selectedDay = ref.watch(selectedProvider);
+
     final bodywidgetsProvider = Provider<List<Widget>>((ref) {
       List<Widget> l = [];
       l.add(
@@ -118,12 +119,10 @@ class HomeScreen extends ConsumerWidget {
     final date = ref.watch(dateProvider);
     final current_index = ref.watch(currentIndexProvider);
     final calendarStatus = ref.watch(calendarStateProvider);
-    String token = getToken();
-    if (token == "null") {
-      return LoginScreen();
-    } else {
-      return Scaffold(
-        appBar: AppBar(
+    final appBarProvider = Provider<List<AppBar>>((ref) {
+      List<AppBar> l = [];
+      l.add(
+        AppBar(
           toolbarHeight: MediaQuery.of(context).size.height / 12,
           elevation: 0,
           backgroundColor: const Color.fromARGB(168, 35, 187, 233),
@@ -172,6 +171,57 @@ class HomeScreen extends ConsumerWidget {
             )
           ],
         ),
+      );
+      l.add(AppBar(
+        toolbarHeight: MediaQuery.of(context).size.height / 12,
+        elevation: 0,
+        backgroundColor: const Color.fromARGB(168, 35, 187, 233),
+        leadingWidth: 220,
+        title: const Text(
+          "Book Slot",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 40,
+            fontFamily: 'Thasadith',
+          ),
+        ),
+      ));
+      l.add(AppBar(
+        toolbarHeight: MediaQuery.of(context).size.height / 12,
+        elevation: 0,
+        backgroundColor: const Color.fromARGB(168, 35, 187, 233),
+        leadingWidth: 220,
+        title: const Text(
+          "Teams",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 40,
+            fontFamily: 'Thasadith',
+          ),
+        ),
+      ));
+      l.add(AppBar(
+        toolbarHeight: MediaQuery.of(context).size.height / 12,
+        elevation: 0,
+        backgroundColor: const Color.fromARGB(168, 35, 187, 233),
+        leadingWidth: 220,
+        title: const Text(
+          "Profile",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 40,
+            fontFamily: 'Thasadith',
+          ),
+        ),
+      ));
+      return l;
+    });
+    String token = getToken();
+    if (token == "null") {
+      return LoginScreen();
+    } else {
+      return Scaffold(
+        appBar: ref.read(appBarProvider)[current_index],
         body: ref.read(bodywidgetsProvider)[current_index],
         bottomNavigationBar: const BottomNavBar(),
       );
