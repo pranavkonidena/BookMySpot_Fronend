@@ -147,7 +147,8 @@ class SlotsListWidget extends ConsumerWidget {
                       padding: const EdgeInsets.only(right: 10.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          context.go("/confirmbooking${value[index]["id"]}");
+                          
+                          context.go("/new/${value[index]["id"]}");
                         },
                         child:  Text(
                           "Book Now",

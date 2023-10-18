@@ -14,6 +14,7 @@ class ProfileScreen extends ConsumerWidget {
         child: ElevatedButton(
             onPressed: () {
               deleteToken();
+              ref.read(currentIndexProvider.notifier).state = 0;
               context.go("/login");
             },
             child: Text("Logout")),

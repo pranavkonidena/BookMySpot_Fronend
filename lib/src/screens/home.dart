@@ -236,8 +236,8 @@ final dataProvider = FutureProvider<dynamic>((ref) async {
     "id": token,
     "date": "${date.year}-${date.month}-${date.day}"
   };
-  dynamic response =
-      await http.post(Uri.parse(using + "user/getBooking"), body: post_body);
+  dynamic response = await http
+      .post(Uri.parse(using + "user/getBooking"), body: post_body);
   dynamic data = jsonDecode(response.body);
   for (int i = 0; i < data.length; i++) {
     data[i] = jsonDecode(data[i].toString());
@@ -253,9 +253,9 @@ class BookingsListView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print(MediaQuery.of(context).size.height);
     final data = ref.watch(dataProvider);
     return data.when(data: (value) {
+      print(value);
       if ((value as List).isEmpty) {
         return const Padding(
           padding: EdgeInsets.only(top: 18.0),

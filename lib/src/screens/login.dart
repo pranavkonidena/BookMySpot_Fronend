@@ -1,3 +1,4 @@
+import 'package:book_my_spot_frontend/src/screens/home.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +11,6 @@ final email_Provider = StateProvider<String>((ref) => "default");
 final password_Provider = StateProvider<String>((ref) => "default");
 
 class LoginScreen extends ConsumerWidget {
-    
   LoginScreen({Key? key}) : super(key: key);
 
   @override
@@ -21,7 +21,6 @@ class LoginScreen extends ConsumerWidget {
     if (token != "null") {
       context.go("/");
     }
-    
 
     print("Email entered is : " + email);
     print("Password entered is :  " + password);
@@ -43,7 +42,6 @@ class LoginScreen extends ConsumerWidget {
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 5,
                 ),
-                
                 const Center(
                   child: Text(
                     'SIGN IN',
@@ -174,7 +172,6 @@ class LoginScreen extends ConsumerWidget {
                   padding: EdgeInsets.only(left: 28.0, top: 15, right: 30),
                   child: Divider(thickness: 2, color: Colors.white),
                 ),
-                
                 Padding(
                   padding: EdgeInsets.only(left: 28.0, top: 30),
                   child: ElevatedButton(
@@ -196,7 +193,6 @@ class LoginScreen extends ConsumerWidget {
                 ),
               ],
             )),
-            
       ),
     );
   }

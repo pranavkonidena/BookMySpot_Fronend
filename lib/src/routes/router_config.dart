@@ -29,7 +29,7 @@ final router = GoRouter(routes: [
   GoRoute(path: "/team", builder: (context, state) => const TeamScreen()),
   GoRoute(path: "/profile", builder: (context, state) => const ProfileScreen()),
   GoRoute(
-    path: "/confirmbooking:id",
+    path: "/new/:id",
     builder: (context, state) {
       final id = state.pathParameters["id"];
       return ConfirmBooking(id);
