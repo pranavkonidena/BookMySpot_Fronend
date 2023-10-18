@@ -11,7 +11,7 @@ class User {
   late int enrollNumber;
   fetchUserData() async {
     dynamic response =
-        await http.get(Uri.parse(base_url_IITR_WIFI + "user?id=${token}"));
+        await http.get(Uri.parse(using + "user?id=${token}"));
     dynamic data = jsonDecode(response.body.toString());
     return data;
   }
