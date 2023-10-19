@@ -48,18 +48,6 @@ class MakeReservationPage extends ConsumerWidget {
               ],
             ),
             const SizedBox(
-              height: 15,
-            ),
-            const Text(
-              "Available Slots",
-              style: TextStyle(
-                color: Color(0xFF606C5D),
-                fontSize: 32,
-                fontFamily: 'Thasadith',
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            const SizedBox(
               height: 30,
             ),
             SlotsListWidget(),
