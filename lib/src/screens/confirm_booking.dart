@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import '../services/storageManager.dart';
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
 import 'package:book_my_spot_frontend/src/screens/make_reservation.dart';
 import 'package:flutter/material.dart';
@@ -90,51 +90,57 @@ class ConfirmBooking extends ConsumerWidget {
           ),
         ),
       ),
-      body: FutureBuilder(
-        future: fetchData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator(); // Show a loading indicator.
-          } else if (snapshot.hasError) {
-            return Text("Error: ${snapshot.error}");
-          } else {
-            // Data has been fetched successfully, use it in your UI.
-            var data = snapshot.data;
+      body: SingleChildScrollView(
+        child: FutureBuilder(
+          future: fetchData(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator(); // Show a loading indicator.
+            } else if (snapshot.hasError) {
+              return Text("Error: ${snapshot.error}");
+            } else {
+              // Data has been fetched successfully, use it in your UI.
+              var data = snapshot.data;
 
-            return Column(
-              children: [
-                Row(
-                  children: [Text("Amenity :"), Text(data[0]["name"])],
-                ),
-                Row(
-                  children: [Text("Venue :"), Text(data[0]["venue"])],
-                ),
-                Row(
-                  children: [
-                    ElevatedButton(
-                        onPressed: () async {
-                          await selectDate(context, ref);
-                        },
-                        child: Text("Select date"))
-                  ],
-                ),
-                Row(
-                  children: [Text("SELECTED"), Text(date.toString())],
-                ),
-                DurationDropdown(id),
-                ElevatedButton(
-                    onPressed: () async {
-                      if (duration == 15) {
-                        ref.read(slotsProviderAmenity.notifier).state =
-                            await fetchSlots(ref);
-                      }
-                      context.go("/test");
-                    },
-                    child: Text("Confirm"))
-              ],
-            );
-          }
-        },
+              return Column(
+                children: [
+                  Row(
+                    children: [Text("Amenity :"), Text(data[0]["name"])],
+                  ),
+                  Row(
+                    children: [Text("Venue :"), Text(data[0]["venue"])],
+                  ),
+                  Row(
+                    children: [
+                      ElevatedButton(
+                          onPressed: () async {
+                            await selectDate(context, ref);
+                          },
+                          child: Text("Select date"))
+                    ],
+                  ),
+                  Row(
+                    children: [Text("SELECTED"), Text(date.toString())],
+                  ),
+                  DurationDropdown(id),
+                  ElevatedButton(
+                      onPressed: () async {
+                        if (duration == 15) {
+                          ref.read(slotsProviderAmenity.notifier).state =
+                              await fetchSlots(ref);
+                        }
+                        ref.read(slotsDropdownStatusProvider.notifier).state =
+                            !ref
+                                .read(slotsDropdownStatusProvider.notifier)
+                                .state;
+                      },
+                      child: Text("Check Slots")),
+                  SlotsDropdown(),
+                ],
+              );
+            }
+          },
+        ),
       ),
     );
   }
@@ -189,6 +195,57 @@ class DurationDropdown extends ConsumerWidget {
           },
         ),
       ],
+    );
+  }
+}
+
+final slotsDropdownStatusProvider = StateProvider<bool>((ref) {
+  return false;
+});
+
+class SlotsDropdown extends ConsumerWidget {
+  const SlotsDropdown({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final data = ref.watch(slotsProviderAmenity);
+    final status = ref.watch(slotsDropdownStatusProvider);
+    return Visibility(
+      visible: status,
+      child: ListView.separated(
+          separatorBuilder: (BuildContext context, int index) {
+            return SizedBox(
+              height: 30,
+            );
+          },
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              height: 130,
+              color: Color.fromRGBO(247, 230, 196, 1),
+              child: ElevatedButton(
+                  onPressed: () async {
+                    final date = ref.read(selectedDateProvider);
+                    var post_data = {
+                      "start_time": data[index]["start_time"].toString(),
+                      "end_time": data[index]["end_time"].toString(),
+                      "id_user": ref.read(tokenProvider).toString(),
+                      "amenity_id": data[index]["amenity_id"].toString(),
+                      "date": "${date.year}-${date.month}-${date.day}",
+                    };
+                    print(post_data);
+                    var response = await http.post(
+                        Uri.parse(using + "booking/individual/bookSlot"),
+                        body: post_data);
+                    print(response.statusCode);
+                    context.go("/");
+                  },
+                  child: Text("PRESS")),
+            );
+          }),
     );
   }
 }
