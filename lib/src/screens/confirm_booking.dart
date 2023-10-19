@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:book_my_spot_frontend/src/screens/home.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
+import '../constants/constants.dart';
 
 final slotsProviderAmenity = StateProvider<List>((ref) {
   return [];
@@ -17,7 +18,7 @@ final idProvider = StateProvider<String?>((ref) {
 });
 
 final durationProvider = StateProvider<int>((ref) {
-  return 15;
+  return 0;
 });
 
 final selectedDateProvider = StateProvider<DateTime>((ref) {
@@ -89,58 +90,108 @@ class ConfirmBooking extends ConsumerWidget {
             fontFamily: 'Thasadith',
           ),
         ),
+        actions: [
+          IconButton(
+              onPressed: () async {
+                await selectDate(context, ref);
+              },
+              icon: Icon(
+                Icons.calendar_month,
+                color: Colors.grey.shade700,
+              ))
+        ],
       ),
-      body: SingleChildScrollView(
-        child: FutureBuilder(
-          future: fetchData(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator(); // Show a loading indicator.
-            } else if (snapshot.hasError) {
-              return Text("Error: ${snapshot.error}");
-            } else {
-              // Data has been fetched successfully, use it in your UI.
-              var data = snapshot.data;
-
-              return Column(
+      body: FutureBuilder(
+        future: fetchData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator(); // Show a loading indicator.
+          } else if (snapshot.hasError) {
+            return Text("Error: ${snapshot.error}");
+          } else {
+            // Data has been fetched successfully, use it in your UI.
+            var data = snapshot.data;
+            final date = ref.watch(selectedDateProvider);
+            return Padding(
+              padding:
+                  EdgeInsets.only(top: MediaQuery.of(context).size.height / 8),
+              child: Column(
                 children: [
                   Row(
-                    children: [Text("Amenity :"), Text(data[0]["name"])],
-                  ),
-                  Row(
-                    children: [Text("Venue :"), Text(data[0]["venue"])],
-                  ),
-                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
-                          onPressed: () async {
-                            await selectDate(context, ref);
-                          },
-                          child: Text("Select date"))
+                      Text(
+                        data[0]["name"],
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 30,
+                          fontFamily: 'Thasadith',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                     ],
                   ),
-                  Row(
-                    children: [Text("SELECTED"), Text(date.toString())],
+                  Wrap(
+                    direction: Axis.horizontal,
+                    children: [
+                      Text(
+                        data[0]["venue"],
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 30,
+                          fontFamily: 'Thasadith',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      )
+                    ],
                   ),
-                  DurationDropdown(id),
-                  ElevatedButton(
-                      onPressed: () async {
-                        if (duration == 15) {
-                          ref.read(slotsProviderAmenity.notifier).state =
-                              await fetchSlots(ref);
-                        }
-                        ref.read(slotsDropdownStatusProvider.notifier).state =
-                            !ref
-                                .read(slotsDropdownStatusProvider.notifier)
-                                .state;
-                      },
-                      child: Text("Check Slots")),
-                  SlotsDropdown(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 18.0),
+                    child: Wrap(
+                      children: [
+                        Text(
+                          "${date.day}th ${months[date.month]} ${date.year}",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontFamily: 'Thasadith',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 38.0),
+                    child: DurationDropdown(id.toString()),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 22.0, top: 28),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton(
+                            onPressed: () {
+                              context.go("/");
+                              ref.read(currentIndexProvider.notifier).state = 1;
+                            },
+                            child: Text("    Cancel    ")),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        ElevatedButton(
+                            onPressed: () {
+                              context.go("/checkSlots");
+                            },
+                            child: Text("Check Slots"))
+                      ],
+                    ),
+                  )
                 ],
-              );
-            }
-          },
-        ),
+              ),
+            );
+          }
+        },
       ),
     );
   }
@@ -149,14 +200,14 @@ class ConfirmBooking extends ConsumerWidget {
 class DurationDropdown extends ConsumerWidget {
   DurationDropdown(this.id);
 
-  String? id;
+  final String id;
 
   Future fetchSlots(WidgetRef ref) async {
     final date = ref.watch(selectedDateProvider);
     final duration = ref.watch(durationProvider);
 
     final post_data = {
-      "amenity": id.toString(),
+      "amenity": id,
       "duration": duration.toString(),
       "date": "${date.year}-${date.month}-${date.day}"
     };
@@ -175,77 +226,51 @@ class DurationDropdown extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     int selectedDuration = ref.watch(durationProvider);
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: 20),
-        DropdownButton<String>(
-          value: selectedDuration.toString(),
-          items: ['15', '30', '45', '60'].map((duration) {
-            return DropdownMenuItem<String>(
-              value: duration,
-              child: Text('$duration minutes'),
+        Wrap(
+          direction: Axis.horizontal,
+          children: ['15', '30', '45', '60'].map((duration) {
+            final isSelected = int.parse(duration) == selectedDuration;
+            return GestureDetector(
+              onTap: () async {
+                ref.read(durationProvider.notifier).state = int.parse(duration);
+                ref.read(slotsProviderAmenity.notifier).state =
+                    await fetchSlots(ref);
+              },
+              child: Container(
+                margin: EdgeInsets.only(right: 16, bottom: 20),
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: isSelected ? Colors.blue : Colors.grey,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Checkbox(
+                      value: isSelected,
+                      onChanged: (bool? value) async {
+                        if (value != null && value) {
+                          ref.read(durationProvider.notifier).state =
+                              int.parse(duration);
+                          ref.read(slotsProviderAmenity.notifier).state =
+                              await fetchSlots(ref);
+                        }
+                      },
+                    ),
+                    Text('$duration minutes'),
+                  ],
+                ),
+              ),
             );
           }).toList(),
-          onChanged: (value) async {
-            if (value != null) {
-              ref.read(durationProvider.notifier).state = int.parse(value);
-              ref.read(slotsProviderAmenity.notifier).state =
-                  await fetchSlots(ref);
-            }
-          },
         ),
       ],
-    );
-  }
-}
-
-final slotsDropdownStatusProvider = StateProvider<bool>((ref) {
-  return false;
-});
-
-class SlotsDropdown extends ConsumerWidget {
-  const SlotsDropdown({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final data = ref.watch(slotsProviderAmenity);
-    final status = ref.watch(slotsDropdownStatusProvider);
-    return Visibility(
-      visible: status,
-      child: ListView.separated(
-          separatorBuilder: (BuildContext context, int index) {
-            return SizedBox(
-              height: 30,
-            );
-          },
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              height: 130,
-              color: Color.fromRGBO(247, 230, 196, 1),
-              child: ElevatedButton(
-                  onPressed: () async {
-                    final date = ref.read(selectedDateProvider);
-                    var post_data = {
-                      "start_time": data[index]["start_time"].toString(),
-                      "end_time": data[index]["end_time"].toString(),
-                      "id_user": ref.read(tokenProvider).toString(),
-                      "amenity_id": data[index]["amenity_id"].toString(),
-                      "date": "${date.year}-${date.month}-${date.day}",
-                    };
-                    print(post_data);
-                    var response = await http.post(
-                        Uri.parse(using + "booking/individual/bookSlot"),
-                        body: post_data);
-                    print(response.statusCode);
-                    context.go("/");
-                  },
-                  child: Text("PRESS")),
-            );
-          }),
     );
   }
 }

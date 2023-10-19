@@ -11,7 +11,11 @@ class BookingPageFinal extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(slotsProviderAmenity);
     return Scaffold(
-      body: Center(child: Text(data.toString())),
+     body: SingleChildScrollView(
+      child: ListView(
+        
+      ),
+     ),
     );
   }
 }

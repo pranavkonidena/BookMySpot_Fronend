@@ -1,4 +1,4 @@
-import 'package:book_my_spot_frontend/src/screens/booking_page.dart';
+import 'package:book_my_spot_frontend/src/screens/checkSlots.dart';
 import 'package:book_my_spot_frontend/src/screens/confirm_booking.dart';
 import 'package:book_my_spot_frontend/src/screens/login.dart';
 import 'package:book_my_spot_frontend/src/screens/make_reservation.dart';
@@ -37,7 +37,7 @@ final router = GoRouter(routes: [
     },
   ),
   GoRoute(
-    path: "/test",
+    path: "/checkSlots",
     builder: (context, state) {
       return BookingPageFinal();
     },
