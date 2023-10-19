@@ -1,3 +1,4 @@
+import 'package:book_my_spot_frontend/src/screens/booking_page.dart';
 import 'package:book_my_spot_frontend/src/screens/confirm_booking.dart';
 import 'package:book_my_spot_frontend/src/screens/login.dart';
 import 'package:book_my_spot_frontend/src/screens/make_reservation.dart';
@@ -33,6 +34,12 @@ final router = GoRouter(routes: [
     builder: (context, state) {
       final id = state.pathParameters["id"];
       return ConfirmBooking(id);
+    },
+  ),
+  GoRoute(
+    path: "/test",
+    builder: (context, state) {
+      return BookingPageFinal();
     },
   )
 ]);

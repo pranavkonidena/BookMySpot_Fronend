@@ -8,7 +8,7 @@ import 'package:book_my_spot_frontend/src/screens/home.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 
-final slotsProvider = StateProvider<List>((ref) {
+final slotsProviderAmenity = StateProvider<List>((ref) {
   return [];
 });
 
@@ -37,9 +37,8 @@ class ConfirmBooking extends ConsumerWidget {
   Future fetchSlots(WidgetRef ref) async {
     final date = ref.watch(selectedDateProvider);
     final duration = ref.watch(durationProvider);
-
     final post_data = {
-      "amenity_id": id.toString(),
+      "amenity": id.toString(),
       "duration": duration.toString(),
       "date": "${date.year}-${date.month}-${date.day}"
     };
@@ -47,8 +46,11 @@ class ConfirmBooking extends ConsumerWidget {
     var response =
         await http.post(Uri.parse(using + "booking/getSlots"), body: post_data);
     var data = jsonDecode(response.body.toString());
-    ref.watch(slotsProvider.notifier).state = data;
-    return data;
+    if (data == "No Slots") {
+      return [];
+    } else {
+      return data;
+    }
   }
 
   Future<void> selectDate(BuildContext context, WidgetRef ref) async {
@@ -65,7 +67,7 @@ class ConfirmBooking extends ConsumerWidget {
     if (picked != null && picked != selectedDate) {
       // Handle the selected date.
       ref.read(selectedDateProvider.notifier).state = picked;
-      fetchSlots(ref);
+      ref.read(slotsProviderAmenity.notifier).state = await fetchSlots(ref);
     }
   }
 
@@ -120,7 +122,15 @@ class ConfirmBooking extends ConsumerWidget {
                   children: [Text("SELECTED"), Text(date.toString())],
                 ),
                 DurationDropdown(id),
-                ElevatedButton(onPressed: () async {}, child: Text("Confirm"))
+                ElevatedButton(
+                    onPressed: () async {
+                      if (duration == 15) {
+                        ref.read(slotsProviderAmenity.notifier).state =
+                            await fetchSlots(ref);
+                      }
+                      context.go("/test");
+                    },
+                    child: Text("Confirm"))
               ],
             );
           }
@@ -140,7 +150,7 @@ class DurationDropdown extends ConsumerWidget {
     final duration = ref.watch(durationProvider);
 
     final post_data = {
-      "amenity_id": id.toString(),
+      "amenity": id.toString(),
       "duration": duration.toString(),
       "date": "${date.year}-${date.month}-${date.day}"
     };
@@ -148,8 +158,12 @@ class DurationDropdown extends ConsumerWidget {
     var response =
         await http.post(Uri.parse(using + "booking/getSlots"), body: post_data);
     var data = jsonDecode(response.body.toString());
-    ref.watch(slotsProvider.notifier).state = data;
-    print(data);
+
+    if (data == "No Slots") {
+      return [];
+    } else {
+      return data;
+    }
   }
 
   @override
@@ -169,7 +183,8 @@ class DurationDropdown extends ConsumerWidget {
           onChanged: (value) async {
             if (value != null) {
               ref.read(durationProvider.notifier).state = int.parse(value);
-              fetchSlots(ref);
+              ref.read(slotsProviderAmenity.notifier).state =
+                  await fetchSlots(ref);
             }
           },
         ),
