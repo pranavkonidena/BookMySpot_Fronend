@@ -172,20 +172,56 @@ class HomeScreen extends ConsumerWidget {
           ],
         ),
       );
-      l.add(AppBar(
-        toolbarHeight: MediaQuery.of(context).size.height / 12,
-        elevation: 0,
-        backgroundColor: const Color.fromARGB(168, 35, 187, 233),
-        leadingWidth: 220,
-        title: const Text(
-          "Book Slot",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 40,
-            fontFamily: 'Thasadith',
+      l.add(
+        AppBar(
+          toolbarHeight: MediaQuery.of(context).size.height / 12,
+          elevation: 0,
+          backgroundColor: const Color.fromARGB(168, 35, 187, 233),
+          leadingWidth: 220,
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 22.0, bottom: 12),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  date.date.toString(),
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 30,
+                    fontFamily: 'Thasadith',
+                  ),
+                ),
+                Text(
+                  date.day.toString(),
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontFamily: 'Thasadith',
+                  ),
+                ),
+              ],
+            ),
           ),
+          actions: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 18.0),
+                  child: IconButton(
+                      onPressed: () {
+
+                      },
+                      icon: const Icon(Icons.calendar_month_outlined),
+                      iconSize: 30,
+                      color: Colors.grey.shade700),
+                )
+              ],
+            )
+          ],
         ),
-      ));
+      );
       l.add(AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 12,
         elevation: 0,
@@ -221,7 +257,7 @@ class HomeScreen extends ConsumerWidget {
       return LoginScreen();
     } else {
       return Scaffold(
-        appBar: ref.read(appBarProvider)[current_index],
+        appBar: ref.read(appBarProvider)[0],
         body: ref.read(bodywidgetsProvider)[current_index],
         bottomNavigationBar: const BottomNavBar(),
       );
@@ -236,8 +272,8 @@ final dataProvider = FutureProvider<dynamic>((ref) async {
     "id": token,
     "date": "${date.year}-${date.month}-${date.day}"
   };
-  dynamic response = await http
-      .post(Uri.parse(using + "user/getBooking"), body: post_body);
+  dynamic response =
+      await http.post(Uri.parse(using + "user/getBooking"), body: post_body);
   dynamic data = jsonDecode(response.body);
   for (int i = 0; i < data.length; i++) {
     data[i] = jsonDecode(data[i].toString());
