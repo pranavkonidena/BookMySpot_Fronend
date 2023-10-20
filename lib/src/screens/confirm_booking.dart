@@ -9,6 +9,10 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import '../constants/constants.dart';
 
+final timeProvider = StateProvider<TimeOfDay>((ref) {
+  return TimeOfDay.now();
+});
+
 final slotsProviderAmenity = StateProvider<List>((ref) {
   return [];
 });
@@ -54,6 +58,43 @@ class ConfirmBooking extends ConsumerWidget {
     }
   }
 
+  Future<void> selectTime(BuildContext context, WidgetRef ref) async {
+    TimeOfDay? selectedTime = TimeOfDay.now();
+    final TimeOfDay? picked_s = await showTimePicker(
+      context: context,
+      initialTime: selectedTime,
+    );
+
+    if (picked_s != null && picked_s != selectedTime) {
+      ref.watch(timeProvider.notifier).state = picked_s;
+      print(picked_s.hour);
+      var slots = ref.read(slotsProviderAmenity);
+      var new_slots = [];
+      for (int i = 0; i < slots.length; i++) {
+        var hour = int.parse(slots[i]["start_time"].toString().substring(0, 2));
+
+        print("PICKED" + picked_s.hour.toString());
+        if (picked_s.hour == hour) {
+          new_slots.add(slots[i]);
+        }
+      }
+      ref.read(slotsProviderAmenity.notifier).state = new_slots;
+    }
+    else{
+      var slots = ref.read(slotsProviderAmenity);
+      var new_slots = [];
+      for (int i = 0; i < slots.length; i++) {
+        var hour = int.parse(slots[i]["start_time"].toString().substring(0, 2));
+
+        
+        if (TimeOfDay.now().hour == hour) {
+          new_slots.add(slots[i]);
+        }
+      }
+      ref.read(slotsProviderAmenity.notifier).state = new_slots;
+    }
+  }
+
   Future<void> selectDate(BuildContext context, WidgetRef ref) async {
     DateTime selectedDate = DateTime
         .now(); // Initial date, you can set any date you want as the initial date.
@@ -76,6 +117,7 @@ class ConfirmBooking extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final date = ref.watch(selectedDateProvider);
     final duration = ref.watch(durationProvider);
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 12,
@@ -112,9 +154,8 @@ class ConfirmBooking extends ConsumerWidget {
             // Data has been fetched successfully, use it in your UI.
             var data = snapshot.data;
             final date = ref.watch(selectedDateProvider);
-            return Padding(
-              padding:
-                  EdgeInsets.only(top: MediaQuery.of(context).size.height / 8),
+            final time = ref.watch(timeProvider);
+            return SingleChildScrollView(
               child: Column(
                 children: [
                   Row(
@@ -165,6 +206,14 @@ class ConfirmBooking extends ConsumerWidget {
                     padding: const EdgeInsets.only(top: 38.0),
                     child: DurationDropdown(id.toString()),
                   ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      selectTime(context, ref);
+                    },
+                    child: Text("Select Time"),
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(right: 22.0, top: 28),
                     child: Row(
@@ -205,11 +254,10 @@ class DurationDropdown extends ConsumerWidget {
   Future fetchSlots(WidgetRef ref) async {
     final date = ref.watch(selectedDateProvider);
     final duration = ref.watch(durationProvider);
-
     final post_data = {
       "amenity": id,
       "duration": duration.toString(),
-      "date": "${date.year}-${date.month}-${date.day}"
+      "date": "${date.year}-${date.month}-${date.day}",
     };
 
     var response =

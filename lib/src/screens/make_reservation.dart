@@ -12,7 +12,6 @@ final slotsProvider = FutureProvider<dynamic>((ref) async {
   var response = await http.get(Uri.parse(using + "amenity/getAll"));
   dynamic data = response.body;
   data = jsonDecode(response.body.toString());
-  print(data);
   return data;
 });
 
