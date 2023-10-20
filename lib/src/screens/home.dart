@@ -15,6 +15,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import '../services/string_extension.dart';
 
+final dataIndexProvider = StateProvider<int>((ref) {
+  return 0;
+});
+
 final calendarStateProvider = StateProvider<bool>((ref) {
   return false;
 });
@@ -178,48 +182,14 @@ class HomeScreen extends ConsumerWidget {
           elevation: 0,
           backgroundColor: const Color.fromARGB(168, 35, 187, 233),
           leadingWidth: 220,
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 22.0, bottom: 12),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  date.date.toString(),
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 30,
-                    fontFamily: 'Thasadith',
-                  ),
-                ),
-                Text(
-                  date.day.toString(),
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Thasadith',
-                  ),
-                ),
-              ],
+          title: Text(
+            "Amenities",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 40,
+              fontFamily: 'Thasadith',
             ),
           ),
-          actions: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 18.0),
-                  child: IconButton(
-                      onPressed: () {
-
-                      },
-                      icon: const Icon(Icons.calendar_month_outlined),
-                      iconSize: 30,
-                      color: Colors.grey.shade700),
-                )
-              ],
-            )
-          ],
         ),
       );
       l.add(AppBar(
@@ -257,8 +227,11 @@ class HomeScreen extends ConsumerWidget {
       return LoginScreen();
     } else {
       return Scaffold(
-        appBar: ref.read(appBarProvider)[0],
-        body: ref.read(bodywidgetsProvider)[current_index],
+        appBar: ref.read(appBarProvider)[current_index],
+        body: current_index == 0
+            ? SingleChildScrollView(
+                child: ref.read(bodywidgetsProvider)[current_index])
+            : ref.read(bodywidgetsProvider)[current_index],
         bottomNavigationBar: const BottomNavBar(),
       );
     }
@@ -306,6 +279,7 @@ class BookingsListView extends ConsumerWidget {
         );
       } else {
         return ListView.separated(
+          physics: NeverScrollableScrollPhysics(),
           separatorBuilder: (BuildContext context, int index) {
             return SizedBox(
               height: 30,
@@ -314,73 +288,79 @@ class BookingsListView extends ConsumerWidget {
           shrinkWrap: true,
           itemCount: value.length,
           itemBuilder: (context, index) {
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              height: 130,
-              color: Color.fromRGBO(247, 230, 196, 1),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.network(
-                          "https://github-production-user-asset-6210df.s3.amazonaws.com/122373207/275466089-4e5a891c-8afd-4e9b-a0da-04ff0c39687c.png",
-                          height: 30)
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        value[index]["amenity"]["name"],
-                        style: const TextStyle(
-                          color: Color(0xFF606C5D),
-                          fontSize: 30,
-                          fontFamily: 'Thasadith',
-                          fontWeight: FontWeight.w400,
+            return InkWell(
+              onTap: () {
+                ref.read(dataIndexProvider.notifier).state = value[index]["id"];
+                context.go("/booking/individual/${value[index]["id"]}");
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 130,
+                color: Color.fromRGBO(247, 230, 196, 1),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.network(
+                            "https://github-production-user-asset-6210df.s3.amazonaws.com/122373207/275466089-4e5a891c-8afd-4e9b-a0da-04ff0c39687c.png",
+                            height: 30)
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          value[index]["amenity"]["name"],
+                          style: const TextStyle(
+                            color: Color(0xFF606C5D),
+                            fontSize: 30,
+                            fontFamily: 'Thasadith',
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      ),
-                      Text(
-                        "${value[index]["time_of_slot"].hour}:${value[index]["time_of_slot"].minute}-${value[index]["end_time"].hour}:${value[index]["end_time"].minute}",
-                        style: const TextStyle(
-                          color: Color(0xFF606C5D),
-                          fontSize: 25,
-                          fontFamily: 'Thasadith',
-                          fontWeight: FontWeight.w400,
+                        Text(
+                          "${value[index]["time_of_slot"].hour}:${value[index]["time_of_slot"].minute}-${value[index]["end_time"].hour}:${value[index]["end_time"].minute}",
+                          style: const TextStyle(
+                            color: Color(0xFF606C5D),
+                            fontSize: 25,
+                            fontFamily: 'Thasadith',
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      ),
-                      Text(
-                        value[index]["amenity"]["venue"],
-                        style: const TextStyle(
-                          color: Color(0xFF606C5D),
-                          fontSize: 15,
-                          fontFamily: 'Thasadith',
-                          fontWeight: FontWeight.w400,
-                        ),
-                      )
-                    ],
-                  ),
-                  const VerticalDivider(
-                    color: Color(0xFF606C5D),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        value[index]["type"].toString().capitalize(),
-                        style: const TextStyle(
-                          color: Color(0xFF606C5D),
-                          fontSize: 25,
-                          fontFamily: 'Thasadith',
-                          fontWeight: FontWeight.w400,
-                        ),
-                      )
-                    ],
-                  ),
-                ],
+                        Text(
+                          value[index]["amenity"]["venue"],
+                          style: const TextStyle(
+                            color: Color(0xFF606C5D),
+                            fontSize: 15,
+                            fontFamily: 'Thasadith',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        )
+                      ],
+                    ),
+                    const VerticalDivider(
+                      color: Color(0xFF606C5D),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          value[index]["type"].toString().capitalize(),
+                          style: const TextStyle(
+                            color: Color(0xFF606C5D),
+                            fontSize: 25,
+                            fontFamily: 'Thasadith',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
             );
           },

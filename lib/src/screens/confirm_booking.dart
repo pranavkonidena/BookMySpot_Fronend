@@ -79,14 +79,12 @@ class ConfirmBooking extends ConsumerWidget {
         }
       }
       ref.read(slotsProviderAmenity.notifier).state = new_slots;
-    }
-    else{
+    } else {
       var slots = ref.read(slotsProviderAmenity);
       var new_slots = [];
       for (int i = 0; i < slots.length; i++) {
         var hour = int.parse(slots[i]["start_time"].toString().substring(0, 2));
 
-        
         if (TimeOfDay.now().hour == hour) {
           new_slots.add(slots[i]);
         }
@@ -140,6 +138,14 @@ class ConfirmBooking extends ConsumerWidget {
               icon: Icon(
                 Icons.calendar_month,
                 color: Colors.grey.shade700,
+              )),
+          IconButton(
+              onPressed: () {
+                selectTime(context, ref);
+              },
+              icon: Icon(
+                Icons.access_time,
+                color: Colors.grey[700],
               ))
         ],
       ),
@@ -206,14 +212,6 @@ class ConfirmBooking extends ConsumerWidget {
                     padding: const EdgeInsets.only(top: 38.0),
                     child: DurationDropdown(id.toString()),
                   ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      selectTime(context, ref);
-                    },
-                    child: Text("Select Time"),
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.grey),
-                  ),
                   Padding(
                     padding: const EdgeInsets.only(right: 22.0, top: 28),
                     child: Row(
@@ -230,6 +228,21 @@ class ConfirmBooking extends ConsumerWidget {
                         ),
                         ElevatedButton(
                             onPressed: () {
+                              var picked_s = ref.read(timeProvider);
+                              var slots = ref.read(slotsProviderAmenity);
+                              var new_slots = [];
+                              for (int i = 0; i < slots.length; i++) {
+                                var hour = int.parse(slots[i]["start_time"]
+                                    .toString()
+                                    .substring(0, 2));
+
+                                print("PICKED" + picked_s.hour.toString());
+                                if (picked_s.hour == hour) {
+                                  new_slots.add(slots[i]);
+                                }
+                              }
+                              ref.read(slotsProviderAmenity.notifier).state =
+                                  new_slots;
                               context.go("/checkSlots");
                             },
                             child: Text("Check Slots"))
