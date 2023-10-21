@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:book_my_spot_frontend/src/screens/amenityEvent.dart';
+import 'package:book_my_spot_frontend/src/screens/eventsList.dart';
 import 'package:book_my_spot_frontend/src/screens/amenityProfile.dart';
 import 'package:book_my_spot_frontend/src/screens/individualBookingDetails.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
@@ -32,6 +33,7 @@ class AmenityHeadHome extends ConsumerWidget {
     final bodyWidgetProvider = Provider<List<Widget>>((ref) {
       List<Widget> l = [];
       l.add(AmenityEventAdd());
+      l.add(EventsList());
       l.add(AmenityHeadProfile());
       return l;
     });
@@ -44,7 +46,23 @@ class AmenityHeadHome extends ConsumerWidget {
           backgroundColor: const Color.fromARGB(168, 35, 187, 233),
           leadingWidth: 220,
           title: const Text(
-            "Make Event",
+            "Add Event",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 40,
+              fontFamily: 'Thasadith',
+            ),
+          ),
+        ),
+      );
+      l.add(
+        AppBar(
+          toolbarHeight: MediaQuery.of(context).size.height / 12,
+          elevation: 0,
+          backgroundColor: const Color.fromARGB(168, 35, 187, 233),
+          leadingWidth: 220,
+          title: const Text(
+            "Events",
             style: TextStyle(
               color: Colors.black,
               fontSize: 40,
@@ -289,6 +307,7 @@ class _BottomNavWidgetState extends ConsumerState<BottomNavWidget> {
                 Icons.add_rounded,
               ),
               label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.event), label: ""),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "")
         ],
       ),
