@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:book_my_spot_frontend/src/screens/home.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
@@ -5,25 +7,45 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import '../services/storageManager.dart';
+import '../constants/constants.dart';
 
 final dio = Dio();
 final email_Provider = StateProvider<String>((ref) => "default");
 final password_Provider = StateProvider<String>((ref) => "default");
 
-class LoginScreen extends ConsumerWidget {
-  LoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends ConsumerStatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    var email = ref.watch(email_Provider);
-    var password = ref.watch(password_Provider);
+  ConsumerState<ConsumerStatefulWidget> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  Future<void> checkTokenAndNavigate() async {
     String? token = getToken();
-    if (token != "null") {
+    String? admintoken = getAdminToken();
+    print("ADMIN TOKEN: " + admintoken.toString());
+    print("TOKEN: " + token.toString());
+
+    if (admintoken != "null") {
+      context.go("/head");
+    } else if (token != "null") {
       context.go("/");
     }
+  }
 
-    print("Email entered is : " + email);
-    print("Password entered is :  " + password);
+  @override
+  void initState() {
+    Future.microtask(() {
+      checkTokenAndNavigate();
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var email = ref.watch(email_Provider);
+    var password = ref.watch(password_Provider);
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -132,7 +154,36 @@ class LoginScreen extends ConsumerWidget {
                   padding: EdgeInsets.only(
                       right: 30, left: MediaQuery.of(context).size.width - 140),
                   child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        var auth_headers = {
+                          "email": email,
+                          "password": password,
+                        };
+                        var response = await http.post(
+                            Uri.parse(using + "amenity/head/auth"),
+                            body: auth_headers);
+                        if (response.statusCode == 200) {
+                          var token = jsonDecode(response.body.toString());
+                          saveAdminToken(token);
+                          context.go("/head");
+                        } else {
+                          if (response.statusCode != 401) {
+                            const snackBar = SnackBar(
+                              content: Text(
+                                  'Error while logging u in, please try later'),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          } else {
+                            const snackBar = SnackBar(
+                              content: Text(
+                                  'Invalid credentials , please try again'),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          }
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                           foregroundColor: Color.fromRGBO(39, 158, 255, 100),
                           shape: RoundedRectangleBorder(

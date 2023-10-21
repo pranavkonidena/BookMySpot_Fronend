@@ -39,11 +39,6 @@ class MakeReservationPage extends ConsumerWidget {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.filter_alt),
-                  color: const Color.fromARGB(255, 96, 94, 94),
-                )
               ],
             ),
             const SizedBox(
