@@ -31,7 +31,7 @@ class MakeReservationPage extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Text(
-                  "Make a Reservation",
+                  "Amenities",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 35,

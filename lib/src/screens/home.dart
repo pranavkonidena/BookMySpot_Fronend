@@ -183,7 +183,7 @@ class HomeScreen extends ConsumerWidget {
           backgroundColor: const Color.fromARGB(168, 35, 187, 233),
           leadingWidth: 220,
           title: Text(
-            "Amenities",
+            "Make a Reservation",
             style: TextStyle(
               color: Colors.black,
               fontSize: 40,

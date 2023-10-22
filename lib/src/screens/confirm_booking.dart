@@ -9,6 +9,27 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import '../constants/constants.dart';
 
+const List<Widget> bookingTypes = <Widget>[
+  Text(
+    '  Individual  ',
+    style: TextStyle(
+      color: Colors.black,
+      fontSize: 20,
+      fontFamily: 'Thasadith',
+      fontWeight: FontWeight.w400,
+    ),
+  ),
+  Text(
+    '     Group    ',
+    style: TextStyle(
+      color: Colors.black,
+      fontSize: 20,
+      fontFamily: 'Thasadith',
+      fontWeight: FontWeight.w400,
+    ),
+  ),
+];
+
 final timeProvider = StateProvider<TimeOfDay>((ref) {
   return TimeOfDay.now();
 });
@@ -65,7 +86,7 @@ class ConfirmBooking extends ConsumerWidget {
       initialTime: selectedTime,
     );
 
-    if (picked_s != null && picked_s != selectedTime) {
+    if (picked_s != null) {
       ref.watch(timeProvider.notifier).state = picked_s;
       print(picked_s.hour);
       var slots = ref.read(slotsProviderAmenity);
@@ -161,95 +182,109 @@ class ConfirmBooking extends ConsumerWidget {
             var data = snapshot.data;
             final date = ref.watch(selectedDateProvider);
             final time = ref.watch(timeProvider);
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        data[0]["name"],
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 30,
-                          fontFamily: 'Thasadith',
-                          fontWeight: FontWeight.w400,
-                        ),
+            return Padding(
+              padding:
+                  EdgeInsets.only(top: MediaQuery.of(context).size.height / 16),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ToggleButtonWidget(),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height / 14),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            data[0]["name"],
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 30,
+                              fontFamily: 'Thasadith',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  Wrap(
-                    direction: Axis.horizontal,
-                    children: [
-                      Text(
-                        data[0]["venue"],
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 30,
-                          fontFamily: 'Thasadith',
-                          fontWeight: FontWeight.w400,
-                        ),
-                      )
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 18.0),
-                    child: Wrap(
+                    ),
+                    Wrap(
+                      direction: Axis.horizontal,
                       children: [
                         Text(
-                          "${date.day}th ${months[date.month]} ${date.year}",
+                          data[0]["venue"],
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 20,
+                            fontSize: 30,
                             fontFamily: 'Thasadith',
                             fontWeight: FontWeight.w400,
                           ),
                         )
                       ],
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 38.0),
-                    child: DurationDropdown(id.toString()),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 22.0, top: 28),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        ElevatedButton(
-                            onPressed: () {
-                              context.go("/");
-                              ref.read(currentIndexProvider.notifier).state = 1;
-                            },
-                            child: Text("    Cancel    ")),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        ElevatedButton(
-                            onPressed: () {
-                              var picked_s = ref.read(timeProvider);
-                              var slots = ref.read(slotsProviderAmenity);
-                              var new_slots = [];
-                              for (int i = 0; i < slots.length; i++) {
-                                var hour = int.parse(slots[i]["start_time"]
-                                    .toString()
-                                    .substring(0, 2));
-
-                                print("PICKED" + picked_s.hour.toString());
-                                if (picked_s.hour == hour) {
-                                  new_slots.add(slots[i]);
-                                }
-                              }
-                              ref.read(slotsProviderAmenity.notifier).state =
-                                  new_slots;
-                              context.go("/checkSlots");
-                            },
-                            child: Text("Check Slots"))
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.only(top: 18.0),
+                      child: Wrap(
+                        children: [
+                          Text(
+                            "${date.day}th ${months[date.month]} ${date.year}",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontFamily: 'Thasadith',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  )
-                ],
+                    Padding(
+                      padding: const EdgeInsets.only(top: 38.0),
+                      child: DurationDropdown(id.toString()),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 22.0, top: 28),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                              onPressed: () {
+                                context.go("/");
+                                ref.read(currentIndexProvider.notifier).state =
+                                    1;
+                              },
+                              child: Text("    Cancel    ")),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          ElevatedButton(
+                              onPressed: () {
+                                var picked_s = ref.read(timeProvider);
+                                if (picked_s != TimeOfDay.now()) {
+                                  var slots = ref.read(slotsProviderAmenity);
+                                  var new_slots = [];
+                                  for (int i = 0; i < slots.length; i++) {
+                                    var hour = int.parse(slots[i]["start_time"]
+                                        .toString()
+                                        .substring(0, 2));
+
+                                    print("PICKED" + picked_s.hour.toString());
+                                    if (picked_s.hour == hour) {
+                                      new_slots.add(slots[i]);
+                                    }
+                                  }
+                                  ref
+                                      .read(slotsProviderAmenity.notifier)
+                                      .state = new_slots;
+                                }
+
+                                context.go("/checkSlots");
+                              },
+                              child: Text("Check Slots"))
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             );
           }
@@ -332,6 +367,48 @@ class DurationDropdown extends ConsumerWidget {
           }).toList(),
         ),
       ],
+    );
+  }
+}
+
+final boolListProvider = StateProvider<List<bool>>((ref) {
+  List<bool> _selectedFruits = <bool>[true, false];
+  return _selectedFruits;
+});
+
+class ToggleButtonWidget extends ConsumerStatefulWidget {
+  const ToggleButtonWidget({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ToggleButtonWidgetState();
+}
+
+class _ToggleButtonWidgetState extends ConsumerState<ToggleButtonWidget> {
+  @override
+  Widget build(BuildContext context) {
+    final a = ref.watch(boolListProvider);
+    return Consumer(
+      builder: (context, ref, child) {
+        final a = ref.watch(boolListProvider);
+        return ToggleButtons(
+          children: bookingTypes,
+          isSelected: a,
+          fillColor: Color.fromRGBO(80, 207, 246, 1),
+          onPressed: (index) {
+            ref.read(boolListProvider.notifier).state = [
+              index == 0,
+              index != 0
+            ];
+          },
+          borderColor: Colors.black.withOpacity(0.3100000023841858),
+           borderRadius: const BorderRadius.all(Radius.circular(8)),
+            constraints: const BoxConstraints(
+                 minHeight: 50,
+                  minWidth: 140.0,
+                ),
+        );
+      },
     );
   }
 }
