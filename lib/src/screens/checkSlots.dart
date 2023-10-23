@@ -236,32 +236,7 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                             } else {
-                              print(data);
-                              var post_data = {
-                                "id_user": getToken().toString(),
-                                "date":
-                                    "${date.year}-${date.month}-${date.day}",
-                                "amenity_id": data[0]["amenity_id"].toString(),
-                                "start_time": data[ref.read(indexProvider)]
-                                        ["start_time"]
-                                    .toString(),
-                                "end_time": data[ref.read(indexProvider)]
-                                        ["end_time"]
-                                    .toString(),
-                                // "amenity_id" : data[]
-                              };
-                              print(post_data);
-                              var response = await http.post(
-                                  Uri.parse(
-                                      using + "booking/individual/bookSlot"),
-                                  body: post_data);
-                              print(response.statusCode);
-                              ref.refresh(dataProvider);
-                              ref.refresh(currentIndexProvider);
-                              ref.refresh(durationProvider);
-                              ref.refresh(selectedDateProvider);
-                              ref.refresh(timeProvider);
-                              context.go("/");
+                              context.go("/grpcreate");
                             }
                           },
                           child: Text("Create Group"))

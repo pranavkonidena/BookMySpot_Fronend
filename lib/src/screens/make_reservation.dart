@@ -7,6 +7,7 @@ import './home.dart';
 import '../models/slot.dart';
 import 'package:http/http.dart' as http;
 import 'package:go_router/go_router.dart';
+
 final slotsProvider = FutureProvider<dynamic>((ref) async {
   var post_data = {"duration": "30", "date": "2023-10-17"};
   var response = await http.get(Uri.parse(using + "amenity/getAll"));
@@ -20,9 +21,9 @@ class MakeReservationPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
+    return const Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(left: 20.0, top: 18, right: 20),
+        padding: EdgeInsets.only(left: 20.0, top: 18, right: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -30,7 +31,7 @@ class MakeReservationPage extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text(
+                Text(
                   "Amenities",
                   style: TextStyle(
                     color: Colors.black,
@@ -41,10 +42,21 @@ class MakeReservationPage extends ConsumerWidget {
                 ),
               ],
             ),
-            const SizedBox(
+            SizedBox(
               height: 30,
             ),
             SlotsListWidget(),
+            SizedBox(height: 30,),
+            Text(
+                  "Events",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 35,
+                    fontFamily: 'Thasadith',
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+            EventsLister(),
           ],
         ),
       ),
@@ -75,7 +87,7 @@ class SlotsListWidget extends ConsumerWidget {
         } else {
           return ListView.separated(
             separatorBuilder: (BuildContext context, int index) {
-              return SizedBox(
+              return const SizedBox(
                 height: 30,
               );
             },
@@ -129,19 +141,16 @@ class SlotsListWidget extends ConsumerWidget {
                       padding: const EdgeInsets.only(right: 10.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          
                           context.go("/new/${value[index]["id"]}");
                         },
-                        child:  Text(
+                        child: Text(
                           "Book Now",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontFamily: 'Thasadith',
-                              fontWeight: FontWeight.w400,
-                      
-                            ),
-                          
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontFamily: 'Thasadith',
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xFFB8DCE7)),
@@ -151,6 +160,31 @@ class SlotsListWidget extends ConsumerWidget {
             },
           );
         }
+      },
+      error: (error, stackTrace) {
+        return const SizedBox();
+      },
+      loading: () => const CircularProgressIndicator(),
+    );
+  }
+}
+
+final eventsProvider = FutureProvider<dynamic>((ref) async {
+  var response = await http.get(Uri.parse(using + "event/getAll"));
+  var data = jsonDecode(response.body.toString());
+  print(data);
+  return data;
+});
+
+class EventsLister extends ConsumerWidget {
+  const EventsLister({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final data = ref.watch(eventsProvider);
+    return data.when(
+      data: (data) {
+        return Text(data.toString());
       },
       error: (error, stackTrace) {
         return const SizedBox();
