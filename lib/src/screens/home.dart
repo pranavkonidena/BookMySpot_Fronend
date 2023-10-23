@@ -248,12 +248,22 @@ final dataProvider = FutureProvider<dynamic>((ref) async {
   dynamic response =
       await http.post(Uri.parse(using + "user/getBooking"), body: post_body);
   dynamic data = jsonDecode(response.body);
+
   for (int i = 0; i < data.length; i++) {
-    data[i] = jsonDecode(data[i].toString());
+    try {
+      data[i] = jsonDecode(data[i].toString());
+      print("P");
+      print(data[i]["type"]);
+    } catch (e) {
+      print(data[i]["type"]);
+      print("CATCH");
+    }
+
     data[i]["time_of_slot"] = DateTime.parse(data[i]["time_of_slot"]);
     data[i]["end_time"] = data[i]["time_of_slot"]
         .add(Duration(minutes: data[i]["duration_of_booking"]));
   }
+
   return data;
 });
 
@@ -264,7 +274,6 @@ class BookingsListView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(dataProvider);
     return data.when(data: (value) {
-      print(value);
       if ((value as List).isEmpty) {
         return const Padding(
           padding: EdgeInsets.only(top: 18.0),

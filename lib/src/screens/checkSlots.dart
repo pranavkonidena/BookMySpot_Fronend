@@ -7,6 +7,10 @@ import 'package:http/http.dart' as http;
 import '../constants/constants.dart';
 import 'package:go_router/go_router.dart';
 
+final indiDetailsProvider = StateProvider<dynamic>((ref) {
+  return ;
+});
+
 const snackBar = SnackBar(
   content: Text("Please select before proceeding"),
 );
@@ -120,6 +124,7 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
                                   .showSnackBar(snackBar);
                             } else {
                               print(data);
+                             
                               var post_data = {
                                 "id_user": getToken().toString(),
                                 "date":
@@ -133,6 +138,7 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
                                     .toString(),
                                 // "amenity_id" : data[]
                               };
+                            
                               print(post_data);
                               var response = await http.post(
                                   Uri.parse(
