@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 final bookingDetailsProvider = FutureProvider<dynamic>((ref) async {
   var response = await http.get(Uri.parse(
-      using + "booking/specificBooking?id=${ref.watch(dataIndexProvider)}"));
+      using + "booking/individual/specificBooking?id=${ref.watch(dataIndexProvider)}"));
   var data = jsonDecode(response.body);
   return data;
 });

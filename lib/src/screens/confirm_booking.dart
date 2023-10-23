@@ -75,6 +75,7 @@ class ConfirmBooking extends ConsumerWidget {
     if (data == "No Slots") {
       return [];
     } else {
+      print(data);
       return data;
     }
   }
@@ -402,11 +403,11 @@ class _ToggleButtonWidgetState extends ConsumerState<ToggleButtonWidget> {
             ];
           },
           borderColor: Colors.black.withOpacity(0.3100000023841858),
-           borderRadius: const BorderRadius.all(Radius.circular(8)),
-            constraints: const BoxConstraints(
-                 minHeight: 50,
-                  minWidth: 140.0,
-                ),
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          constraints: const BoxConstraints(
+            minHeight: 50,
+            minWidth: 140.0,
+          ),
         );
       },
     );

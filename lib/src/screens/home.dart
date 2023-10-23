@@ -15,6 +15,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import '../services/string_extension.dart';
 
+final groupidProvider = StateProvider<int>((ref) {
+  return 0;
+});
+
 final dataIndexProvider = StateProvider<int>((ref) {
   return 0;
 });
@@ -299,8 +303,13 @@ class BookingsListView extends ConsumerWidget {
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
+                ref.read(groupidProvider.notifier).state = value[index]["id"];
                 ref.read(dataIndexProvider.notifier).state = value[index]["id"];
-                context.go("/booking/individual/${value[index]["id"]}");
+                if (value[index]["type"] == "individual") {
+                  context.go("/booking/individual/${value[index]["id"]}");
+                } else {
+                  context.go("/booking/group/${value[index]["id"]}");
+                }
               },
               child: Container(
                 width: MediaQuery.of(context).size.width,

@@ -1,6 +1,7 @@
 import 'package:book_my_spot_frontend/src/screens/amenityheadHome.dart';
 import 'package:book_my_spot_frontend/src/screens/checkSlots.dart';
 import 'package:book_my_spot_frontend/src/screens/confirm_booking.dart';
+import 'package:book_my_spot_frontend/src/screens/grouBookingDetails.dart';
 import 'package:book_my_spot_frontend/src/screens/groupBooking.dart';
 import 'package:book_my_spot_frontend/src/screens/groupCreation.dart';
 import 'package:book_my_spot_frontend/src/screens/individualBookingDetails.dart';
@@ -51,6 +52,13 @@ final router = GoRouter(routes: [
     builder: (context, state) {
       final id = state.pathParameters["id"];
       return IndividualBookingDetails(id.toString());
+    },
+  ),
+  GoRoute(
+    path: "/booking/group/:id",
+    builder: (context, state) {
+      final id = state.pathParameters["id"];
+      return GroupBookingDetails(id.toString());
     },
   ),
   GoRoute(
