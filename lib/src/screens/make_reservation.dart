@@ -24,40 +24,47 @@ class MakeReservationPage extends ConsumerWidget {
     return const Scaffold(
       body: Padding(
         padding: EdgeInsets.only(left: 20.0, top: 18, right: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "Amenities",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 35,
-                    fontFamily: 'Thasadith',
-                    fontWeight: FontWeight.w400,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Amenities",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 35,
+                      fontFamily: 'Thasadith',
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
+                ],
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              SlotsListWidget(),
+              SizedBox(
+                height: 30,
+              ),
+              Text(
+                "Events",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 35,
+                  fontFamily: 'Thasadith',
+                  fontWeight: FontWeight.w400,
                 ),
-              ],
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            SlotsListWidget(),
-            SizedBox(height: 30,),
-            Text(
-                  "Events",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 35,
-                    fontFamily: 'Thasadith',
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-            EventsLister(),
-          ],
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              EventsLister(),
+            ],
+          ),
         ),
       ),
     );
@@ -183,8 +190,39 @@ class EventsLister extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(eventsProvider);
     return data.when(
-      data: (data) {
-        return Text(data.toString());
+      data: (value) {
+        return ListView.separated(
+            physics: NeverScrollableScrollPhysics(),
+            separatorBuilder: (BuildContext context, int index) {
+              return SizedBox(
+                height: 30,
+              );
+            },
+            shrinkWrap: true,
+            itemCount: value.length,
+            itemBuilder: (context, index) {
+              return InkWell(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 130,
+                  color: Color.fromRGBO(247, 230, 196, 1),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        value[index]["name"],
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 25,
+                          fontFamily: 'Thasadith',
+                          fontWeight: FontWeight.w400,
+                        ),
+                    )
+                    ],
+                  ),
+                ),
+              );
+            });
       },
       error: (error, stackTrace) {
         return const SizedBox();

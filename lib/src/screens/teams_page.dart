@@ -1,13 +1,60 @@
+import 'dart:convert';
+import 'package:go_router/go_router.dart';
+import 'package:book_my_spot_frontend/src/screens/loadingScreen.dart';
+import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import './home.dart';
+import 'package:http/http.dart' as http;
+import '../constants/constants.dart';
+
+final teamIDProvider = StateProvider<int>((ref) {
+  return 0;
+});
+
+final teamsListProvider = FutureProvider<dynamic>((ref) async {
+  var response = await http.get(Uri.parse(using + "team?id=${getToken()}"));
+  var data = jsonDecode(response.body);
+  return data;
+});
+
 class TeamScreen extends ConsumerWidget {
   const TeamScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      body: Text("This is the teams page"),
+    final data = ref.watch(teamsListProvider);
+    return data.when(
+      loading: () => const LoadingScreen(),
+      error: (error, stackTrace) {
+        return const SizedBox();
+      },
+      data: (value) {
+        return Scaffold(
+            body: SingleChildScrollView(
+                child: Padding(
+          padding: const EdgeInsets.only(top: 38.0, left: 8, right: 8),
+          child: ListView.separated(
+              physics: NeverScrollableScrollPhysics(),
+              separatorBuilder: (BuildContext context, int index) {
+                return SizedBox(
+                  height: 30,
+                );
+              },
+              shrinkWrap: true,
+              itemCount: value.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  onTap: () {
+                    ref.read(teamIDProvider.notifier).state =
+                        value[index]["id"];
+                    context.go("/teamDetails");
+                  },
+                  tileColor: Color.fromRGBO(217, 217, 217, 0.3),
+                  title: Center(child: Text(value[index]["name"])),
+                );
+              }),
+        )));
+      },
     );
   }
 }
