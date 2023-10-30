@@ -36,8 +36,7 @@ class GroupBookingFinalPage extends ConsumerWidget {
         leading: IconButton(
             onPressed: () {
               ref.refresh(groupNameProvider);
-
-              context.go("/grpcreate");
+              context.go("/grpcreate/checkSlots");
             },
             icon: Icon(
               Icons.arrow_back_ios,

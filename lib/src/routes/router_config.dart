@@ -1,6 +1,7 @@
 import 'package:book_my_spot_frontend/src/screens/amenityheadHome.dart';
 import 'package:book_my_spot_frontend/src/screens/checkSlots.dart';
 import 'package:book_my_spot_frontend/src/screens/confirm_booking.dart';
+import 'package:book_my_spot_frontend/src/screens/eventBooking.dart';
 import 'package:book_my_spot_frontend/src/screens/grouBookingDetails.dart';
 import 'package:book_my_spot_frontend/src/screens/groupBooking.dart';
 import 'package:book_my_spot_frontend/src/screens/groupCreation.dart';
@@ -69,9 +70,10 @@ final router = GoRouter(routes: [
     },
   ),
   GoRoute(
-    path: "/grpcreate",
+    path: "/grpcreate/:fallBack",
     builder: (context, state) {
-      return GroupCreatePage();
+      final fallBack = '/'+state.pathParameters["fallBack"]!;
+      return GroupCreatePage(fallBack);
     },
   ),
   GoRoute(
@@ -81,9 +83,16 @@ final router = GoRouter(routes: [
     },
   ),
   GoRoute(
-    path: "/teamDetails",
+    path: "/teamDetails:id",
     builder: (context, state) {
-      return TeamDetails();
+      final id = state.pathParameters["id"];
+      return TeamDetails(id);
+    },
+  ),
+  GoRoute(
+    path: "/event/book",
+    builder: (context, state) {
+      return EventBookingPage();
     },
   ),
 ]);

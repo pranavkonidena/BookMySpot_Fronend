@@ -1,12 +1,30 @@
 import 'dart:convert';
 
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
+import 'package:book_my_spot_frontend/src/services/storageManager.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_storage/get_storage.dart';
 import './home.dart';
 import '../models/slot.dart';
 import 'package:http/http.dart' as http;
 import 'package:go_router/go_router.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+
+var final_teams = [];
+
+final selectedEventProvider = StateProvider<int>((ref) {
+  return 0;
+});
+
+final isDropdownOpenProvider = StateProvider<bool>((ref) {
+  return false;
+});
+
+final finalTeamsProvider = StateProvider<dynamic>((ref) {
+  return;
+});
 
 final slotsProvider = FutureProvider<dynamic>((ref) async {
   var post_data = {"duration": "30", "date": "2023-10-17"};
@@ -209,15 +227,72 @@ class EventsLister extends ConsumerWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        value[index]["name"],
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 25,
-                          fontFamily: 'Thasadith',
-                          fontWeight: FontWeight.w400,
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Wrap(children: [
+                              Text(
+                                value[index]["name"],
+                                style: TextStyle(
+                                  color: Color(0xFF606C5D),
+                                  fontSize: 25,
+                                  fontFamily: 'Thasadith',
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              )
+                            ]),
+                            Text(
+                              "${DateTime.parse(value[index]["time_of_occourence_start"]).day} ${months[DateTime.parse(value[index]["time_of_occourence_start"]).month]} ${DateTime.parse(value[index]["time_of_occourence_start"]).year} - ${DateTime.parse(value[index]["time_of_occourence_end"]).day} ${months[DateTime.parse(value[index]["time_of_occourence_end"]).month]} ${DateTime.parse(value[index]["time_of_occourence_end"]).year} ",
+                              style: TextStyle(
+                                color: Color(0xFF606C5D),
+                                fontSize: 25,
+                                fontFamily: 'Thasadith',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
                         ),
-                    )
+                      ),
+                      const VerticalDivider(
+                        color: Color(0xFF606C5D),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            ref.read(selectedEventProvider.notifier).state =
+                                value[index]["id"];
+                            print(value[index]["id"].runtimeType);
+                            ref.read(finalTeamsProvider.notifier).state = [];
+                            var teams_as_admin = await http.get(Uri.parse(
+                                using + "teamasadmin?id=${getToken()}"));
+                            var teams = jsonDecode(teams_as_admin.body);
+                            final_teams.clear();
+                            for (int i = 0; i < teams.length; i++) {
+                              if (!value[index]["team"]
+                                  .contains(teams[i]["id"])) {
+                                final_teams.add(teams[i]);
+                              }
+                            }
+                            ref.read(finalTeamsProvider.notifier).state =
+                                final_teams;
+                            context.go("/event/book");
+                            print(final_teams);
+                          },
+                          child: Text(
+                            "Book",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontFamily: 'Thasadith',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFFB8DCE7)),
+                        ),
+                      ),
                     ],
                   ),
                 ),

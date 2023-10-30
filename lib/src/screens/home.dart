@@ -200,7 +200,19 @@ class HomeScreen extends ConsumerWidget {
         toolbarHeight: MediaQuery.of(context).size.height / 12,
         elevation: 0,
         backgroundColor: const Color.fromARGB(168, 35, 187, 233),
-        leadingWidth: 220,
+        actions: [
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              "New team",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                fontFamily: 'Thasadith',
+              ),
+            ),
+          )
+        ],
         title: const Text(
           "Teams",
           style: TextStyle(

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:book_my_spot_frontend/src/screens/teamsDetail.dart';
 import 'package:go_router/go_router.dart';
 import 'package:book_my_spot_frontend/src/screens/loadingScreen.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
@@ -32,12 +33,12 @@ class TeamScreen extends ConsumerWidget {
         return Scaffold(
             body: SingleChildScrollView(
                 child: Padding(
-          padding: const EdgeInsets.only(top: 38.0, left: 8, right: 8),
+          padding: const EdgeInsets.only(top: 38.0, left: 16, right: 16),
           child: ListView.separated(
               physics: NeverScrollableScrollPhysics(),
               separatorBuilder: (BuildContext context, int index) {
                 return SizedBox(
-                  height: 30,
+                  height: 20,
                 );
               },
               shrinkWrap: true,
@@ -47,10 +48,20 @@ class TeamScreen extends ConsumerWidget {
                   onTap: () {
                     ref.read(teamIDProvider.notifier).state =
                         value[index]["id"];
-                    context.go("/teamDetails");
+                    ref.refresh(teamdetailsProvider);
+                    print("ID" + ref.read(teamIDProvider).toString());
+                    context.go("/teamDetails${value[index]["id"]}");
                   },
                   tileColor: Color.fromRGBO(217, 217, 217, 0.3),
-                  title: Center(child: Text(value[index]["name"])),
+                  title: Center(
+                      child: Text(
+                    value[index]["name"],
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 35,
+                      fontFamily: 'Thasadith',
+                    ),
+                  )),
                 );
               }),
         )));

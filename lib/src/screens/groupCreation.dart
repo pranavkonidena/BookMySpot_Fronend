@@ -45,7 +45,8 @@ final usersAllProvider = FutureProvider<dynamic>((ref) async {
 });
 
 class GroupCreatePage extends ConsumerStatefulWidget {
-  const GroupCreatePage({super.key});
+  GroupCreatePage(this.fallbackRoute , {super.key});
+  String fallbackRoute;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -67,7 +68,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                   onPressed: () {
                     ref.refresh(currentStringProvider);
                     ref.refresh(filtereditemsProvider);
-                    context.go("/checkSlots");
+                    context.go(widget.fallbackRoute);
                   },
                   icon: Icon(
                     Icons.arrow_back_ios,

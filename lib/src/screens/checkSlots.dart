@@ -242,7 +242,7 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                             } else {
-                              context.go("/grpcreate");
+                              context.go("/grpcreate/checkSlots");
                             }
                           },
                           child: Text("Create Group"))
