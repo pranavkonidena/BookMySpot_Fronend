@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:book_my_spot_frontend/src/screens/checkSlots.dart';
+import 'package:book_my_spot_frontend/src/screens/teamsDetail.dart';
+import 'package:book_my_spot_frontend/src/screens/teams_page.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:easy_search_bar/easy_search_bar.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,10 @@ import 'package:get_storage/get_storage.dart';
 import '../constants/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:go_router/go_router.dart';
+
+final dialogBoxStateProvider = StateProvider<bool>((ref) {
+  return false;
+});
 
 final groupselectedProvider = StateProvider<List<Map>>((ref) {
   List<Map> l = [];
@@ -45,7 +51,7 @@ final usersAllProvider = FutureProvider<dynamic>((ref) async {
 });
 
 class GroupCreatePage extends ConsumerStatefulWidget {
-  GroupCreatePage(this.fallbackRoute , {super.key});
+  GroupCreatePage(this.fallbackRoute, {super.key});
   String fallbackRoute;
 
   @override
@@ -68,6 +74,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                   onPressed: () {
                     ref.refresh(currentStringProvider);
                     ref.refresh(filtereditemsProvider);
+                    ref.refresh(groupselectedProvider);
                     context.go(widget.fallbackRoute);
                   },
                   icon: Icon(
@@ -87,21 +94,58 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 15.0),
                   child: TextButton(
-                      onPressed: () {
-                        SnackBar snackBarNew = const SnackBar(
-                            content: Text("Group must have atleast 2 members"));
-                        if (ref
-                                .read(groupselectedProvider.notifier)
-                                .state
-                                .length <
-                            2) {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(snackBarNew);
-                        } else {
-                          context.go("/grpbooking");
+                      onPressed: () async {
+                        if (widget.fallbackRoute.contains('/checkSlots')) {
+                          SnackBar snackBarNew = const SnackBar(
+                              content:
+                                  Text("Group must have atleast 2 members"));
+                          if (ref
+                                  .read(groupselectedProvider.notifier)
+                                  .state
+                                  .length <
+                              2) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBarNew);
+                          } else {
+                            context.go("/grpbooking");
+                          }
+                        } else if (widget.fallbackRoute
+                            .contains("teamDetails")) {
+                          var id = ref.watch(teamIDProvider);
+                          var response = await http
+                              .get(Uri.parse(using + "team/i?id=$id"));
+                          var data = jsonDecode(response.body.toString());
+                          var team_name = data[0]["name"];
+                          for (int i = 0;
+                              i <
+                                  ref
+                                      .watch(groupselectedProvider.notifier)
+                                      .state
+                                      .length;
+                              i++) {
+                            var entry = ref.watch(groupselectedProvider)[i];
+                            var member_id = entry["id"];
+                            var admin = entry["admin"];
+
+                            var post_data = {
+                              "id": getToken(),
+                              "name": team_name,
+                              "member_id": member_id,
+                              "admin": admin,
+                            };
+
+                            var response = await http.post(
+                                Uri.parse(using + "team/add"),
+                                body: post_data);
+                            var data = jsonDecode(response.body.toString());
+                            print(data);
+                            ref.refresh(groupselectedProvider);
+                            ref.refresh(teamdetailsProvider);
+                            context.go("/teamDetails$id");
+                          }
                         }
                       },
-                      child: Text(
+                      child: const Text(
                         "Next",
                         style: TextStyle(
                           color: Colors.black,
@@ -218,30 +262,168 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                           padding: const EdgeInsets.all(8.0),
                           child: ListTile(
                             onTap: () {
-                              var entry = {};
-                              entry["name"] = ref
-                                  .read(filtereditemsProvider)[index]["name"];
-                              entry["dp"] =
-                                  ref.read(filtereditemsProvider)[index]["dp"];
-                              entry["id"] = ref
-                                  .read(filtereditemsProvider.notifier)
-                                  .state[index]["id"];
-                              bool isNamePresent = ref
-                                  .read(groupselectedProvider)
-                                  .any((map) => map['name'] == entry["name"]);
-                              if (isNamePresent) {
-                                ref
-                                    .read(groupselectedProvider.notifier)
-                                    .state
-                                    .removeWhere(
-                                        (map) => map["name"] == entry["name"]);
+                              if (widget.fallbackRoute.contains("checkSlots")) {
+                                var entry = {};
+                                entry["name"] = ref
+                                    .read(filtereditemsProvider)[index]["name"];
+                                entry["dp"] = ref
+                                    .read(filtereditemsProvider)[index]["dp"];
+                                entry["id"] = ref
+                                    .read(filtereditemsProvider.notifier)
+                                    .state[index]["id"];
+                                bool isNamePresent = ref
+                                    .read(groupselectedProvider)
+                                    .any((map) => map['name'] == entry["name"]);
+                                if (isNamePresent) {
+                                  ref
+                                      .read(groupselectedProvider.notifier)
+                                      .state
+                                      .removeWhere((map) =>
+                                          map["name"] == entry["name"]);
+                                } else {
+                                  ref
+                                      .read(groupselectedProvider.notifier)
+                                      .state
+                                      .add(entry);
+                                }
+                                setState(() {});
                               } else {
                                 ref
-                                    .read(groupselectedProvider.notifier)
-                                    .state
-                                    .add(entry);
+                                        .read(dialogBoxStateProvider.notifier)
+                                        .state =
+                                    !ref
+                                        .read(dialogBoxStateProvider.notifier)
+                                        .state;
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Visibility(
+                                      visible:
+                                          ref.watch(dialogBoxStateProvider),
+                                      child: Dialog(
+                                        child: Container(
+                                            height: 100,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Text("Select Role"),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    ElevatedButton(
+                                                        onPressed: () {
+                                                          var entry = {};
+                                                          entry[
+                                                              "name"] = ref.read(
+                                                                  filtereditemsProvider)[
+                                                              index]["name"];
+                                                          entry[
+                                                              "dp"] = ref.read(
+                                                                  filtereditemsProvider)[
+                                                              index]["dp"];
+                                                          entry["id"] = ref
+                                                              .read(
+                                                                  filtereditemsProvider
+                                                                      .notifier)
+                                                              .state[index]["id"];
+                                                          entry["admin"] =
+                                                              "True";
+                                                          bool isNamePresent = ref
+                                                              .read(
+                                                                  groupselectedProvider)
+                                                              .any((map) =>
+                                                                  map['name'] ==
+                                                                  entry[
+                                                                      "name"]);
+                                                          if (isNamePresent) {
+                                                            ref
+                                                                .read(groupselectedProvider
+                                                                    .notifier)
+                                                                .state
+                                                                .removeWhere((map) =>
+                                                                    map["name"] ==
+                                                                    entry[
+                                                                        "name"]);
+                                                          } else {
+                                                            ref
+                                                                .read(groupselectedProvider
+                                                                    .notifier)
+                                                                .state
+                                                                .add(entry);
+                                                          }
+                                                          ref
+                                                              .read(
+                                                                  dialogBoxStateProvider
+                                                                      .notifier)
+                                                              .state = false;
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          setState(() {});
+                                                        },
+                                                        child: Text("Admin")),
+                                                    ElevatedButton(
+                                                        onPressed: () {
+                                                          var entry = {};
+                                                          entry[
+                                                              "name"] = ref.read(
+                                                                  filtereditemsProvider)[
+                                                              index]["name"];
+                                                          entry[
+                                                              "dp"] = ref.read(
+                                                                  filtereditemsProvider)[
+                                                              index]["dp"];
+                                                          entry["id"] = ref
+                                                              .read(
+                                                                  filtereditemsProvider
+                                                                      .notifier)
+                                                              .state[index]["id"];
+                                                          entry["admin"] =
+                                                              "False";
+                                                          bool isNamePresent = ref
+                                                              .read(
+                                                                  groupselectedProvider)
+                                                              .any((map) =>
+                                                                  map['name'] ==
+                                                                  entry[
+                                                                      "name"]);
+                                                          if (isNamePresent) {
+                                                            ref
+                                                                .read(groupselectedProvider
+                                                                    .notifier)
+                                                                .state
+                                                                .removeWhere((map) =>
+                                                                    map["name"] ==
+                                                                    entry[
+                                                                        "name"]);
+                                                          } else {
+                                                            ref
+                                                                .read(groupselectedProvider
+                                                                    .notifier)
+                                                                .state
+                                                                .add(entry);
+                                                          }
+                                                          ref
+                                                              .read(
+                                                                  dialogBoxStateProvider
+                                                                      .notifier)
+                                                              .state = false;
+                                                          setState(() {});
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        child: Text("Member"))
+                                                  ],
+                                                )
+                                              ],
+                                            )),
+                                      ),
+                                    );
+                                  },
+                                );
                               }
-                              setState(() {});
                             },
                             leading: Column(
                               mainAxisAlignment: MainAxisAlignment.start,

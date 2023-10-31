@@ -16,6 +16,7 @@ import 'package:go_router/go_router.dart';
 import '../screens/home.dart';
 import '../screens/login_webView.dart';
 
+
 final router = GoRouter(routes: [
   GoRoute(name: "home", path: "/", builder: (context, state) => HomeScreen()),
   GoRoute(
@@ -73,6 +74,7 @@ final router = GoRouter(routes: [
     path: "/grpcreate/:fallBack",
     builder: (context, state) {
       final fallBack = '/'+state.pathParameters["fallBack"]!;
+      
       return GroupCreatePage(fallBack);
     },
   ),
