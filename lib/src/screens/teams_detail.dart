@@ -1,32 +1,30 @@
 import 'dart:convert';
-
 import 'package:book_my_spot_frontend/src/screens/teams_page.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import '../constants/constants.dart';
 
-bool is_admin = false;
-Map<String, String> admin_dp = {};
-Map<String, String> members_dp = {};
+bool isAdmin = false;
+Map<String, String> adminDp = {};
+Map<String, String> membersDp = {};
 final teamdetailsProvider = FutureProvider<dynamic>((ref) async {
-  final team_id = ref.read(teamIDProvider).toString();
-  var response = await http.get(Uri.parse(using + "team/i?id=${team_id}"));
+  final teamId = ref.read(teamIDProvider).toString();
+  var response = await http.get(Uri.parse("${using}team/i?id=${teamId}"));
   var data = jsonDecode(response.body);
   for (int i = 0; i < data[0]["admin_id"].length; i++) {
     String id = data[0]["admin_id"][i];
     var profile_picResp = await http.get(Uri.parse(using + "user?id=$id"));
     var proData = jsonDecode(profile_picResp.body);
     if (!proData[0]["profile_pic"].contains("github")) {
-      admin_dp[proData[0]["id"]] =
+      adminDp[proData[0]["id"]] =
           "https://channeli.in" + proData[0]["profile_pic"];
     } else {
-      admin_dp[proData[0]["id"]] = proData[0]["profile_pic"];
+      adminDp[proData[0]["id"]] = proData[0]["profile_pic"];
     }
-    admin_dp[proData[0]["id"] + "name"] = proData[0]["name"];
+    adminDp[proData[0]["id"] + "name"] = proData[0]["name"];
   }
   for (int i = 0; i < data[0]["members_id"].length; i++) {
     String id = data[0]["members_id"][i];
@@ -37,11 +35,11 @@ final teamdetailsProvider = FutureProvider<dynamic>((ref) async {
       proData[0]["profile_pic"] =
           "https://channeli.in" + proData[0]["profile_pic"];
     }
-    members_dp[proData[0]["id"] + "name"] = proData[0]["name"];
-    members_dp[proData[0]["id"]] = proData[0]["profile_pic"];
+    membersDp[proData[0]["id"] + "name"] = proData[0]["name"];
+    membersDp[proData[0]["id"]] = proData[0]["profile_pic"];
   }
 
-  is_admin = data[0]["admin_id"].contains(getToken());
+  isAdmin = data[0]["admin_id"].contains(getToken());
   return data;
 });
 
@@ -81,7 +79,7 @@ class TeamDetails extends ConsumerWidget {
                 ),
               ),
               actions: [
-                is_admin
+                isAdmin
                     ? Padding(
                         padding: const EdgeInsets.only(right: 16.0),
                         child: IconButton(
@@ -122,7 +120,7 @@ class TeamDetails extends ConsumerWidget {
                     title: Padding(
                       padding: const EdgeInsets.only(left: 18.0),
                       child: Text(
-                        admin_dp[value[0]["admin_id"][i].toString() + "name"]!,
+                        adminDp[value[0]["admin_id"][i].toString() + "name"]!,
                       ),
                     ),
                     leading: Container(
@@ -133,7 +131,7 @@ class TeamDetails extends ConsumerWidget {
                         height: 56,
                         width: 56,
                         child: Image.network(
-                            admin_dp[value[0]["admin_id"][i].toString()]!)),
+                            adminDp[value[0]["admin_id"][i].toString()]!)),
                   ),
                 ),
               const SizedBox(
@@ -151,12 +149,13 @@ class TeamDetails extends ConsumerWidget {
                         fontFamily: 'Thasadith',
                       ),
                     ),
-                    is_admin
+                    isAdmin
                         ? Padding(
                             padding: const EdgeInsets.only(left: 8),
                             child: IconButton(
                                 onPressed: () {
-                                  context.go("/grpcreate/teamDetails" + id.toString());
+                                  context.go(
+                                      "/grpcreate/teamDetails" + id.toString());
                                 },
                                 icon: Icon(
                                   Icons.add,
@@ -177,7 +176,7 @@ class TeamDetails extends ConsumerWidget {
                     title: Padding(
                       padding: const EdgeInsets.only(left: 18.0),
                       child: Text(
-                        members_dp[
+                        membersDp[
                             value[0]["members_id"][i].toString() + "name"]!,
                       ),
                     ),
@@ -189,7 +188,7 @@ class TeamDetails extends ConsumerWidget {
                         height: 56,
                         width: 56,
                         child: Image.network(
-                            members_dp[value[0]["members_id"][i].toString()]!)),
+                            membersDp[value[0]["members_id"][i].toString()]!)),
                   ),
                 ),
             ]));

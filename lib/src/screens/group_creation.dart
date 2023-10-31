@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:book_my_spot_frontend/src/screens/checkSlots.dart';
-import 'package:book_my_spot_frontend/src/screens/teamsDetail.dart';
+import 'package:book_my_spot_frontend/src/screens/check_slots.dart';
+import 'package:book_my_spot_frontend/src/screens/teams_detail.dart';
 import 'package:book_my_spot_frontend/src/screens/teams_page.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:easy_search_bar/easy_search_bar.dart';

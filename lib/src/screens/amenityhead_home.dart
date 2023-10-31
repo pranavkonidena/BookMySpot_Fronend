@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:book_my_spot_frontend/src/screens/amenityEvent.dart';
-import 'package:book_my_spot_frontend/src/screens/eventsList.dart';
-import 'package:book_my_spot_frontend/src/screens/amenityProfile.dart';
-import 'package:book_my_spot_frontend/src/screens/individualBookingDetails.dart';
+import 'package:book_my_spot_frontend/src/screens/amenity_event.dart';
+import 'package:book_my_spot_frontend/src/screens/events_list.dart';
+import 'package:book_my_spot_frontend/src/screens/amenity_profile.dart';
+import 'package:book_my_spot_frontend/src/screens/individual_bookingdetails.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

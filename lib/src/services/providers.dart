@@ -74,3 +74,17 @@ final userBookingsProvider = FutureProvider<dynamic>((ref) async {
   }
   return data;
 });
+
+final uriProvider = StateProvider<Uri>((ref) {
+  return Uri.parse("channeli");
+});
+
+
+
+final finalTeamsProvider = StateProvider<dynamic>((ref) {
+  return;
+});
+
+final selectedEventProvider = StateProvider<int>((ref) {
+  return 0;
+});

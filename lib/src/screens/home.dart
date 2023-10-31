@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:book_my_spot_frontend/src/screens/make_reservation.dart';
 import 'package:book_my_spot_frontend/src/screens/profile_page.dart';
 import 'package:book_my_spot_frontend/src/screens/teams_page.dart';
@@ -7,10 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:book_my_spot_frontend/src/screens/login.dart';
 import 'package:flutter/material.dart';
-import '../constants/constants.dart';
 import '../services/storageManager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
 import '../services/string_extension.dart';
 import '../models/user.dart';
 

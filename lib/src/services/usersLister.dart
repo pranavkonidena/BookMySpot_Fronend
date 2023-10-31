@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:book_my_spot_frontend/src/screens/groupCreation.dart';
+import 'package:book_my_spot_frontend/src/screens/group_creation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;

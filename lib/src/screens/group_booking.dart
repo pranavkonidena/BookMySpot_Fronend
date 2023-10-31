@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:book_my_spot_frontend/src/screens/checkSlots.dart';
+import 'package:book_my_spot_frontend/src/screens/check_slots.dart';
 import 'package:book_my_spot_frontend/src/screens/confirm_booking.dart';
-import 'package:book_my_spot_frontend/src/screens/groupCreation.dart';
+import 'package:book_my_spot_frontend/src/screens/group_creation.dart';
 import 'package:book_my_spot_frontend/src/screens/home.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';

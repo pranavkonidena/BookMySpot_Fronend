@@ -1,7 +1,8 @@
-import 'package:book_my_spot_frontend/src/screens/amenityheadHome.dart';
-import 'package:book_my_spot_frontend/src/screens/eventsList.dart';
+import 'package:book_my_spot_frontend/src/screens/amenityhead_home.dart';
+import 'package:book_my_spot_frontend/src/screens/events_list.dart';
 import 'package:book_my_spot_frontend/src/screens/home.dart';
 import 'package:book_my_spot_frontend/src/screens/make_reservation.dart';
+import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

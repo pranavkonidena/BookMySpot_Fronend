@@ -1,17 +1,13 @@
 import 'dart:convert';
-
-import 'package:book_my_spot_frontend/src/screens/home.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:dio/dio.dart';
 import '../services/storageManager.dart';
 import '../constants/constants.dart';
 
-final dio = Dio();
-final email_Provider = StateProvider<String>((ref) => "default");
-final password_Provider = StateProvider<String>((ref) => "default");
+final emailProvider = StateProvider<String>((ref) => "default");
+final passwordProvider = StateProvider<String>((ref) => "default");
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -24,9 +20,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Future<void> checkTokenAndNavigate() async {
     String? token = getToken();
     String? admintoken = getAdminToken();
-    print("ADMIN TOKEN: " + admintoken.toString());
-    print("TOKEN: " + token.toString());
-
     if (admintoken != "null") {
       context.go("/head");
     } else if (token != "null") {
@@ -44,8 +37,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var email = ref.watch(email_Provider);
-    var password = ref.watch(password_Provider);
+    var email = ref.watch(emailProvider);
+    var password = ref.watch(passwordProvider);
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -99,7 +92,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       padding: const EdgeInsets.only(left: 28.0, right: 28),
                       child: TextField(
                         onChanged: (value) {
-                          ref.read(email_Provider.notifier).state = value;
+                          ref.read(emailProvider.notifier).state = value;
                         },
                         decoration: const InputDecoration(
                             fillColor: Color.fromRGBO(190, 255, 247, 100),
@@ -135,7 +128,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       padding: const EdgeInsets.only(left: 28.0, right: 28),
                       child: TextField(
                         onChanged: (value) {
-                          ref.read(password_Provider.notifier).state = value;
+                          ref.read(passwordProvider.notifier).state = value;
                         },
                         decoration: const InputDecoration(
                             fillColor: Color.fromRGBO(190, 255, 247, 100),
@@ -155,13 +148,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       right: 30, left: MediaQuery.of(context).size.width - 140),
                   child: ElevatedButton(
                       onPressed: () async {
-                        var auth_headers = {
+                        var authHeaders = {
                           "email": email,
                           "password": password,
                         };
                         var response = await http.post(
-                            Uri.parse(using + "amenity/head/auth"),
-                            body: auth_headers);
+                            Uri.parse("${using}amenity/head/auth"),
+                            body: authHeaders);
                         if (response.statusCode == 200) {
                           var token = jsonDecode(response.body.toString());
                           saveAdminToken(token);
@@ -185,7 +178,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                          foregroundColor: Color.fromRGBO(39, 158, 255, 100),
+                          foregroundColor: const Color.fromRGBO(39, 158, 255, 100),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5))),
                       child: const Center(
