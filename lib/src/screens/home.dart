@@ -399,7 +399,7 @@ class BookingsListView extends ConsumerWidget {
     }, error: (error, stackTrace) {
       return const SizedBox();
     }, loading: () {
-      return const CircularProgressIndicator();
+      return Center(child: const CircularProgressIndicator());
     });
   }
 }

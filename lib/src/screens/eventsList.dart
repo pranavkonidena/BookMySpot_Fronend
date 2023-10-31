@@ -129,7 +129,7 @@ class EventsList extends ConsumerWidget {
     }, error: (error, stackTrace) {
       return const SizedBox();
     }, loading: () {
-      return CircularProgressIndicator();
+      return Center(child: CircularProgressIndicator());
     });
   }
 }

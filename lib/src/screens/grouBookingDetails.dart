@@ -22,7 +22,7 @@ class GroupBookingDetails extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(specificgrpbkngProvider);
     return data.when(
-      loading: () => const CircularProgressIndicator(),
+      loading: () => Center(child: const CircularProgressIndicator()),
       error: (error, stackTrace) {
         return const SizedBox();
       },

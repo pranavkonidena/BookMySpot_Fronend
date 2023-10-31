@@ -12,10 +12,6 @@ import '../constants/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:go_router/go_router.dart';
 
-final dialogBoxStateProvider = StateProvider<bool>((ref) {
-  return false;
-});
-
 final groupselectedProvider = StateProvider<List<Map>>((ref) {
   List<Map> l = [];
   return l;
@@ -288,18 +284,11 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                 }
                                 setState(() {});
                               } else {
-                                ref
-                                        .read(dialogBoxStateProvider.notifier)
-                                        .state =
-                                    !ref
-                                        .read(dialogBoxStateProvider.notifier)
-                                        .state;
                                 showDialog(
                                   context: context,
                                   builder: (context) {
                                     return Visibility(
-                                      visible:
-                                          ref.watch(dialogBoxStateProvider),
+                                      visible: true,
                                       child: Dialog(
                                         child: Container(
                                             height: 100,
@@ -354,11 +343,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                                                 .state
                                                                 .add(entry);
                                                           }
-                                                          ref
-                                                              .read(
-                                                                  dialogBoxStateProvider
-                                                                      .notifier)
-                                                              .state = false;
+
                                                           Navigator.of(context)
                                                               .pop();
                                                           setState(() {});
@@ -405,11 +390,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                                                 .state
                                                                 .add(entry);
                                                           }
-                                                          ref
-                                                              .read(
-                                                                  dialogBoxStateProvider
-                                                                      .notifier)
-                                                              .state = false;
+
                                                           setState(() {});
                                                           Navigator.of(context)
                                                               .pop();
@@ -472,7 +453,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
         return SizedBox();
       },
       loading: () {
-        return const CircularProgressIndicator();
+        return Center(child: const CircularProgressIndicator());
       },
     );
   }

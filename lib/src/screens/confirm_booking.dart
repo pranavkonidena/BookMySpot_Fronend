@@ -175,7 +175,7 @@ class ConfirmBooking extends ConsumerWidget {
         future: fetchData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator(); // Show a loading indicator.
+            return Center(child: CircularProgressIndicator()); // Show a loading indicator.
           } else if (snapshot.hasError) {
             return Text("Error: ${snapshot.error}");
           } else {

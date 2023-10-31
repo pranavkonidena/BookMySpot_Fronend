@@ -189,7 +189,7 @@ class SlotsListWidget extends ConsumerWidget {
       error: (error, stackTrace) {
         return const SizedBox();
       },
-      loading: () => const CircularProgressIndicator(),
+      loading: () => Center(child: const CircularProgressIndicator()),
     );
   }
 }
@@ -302,7 +302,7 @@ class EventsLister extends ConsumerWidget {
       error: (error, stackTrace) {
         return const SizedBox();
       },
-      loading: () => const CircularProgressIndicator(),
+      loading: () => Center(child: const CircularProgressIndicator()),
     );
   }
 }

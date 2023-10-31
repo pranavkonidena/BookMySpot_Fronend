@@ -69,7 +69,7 @@ class IndividualBookingDetails extends ConsumerWidget {
       },
       loading: () {
         return Scaffold(
-          body: CircularProgressIndicator(),
+          body: Center(child: CircularProgressIndicator()),
         );
       },
     );

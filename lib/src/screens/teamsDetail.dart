@@ -52,7 +52,7 @@ class TeamDetails extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(teamdetailsProvider);
     return data.when(
-      loading: () => const CircularProgressIndicator(),
+      loading: () => Center(child: const CircularProgressIndicator()),
       error: (error, stackTrace) {
         return const SizedBox();
       },
@@ -116,22 +116,25 @@ class TeamDetails extends ConsumerWidget {
                 height: 15,
               ),
               for (int i = 0; i < value[0]["admin_id"].length; i++)
-                ListTile(
-                  title: Padding(
-                    padding: const EdgeInsets.only(left: 18.0),
-                    child: Text(
-                      admin_dp[value[0]["admin_id"][i].toString() + "name"]!,
-                    ),
-                  ),
-                  leading: Container(
-                      clipBehavior: Clip.antiAlias,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListTile(
+                    title: Padding(
+                      padding: const EdgeInsets.only(left: 18.0),
+                      child: Text(
+                        admin_dp[value[0]["admin_id"][i].toString() + "name"]!,
                       ),
-                      height: 56,
-                      width: 56,
-                      child: Image.network(
-                          admin_dp[value[0]["admin_id"][i].toString()]!)),
+                    ),
+                    leading: Container(
+                        clipBehavior: Clip.antiAlias,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        height: 56,
+                        width: 56,
+                        child: Image.network(
+                            admin_dp[value[0]["admin_id"][i].toString()]!)),
+                  ),
                 ),
               const SizedBox(
                 height: 15,
@@ -168,23 +171,26 @@ class TeamDetails extends ConsumerWidget {
                 height: 10,
               ),
               for (int i = 0; i < value[0]["members_id"].length; i++)
-                ListTile(
-                  title: Padding(
-                    padding: const EdgeInsets.only(left: 18.0),
-                    child: Text(
-                      members_dp[
-                          value[0]["members_id"][i].toString() + "name"]!,
-                    ),
-                  ),
-                  leading: Container(
-                      clipBehavior: Clip.antiAlias,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListTile(
+                    title: Padding(
+                      padding: const EdgeInsets.only(left: 18.0),
+                      child: Text(
+                        members_dp[
+                            value[0]["members_id"][i].toString() + "name"]!,
                       ),
-                      height: 56,
-                      width: 56,
-                      child: Image.network(
-                          members_dp[value[0]["members_id"][i].toString()]!)),
+                    ),
+                    leading: Container(
+                        clipBehavior: Clip.antiAlias,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        height: 56,
+                        width: 56,
+                        child: Image.network(
+                            members_dp[value[0]["members_id"][i].toString()]!)),
+                  ),
                 ),
             ]));
       },

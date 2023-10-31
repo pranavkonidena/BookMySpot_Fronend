@@ -102,7 +102,7 @@ class _WebViewLoginState extends ConsumerState<WebViewLogin> {
                 }
               },
             )
-          : CircularProgressIndicator(),
+          : Center(child: CircularProgressIndicator()),
     );
   }
 }
