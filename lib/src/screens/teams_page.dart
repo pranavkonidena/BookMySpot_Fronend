@@ -15,6 +15,7 @@ final teamIDProvider = StateProvider<int>((ref) {
 final teamsListProvider = FutureProvider<dynamic>((ref) async {
   var response = await http.get(Uri.parse(using + "team?id=${getToken()}"));
   var data = jsonDecode(response.body);
+  print(data);
   return data;
 });
 
@@ -35,7 +36,7 @@ class TeamScreen extends ConsumerWidget {
                 child: Padding(
           padding: const EdgeInsets.only(top: 38.0, left: 16, right: 16),
           child: ListView.separated(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               separatorBuilder: (BuildContext context, int index) {
                 return SizedBox(
                   height: 20,

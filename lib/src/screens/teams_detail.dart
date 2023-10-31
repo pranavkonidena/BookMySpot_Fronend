@@ -1,11 +1,17 @@
 import 'dart:convert';
 import 'package:book_my_spot_frontend/src/screens/teams_page.dart';
+import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import '../constants/constants.dart';
+import '../models/user.dart';
+
+final _teamNameProvider = StateProvider<String>((ref) {
+  return "";
+});
 
 bool isAdmin = false;
 Map<String, String> adminDp = {};
@@ -14,6 +20,7 @@ final teamdetailsProvider = FutureProvider<dynamic>((ref) async {
   final teamId = ref.read(teamIDProvider).toString();
   var response = await http.get(Uri.parse("${using}team/i?id=${teamId}"));
   var data = jsonDecode(response.body);
+  ref.read(_teamNameProvider.notifier).state = data[0]["name"];
   for (int i = 0; i < data[0]["admin_id"].length; i++) {
     String id = data[0]["admin_id"][i];
     var profile_picResp = await http.get(Uri.parse(using + "user?id=$id"));
@@ -50,7 +57,7 @@ class TeamDetails extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(teamdetailsProvider);
     return data.when(
-      loading: () => Center(child: const CircularProgressIndicator()),
+      loading: () => const Center(child: const CircularProgressIndicator()),
       error: (error, stackTrace) {
         return const SizedBox();
       },
@@ -175,9 +182,32 @@ class TeamDetails extends ConsumerWidget {
                   child: ListTile(
                     title: Padding(
                       padding: const EdgeInsets.only(left: 18.0),
-                      child: Text(
-                        membersDp[
-                            value[0]["members_id"][i].toString() + "name"]!,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            membersDp[
+                                value[0]["members_id"][i].toString() + "name"]!,
+                          ),
+                          isAdmin
+                              ? IconButton(
+                                  onPressed: () async {
+                                    var postData = {
+                                      "name": ref.read(_teamNameProvider),
+                                      "id": getToken(),
+                                      "member_id":
+                                          value[0]["members_id"][i].toString(),
+                                    };
+                                    var response = await http.post(
+                                        Uri.parse("${using}team/remove"),
+                                        body: postData);
+                                    ref.refresh(teamdetailsProvider);
+                                    // print(ref.watch(teamIDProvider));
+                                  },
+                                  icon: Icon(Icons.highlight_remove,
+                                      color: Colors.grey.shade700))
+                              : const SizedBox()
+                        ],
                       ),
                     ),
                     leading: Container(
