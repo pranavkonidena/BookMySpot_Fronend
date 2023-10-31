@@ -145,7 +145,7 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
                                       using + "booking/individual/bookSlot"),
                                   body: post_data);
                               print(response.statusCode);
-                              ref.refresh(dataProvider);
+                              ref.refresh(userBookingsProvider);
                               ref.refresh(currentIndexProvider);
                               ref.refresh(durationProvider);
                               ref.refresh(selectedDateProvider);

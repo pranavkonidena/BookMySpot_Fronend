@@ -135,10 +135,11 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                 body: post_data);
                             var data = jsonDecode(response.body.toString());
                             print(data);
-                            ref.refresh(groupselectedProvider);
-                            ref.refresh(teamdetailsProvider);
-                            context.go("/teamDetails$id");
+                           
                           }
+                           ref.refresh(groupselectedProvider);
+                            ref.refresh(teamdetailsProvider);
+                          context.go("/teamDetails$id");
                         }
                       },
                       child: const Text(
