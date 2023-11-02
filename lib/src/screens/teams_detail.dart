@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:book_my_spot_frontend/src/screens/teams_page.dart';
+import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import '../constants/constants.dart';
+import '../models/user.dart';
 
 final _teamNameProvider = StateProvider<String>((ref) {
   return "";
@@ -89,12 +91,21 @@ class TeamDetails extends ConsumerWidget {
                         padding: const EdgeInsets.only(right: 16.0),
                         child: IconButton(
                             onPressed: () async {
-                              String name = value[0]["name"];
-                              String id = getToken();
+                              User user = ref.watch(userProvider);
+                              var post_data = {
+                                "name": ref.watch(_teamNameProvider),
+                                "id": user.token
+                              };
+                              print(post_data);
+                              var response = await http.post(
+                                  Uri.parse("${using}team/delete"),
+                                  body: post_data);
+                              ref.refresh(teamsListProvider);
+                              context.go("/");
                             },
                             icon: Icon(
-                              Icons.add,
-                              color: Colors.grey[700],
+                              Icons.delete_forever_rounded,
+                              color: Colors.grey[600],
                             )))
                     : SizedBox()
               ],

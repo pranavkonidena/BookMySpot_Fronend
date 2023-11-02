@@ -77,6 +77,7 @@ class AmenityEventTeamsList extends ConsumerWidget {
                       
                       ref.watch(teamIDProvider.notifier).state =
                           data[index][0]["id"];
+                          
                       context.go("/teamDetails${data[index][0]["id"]}");
                       ref.refresh(teamdetailsProvider);
                     },
