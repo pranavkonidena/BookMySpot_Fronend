@@ -7,6 +7,10 @@ import '../constants/constants.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 
+final selectedEventIDProvider = StateProvider<List<dynamic>>((ref) {
+  return [];
+});
+
 final eventsListProvider = FutureProvider<dynamic>((ref) async {
   var token = getAdminToken().toString();
   var response = await http.get(Uri.parse(using + "event/getAll?id=${token}"));
@@ -53,6 +57,8 @@ class EventsList extends ConsumerWidget {
                   print(value[index]);
                   return InkWell(
                     onTap: () {
+                      ref.read(selectedEventIDProvider.notifier).state =
+                          value[index]["team"];
                       context.go("/head/event/teams");
                     },
                     child: Container(

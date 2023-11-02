@@ -74,7 +74,7 @@ class EventBookingPage extends ConsumerWidget {
                                     Uri.parse(using + "event/register"),
                                     body: post_data);
                                 if (response.statusCode == 500) {
-                                  SnackBar snackBar = SnackBar(
+                                  SnackBar snackBar = const SnackBar(
                                       content: Text("You are not an admin!"));
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(snackBar);
