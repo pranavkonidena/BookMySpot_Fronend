@@ -43,7 +43,7 @@ class AmenityHeadHome extends ConsumerWidget {
         AppBar(
           toolbarHeight: MediaQuery.of(context).size.height / 12,
           elevation: 0,
-          backgroundColor: const Color.fromARGB(168, 35, 187, 233),
+          backgroundColor: Color.fromARGB(168, 117, 154, 165),
           leadingWidth: 220,
           title: const Text(
             "Add Event",

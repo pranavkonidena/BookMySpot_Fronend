@@ -1,3 +1,4 @@
+import 'package:book_my_spot_frontend/src/screens/confirm_booking.dart';
 import 'package:book_my_spot_frontend/src/screens/make_reservation.dart';
 import 'package:book_my_spot_frontend/src/screens/profile_page.dart';
 import 'package:book_my_spot_frontend/src/screens/teams_page.dart';
@@ -66,9 +67,9 @@ class HomeScreen extends ConsumerWidget {
                 ),
                 Visibility(
                   child: TableCalendar(
-                    focusedDay: DateTime.now(),
+                    focusedDay: ref.watch(selectedDateProvider),
                     firstDay: DateTime(2023, 10, 1),
-                    lastDay: DateTime(2023, 11, 4),
+                    lastDay: DateTime.now().add(Duration(days: 7)),
                     selectedDayPredicate: (day) {
                       return isSameDay(_selectedDay, day);
                     },

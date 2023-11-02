@@ -175,7 +175,7 @@ class SlotsListWidget extends ConsumerWidget {
   }
 }
 
-final _eventsProvider = FutureProvider<dynamic>((ref) async {
+final eventsProvider = FutureProvider<dynamic>((ref) async {
   var response = await http.get(Uri.parse("${using}event/getAll"));
   var data = jsonDecode(response.body.toString());
   return data;
@@ -186,7 +186,7 @@ class EventsLister extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final data = ref.watch(_eventsProvider);
+    final data = ref.watch(eventsProvider);
     return data.when(
       data: (value) {
         return ListView.separated(

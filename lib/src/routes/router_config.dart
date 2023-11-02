@@ -1,3 +1,4 @@
+import 'package:book_my_spot_frontend/src/screens/amenity_eventteams.dart';
 import 'package:book_my_spot_frontend/src/screens/amenityhead_home.dart';
 import 'package:book_my_spot_frontend/src/screens/check_slots.dart';
 import 'package:book_my_spot_frontend/src/screens/confirm_booking.dart';
@@ -95,6 +96,12 @@ final router = GoRouter(routes: [
     path: "/event/book",
     builder: (context, state) {
       return EventBookingPage();
+    },
+  ),
+  GoRoute(
+    path: "/head/event/teams",
+    builder: (context, state) {
+      return AmenityEventTeamsList();
     },
   ),
 ]);
