@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-import 'package:book_my_spot_frontend/src/screens/checkSlots.dart';
+import 'package:book_my_spot_frontend/src/screens/check_slots.dart';
 import 'package:book_my_spot_frontend/src/screens/confirm_booking.dart';
-import 'package:book_my_spot_frontend/src/screens/groupCreation.dart';
+import 'package:book_my_spot_frontend/src/screens/group_creation.dart';
 import 'package:book_my_spot_frontend/src/screens/home.dart';
+import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -80,7 +81,7 @@ class GroupBookingFinalPage extends ConsumerWidget {
                 if (response.statusCode == 200) {
                   ref.refresh(groupNameProvider);
                   ref.refresh(groupselectedProvider);
-                  ref.refresh(dataProvider);
+                  ref.refresh(userBookingsProvider);
                   ref.refresh(currentIndexProvider);
                   context.go("/");
                 }

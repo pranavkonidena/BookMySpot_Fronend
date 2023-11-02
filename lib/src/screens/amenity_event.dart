@@ -1,5 +1,5 @@
-import 'package:book_my_spot_frontend/src/screens/amenityheadHome.dart';
-import 'package:book_my_spot_frontend/src/screens/eventsList.dart';
+import 'package:book_my_spot_frontend/src/screens/amenityhead_home.dart';
+import 'package:book_my_spot_frontend/src/screens/events_list.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';

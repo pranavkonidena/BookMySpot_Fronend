@@ -1,24 +1,25 @@
-import 'package:book_my_spot_frontend/src/screens/amenityheadHome.dart';
-import 'package:book_my_spot_frontend/src/screens/checkSlots.dart';
+import 'package:book_my_spot_frontend/src/screens/amenity_eventteams.dart';
+import 'package:book_my_spot_frontend/src/screens/amenityhead_home.dart';
+import 'package:book_my_spot_frontend/src/screens/check_slots.dart';
 import 'package:book_my_spot_frontend/src/screens/confirm_booking.dart';
-import 'package:book_my_spot_frontend/src/screens/eventBooking.dart';
-import 'package:book_my_spot_frontend/src/screens/grouBookingDetails.dart';
-import 'package:book_my_spot_frontend/src/screens/groupBooking.dart';
-import 'package:book_my_spot_frontend/src/screens/groupCreation.dart';
-import 'package:book_my_spot_frontend/src/screens/individualBookingDetails.dart';
+import 'package:book_my_spot_frontend/src/screens/event_booking.dart';
+import 'package:book_my_spot_frontend/src/screens/group_bookingdetails.dart';
+import 'package:book_my_spot_frontend/src/screens/group_booking.dart';
+import 'package:book_my_spot_frontend/src/screens/group_creation.dart';
+import 'package:book_my_spot_frontend/src/screens/individual_bookingdetails.dart';
 import 'package:book_my_spot_frontend/src/screens/login.dart';
 import 'package:book_my_spot_frontend/src/screens/make_reservation.dart';
 import 'package:book_my_spot_frontend/src/screens/profile_page.dart';
-import 'package:book_my_spot_frontend/src/screens/teamsDetail.dart';
+import 'package:book_my_spot_frontend/src/screens/teams_detail.dart';
 import 'package:book_my_spot_frontend/src/screens/teams_page.dart';
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../screens/home.dart';
-import '../screens/login_webView.dart';
+import '../screens/login_wview.dart';
 
 
 final router = GoRouter(routes: [
   GoRoute(name: "home", path: "/", builder: (context, state) => HomeScreen()),
+  GoRoute(path: "/home", builder: (context, state) => HomeScreen()),
   GoRoute(
       name: "login",
       path: "/login",
@@ -95,6 +96,12 @@ final router = GoRouter(routes: [
     path: "/event/book",
     builder: (context, state) {
       return EventBookingPage();
+    },
+  ),
+  GoRoute(
+    path: "/head/event/teams",
+    builder: (context, state) {
+      return AmenityEventTeamsList();
     },
   ),
 ]);

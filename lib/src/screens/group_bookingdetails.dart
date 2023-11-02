@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:book_my_spot_frontend/src/screens/home.dart';
+import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -36,7 +37,7 @@ class GroupBookingDetails extends ConsumerWidget {
                   onPressed: () async {
                     await http.get(Uri.parse(
                         using + "booking/group/cancelSlot?booking_id=${id}"));
-                    ref.refresh(dataProvider);
+                    ref.refresh(userBookingsProvider);
                     context.go("/");
                   },
                   child: Text("Cancel"))

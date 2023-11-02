@@ -1,33 +1,20 @@
-import 'dart:convert';
-import 'package:book_my_spot_frontend/src/screens/login_webView.dart';
+import 'package:book_my_spot_frontend/src/screens/confirm_booking.dart';
 import 'package:book_my_spot_frontend/src/screens/make_reservation.dart';
 import 'package:book_my_spot_frontend/src/screens/profile_page.dart';
 import 'package:book_my_spot_frontend/src/screens/teams_page.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../models/user.dart';
 import 'package:book_my_spot_frontend/src/screens/login.dart';
 import 'package:flutter/material.dart';
-import '../constants/constants.dart';
 import '../services/storageManager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
 import '../services/string_extension.dart';
+import '../models/user.dart';
+import '../constants/constants.dart';
+import '../models/date.dart';
 
-final groupidProvider = StateProvider<int>((ref) {
-  return 0;
-});
-
-final dataIndexProvider = StateProvider<int>((ref) {
-  return 0;
-});
-
-final calendarStateProvider = StateProvider<bool>((ref) {
-  return false;
-});
-
-final selectedProvider = StateProvider<DateTime?>((ref) {
+final _selectedProvider = StateProvider<DateTime?>((ref) {
   DateTime? _selectedDay;
   return _selectedDay;
 });
@@ -36,11 +23,6 @@ final focusedProvider = StateProvider<DateTime>((ref) {
   DateTime _focusedDay = DateTime.now();
   return _focusedDay;
 });
-
-class Date {
-  String? date;
-  String? day;
-}
 
 final dateProvider = Provider<Date>((ref) {
   final now = ref.watch(focusedProvider);
@@ -53,26 +35,15 @@ final dateProvider = Provider<Date>((ref) {
   return _date;
 });
 
-final tokenProvider = Provider<String>((ref) {
-  String token = getToken();
-  return token;
-});
-
-final userProvider = FutureProvider<String>((ref) async {
-  User u = User();
-  u.token = getToken();
-  return await u.userFromJSON();
-});
-
 class HomeScreen extends ConsumerWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    DateTime _focusedDay = ref.watch(focusedProvider);
-    DateTime? _selectedDay = ref.watch(selectedProvider);
-
+    final calendarState = ref.watch(calendarStateProvider);
     final bodywidgetsProvider = Provider<List<Widget>>((ref) {
       List<Widget> l = [];
+      DateTime? _focusedDay = ref.watch(focusedProvider);
+      DateTime? _selectedDay = ref.watch(_selectedProvider);
       l.add(
         SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -96,22 +67,22 @@ class HomeScreen extends ConsumerWidget {
                 ),
                 Visibility(
                   child: TableCalendar(
-                    focusedDay: DateTime.now(),
+                    focusedDay: ref.watch(selectedDateProvider),
                     firstDay: DateTime(2023, 10, 1),
-                    lastDay: DateTime(2023, 11, 1),
+                    lastDay: DateTime.now().add(Duration(days: 7)),
                     selectedDayPredicate: (day) {
                       return isSameDay(_selectedDay, day);
                     },
                     onDaySelected: (selectedDay, focusedDay) {
                       if (!isSameDay(_selectedDay, selectedDay)) {
-                        ref.read(focusedProvider.notifier).state = focusedDay;
-                        ref.read(selectedProvider.notifier).state = selectedDay;
-
                         ref.read(calendarStateProvider.notifier).state = false;
+                        ref.read(focusedProvider.notifier).state = focusedDay;
+                        ref.read(_selectedProvider.notifier).state =
+                            selectedDay;
                       }
                     },
                   ),
-                  visible: ref.watch(calendarStateProvider),
+                  visible: calendarState,
                 ),
                 const BookingsListView(),
               ],
@@ -125,7 +96,7 @@ class HomeScreen extends ConsumerWidget {
       return l;
     });
     final date = ref.watch(dateProvider);
-    final current_index = ref.watch(currentIndexProvider);
+    final currentIndex = ref.watch(currentIndexProvider);
     final calendarStatus = ref.watch(calendarStateProvider);
     final appBarProvider = Provider<List<AppBar>>((ref) {
       List<AppBar> l = [];
@@ -186,7 +157,7 @@ class HomeScreen extends ConsumerWidget {
           elevation: 0,
           backgroundColor: const Color.fromARGB(168, 35, 187, 233),
           leadingWidth: 220,
-          title: Text(
+          title: const Text(
             "Make a Reservation",
             style: TextStyle(
               color: Colors.black,
@@ -202,8 +173,10 @@ class HomeScreen extends ConsumerWidget {
         backgroundColor: const Color.fromARGB(168, 35, 187, 233),
         actions: [
           TextButton(
-            onPressed: () {},
-            child: Text(
+            onPressed: () {
+              context.go("/grpcreate/home");
+            },
+            child: const Text(
               "New team",
               style: TextStyle(
                 color: Colors.black,
@@ -240,55 +213,32 @@ class HomeScreen extends ConsumerWidget {
     });
     String token = getToken();
     if (token == "null") {
-      return LoginScreen();
+      return const LoginScreen();
     } else {
       return Scaffold(
-        appBar: ref.read(appBarProvider)[current_index],
-        body: current_index == 0
+        appBar: ref.read(appBarProvider)[currentIndex],
+        body: currentIndex == 0
             ? SingleChildScrollView(
-                child: ref.read(bodywidgetsProvider)[current_index])
-            : ref.read(bodywidgetsProvider)[current_index],
+                child: ref.read(bodywidgetsProvider)[currentIndex])
+            : ref.read(bodywidgetsProvider)[currentIndex],
         bottomNavigationBar: const BottomNavBar(),
       );
     }
   }
 }
 
-final dataProvider = FutureProvider<dynamic>((ref) async {
-  String token = getToken();
-  final date = ref.watch(focusedProvider);
-  var post_body = {
-    "id": token,
-    "date": "${date.year}-${date.month}-${date.day}"
-  };
-  dynamic response =
-      await http.post(Uri.parse(using + "user/getBooking"), body: post_body);
-  dynamic data = jsonDecode(response.body);
-
-  for (int i = 0; i < data.length; i++) {
-    try {
-      data[i] = jsonDecode(data[i].toString());
-      print("P");
-      print(data[i]["type"]);
-    } catch (e) {
-      print(data[i]["type"]);
-      print("CATCH");
-    }
-
-    data[i]["time_of_slot"] = DateTime.parse(data[i]["time_of_slot"]);
-    data[i]["end_time"] = data[i]["time_of_slot"]
-        .add(Duration(minutes: data[i]["duration_of_booking"]));
-  }
-
-  return data;
-});
-
 class BookingsListView extends ConsumerWidget {
   const BookingsListView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final data = ref.watch(dataProvider);
+    final data = ref.watch(userBookingsProvider);
+    Future<User> futureUser = ref.watch(userFutureProvider.future);
+    futureUser.then(
+      (value) {
+        ref.read(userProvider.notifier).state = value;
+      },
+    );
     return data.when(data: (value) {
       if ((value as List).isEmpty) {
         return const Padding(
@@ -304,9 +254,9 @@ class BookingsListView extends ConsumerWidget {
         );
       } else {
         return ListView.separated(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           separatorBuilder: (BuildContext context, int index) {
-            return SizedBox(
+            return const SizedBox(
               height: 30,
             );
           },
@@ -326,7 +276,7 @@ class BookingsListView extends ConsumerWidget {
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: 130,
-                color: Color.fromRGBO(247, 230, 196, 1),
+                color: const Color.fromRGBO(247, 230, 196, 1),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -399,7 +349,7 @@ class BookingsListView extends ConsumerWidget {
     }, error: (error, stackTrace) {
       return const SizedBox();
     }, loading: () {
-      return Center(child: const CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     });
   }
 }
@@ -417,12 +367,12 @@ final currentIndexProvider = StateProvider<int>((ref) {
 class _BottomNavBarState extends ConsumerState<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
-    final current_index = ref.watch(currentIndexProvider);
+    final currentIndex = ref.watch(currentIndexProvider);
     return Theme(
-      data: Theme.of(context).copyWith(canvasColor: Color(0xFFF6F1F1)),
+      data: Theme.of(context).copyWith(canvasColor: const Color(0xFFF6F1F1)),
       child: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: current_index,
+        currentIndex: currentIndex,
         selectedItemColor: Color.fromRGBO(33, 42, 62, 1),
         selectedFontSize: 0,
         unselectedItemColor: Color.fromRGBO(113, 111, 111, 1),

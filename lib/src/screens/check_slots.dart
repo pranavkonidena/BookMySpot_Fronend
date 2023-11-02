@@ -1,5 +1,6 @@
 import 'package:book_my_spot_frontend/src/screens/confirm_booking.dart';
 import 'package:book_my_spot_frontend/src/screens/home.dart';
+import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -145,7 +146,7 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
                                       using + "booking/individual/bookSlot"),
                                   body: post_data);
                               print(response.statusCode);
-                              ref.refresh(dataProvider);
+                              ref.refresh(userBookingsProvider);
                               ref.refresh(currentIndexProvider);
                               ref.refresh(durationProvider);
                               ref.refresh(selectedDateProvider);

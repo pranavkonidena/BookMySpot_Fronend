@@ -3,9 +3,13 @@ import 'package:intl/intl.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_storage/get_storage.dart';
 import '../constants/constants.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
+
+final selectedEventIDProvider = StateProvider<List<dynamic>>((ref) {
+  return [];
+});
 
 final eventsListProvider = FutureProvider<dynamic>((ref) async {
   var token = getAdminToken().toString();
@@ -52,6 +56,11 @@ class EventsList extends ConsumerWidget {
                 itemBuilder: (context, index) {
                   print(value[index]);
                   return InkWell(
+                    onTap: () {
+                      ref.read(selectedEventIDProvider.notifier).state =
+                          value[index]["team"];
+                      context.go("/head/event/teams");
+                    },
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       height: 130,
@@ -112,7 +121,7 @@ class EventsList extends ConsumerWidget {
                   );
                 })
             : Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     "No events found",

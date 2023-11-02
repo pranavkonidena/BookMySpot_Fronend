@@ -1,8 +1,9 @@
 import 'dart:convert';
-
-import 'package:book_my_spot_frontend/src/screens/checkSlots.dart';
-import 'package:book_my_spot_frontend/src/screens/teamsDetail.dart';
+import '../models/user.dart';
+import 'package:book_my_spot_frontend/src/screens/check_slots.dart';
+import 'package:book_my_spot_frontend/src/screens/teams_detail.dart';
 import 'package:book_my_spot_frontend/src/screens/teams_page.dart';
+import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:easy_search_bar/easy_search_bar.dart';
 import 'package:flutter/material.dart';
@@ -135,10 +136,104 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                 body: post_data);
                             var data = jsonDecode(response.body.toString());
                             print(data);
-                            ref.refresh(groupselectedProvider);
-                            ref.refresh(teamdetailsProvider);
-                            context.go("/teamDetails$id");
                           }
+                          ref.refresh(groupselectedProvider);
+                          ref.refresh(teamdetailsProvider);
+                          context.go("/teamDetails$id");
+                        } else if (widget.fallbackRoute.contains("/home")) {
+                          TextEditingController _textFieldController =
+                              TextEditingController();
+                          showAdaptiveDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('Enter Team Name'),
+                                content: TextField(
+                                  controller: _textFieldController,
+                                  decoration: InputDecoration(
+                                      hintText: "Team name here"),
+                                ),
+                                actions: <Widget>[
+                                  ElevatedButton(
+                                    child: Text('CANCEL'),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  ElevatedButton(
+                                    child: Text('OK'),
+                                    onPressed: () async {
+                                      SnackBar snackBar = SnackBar(
+                                          content: Text(
+                                              "Please enter a non empty team name"));
+                                      if (_textFieldController.text == "") {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                      } else {
+                                        print(_textFieldController.text);
+                                        User user = ref.watch(userProvider);
+                                        var post_data = {
+                                          "id": user.token,
+                                          "name": _textFieldController.text
+                                        };
+                                        if (ref
+                                                .read(groupselectedProvider)
+                                                .length !=
+                                            0) {
+                                          var response = await http.post(
+                                              Uri.parse("${using}team/create"),
+                                              body: post_data);
+                                          if (response.statusCode == 200) {
+                                            for (int i = 0;
+                                                i <
+                                                    ref
+                                                        .watch(
+                                                            groupselectedProvider)
+                                                        .length;
+                                                i++) {
+                                              var entry = ref.watch(
+                                                  groupselectedProvider)[i];
+                                              var member_id = entry["id"];
+                                              var admin = entry["admin"];
+
+                                              var post_data = {
+                                                "id": getToken(),
+                                                "name":
+                                                    _textFieldController.text,
+                                                "member_id": member_id,
+                                                "admin": admin,
+                                              };
+
+                                              var response = await http.post(
+                                                  Uri.parse(using + "team/add"),
+                                                  body: post_data);
+                                            }
+                                            ref.refresh(teamsListProvider);
+                                            ref.refresh(teamdetailsProvider);
+                                            context.go("/");
+
+                                            Navigator.pop(context);
+                                          } else {
+                                            SnackBar snackBar = const SnackBar(
+                                                content: Text(
+                                                    "Error occoured while creating team!"));
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(snackBar);
+                                          }
+                                        } else {
+                                          SnackBar snackBar = const SnackBar(
+                                              content: Text(
+                                                  "Please selct atleast one member before proceeding!"));
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(snackBar);
+                                        }
+                                      }
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         }
                       },
                       child: const Text(
@@ -283,7 +378,9 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                       .add(entry);
                                 }
                                 setState(() {});
-                              } else {
+                              } else if (widget.fallbackRoute
+                                      .contains("teamDetails") ||
+                                  widget.fallbackRoute.contains("home")) {
                                 showDialog(
                                   context: context,
                                   builder: (context) {

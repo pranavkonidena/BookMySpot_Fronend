@@ -2,14 +2,15 @@ import 'dart:convert';
 
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
 import 'package:book_my_spot_frontend/src/screens/home.dart';
+import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 
 final bookingDetailsProvider = FutureProvider<dynamic>((ref) async {
-  var response = await http.get(Uri.parse(
-      using + "booking/individual/specificBooking?id=${ref.watch(dataIndexProvider)}"));
+  var response = await http.get(Uri.parse(using +
+      "booking/individual/specificBooking?id=${ref.watch(dataIndexProvider)}"));
   var data = jsonDecode(response.body);
   return data;
 });
@@ -54,9 +55,9 @@ class IndividualBookingDetails extends ConsumerWidget {
               ),
               ElevatedButton(
                   onPressed: () async {
-                    await http.get(Uri.parse(
-                        using + "booking/individual/cancelSlot?booking_id=${id}"));
-                    ref.refresh(dataProvider);
+                    await http.get(Uri.parse(using +
+                        "booking/individual/cancelSlot?booking_id=${id}"));
+                    ref.refresh(userBookingsProvider);
                     context.go("/");
                   },
                   child: Text("Cancel"))
