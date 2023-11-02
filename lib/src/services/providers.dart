@@ -1,3 +1,4 @@
+import 'package:book_my_spot_frontend/src/screens/home.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/user.dart';
@@ -29,26 +30,8 @@ final calendarStateProvider = StateProvider<bool>((ref) {
 });
 
 
-final selectedProvider = StateProvider<DateTime?>((ref) {
-  DateTime? _selectedDay;
-  return _selectedDay;
-});
 
-final focusedProvider = StateProvider<DateTime>((ref) {
-  DateTime _focusedDay = DateTime.now();
-  return _focusedDay;
-});
 
-final dateProvider = Provider<Date>((ref) {
-  final now = ref.watch(focusedProvider);
-  String year = "";
-  year += "${now.year % 100}";
-
-  Date _date = Date();
-  _date.date = "${now.day}th ${months[now.month]} '$year";
-  _date.day = days[now.weekday];
-  return _date;
-});
 
 final userBookingsProvider = FutureProvider<dynamic>((ref) async {
   User user = ref.watch(userProvider);
@@ -79,7 +62,21 @@ final uriProvider = StateProvider<Uri>((ref) {
   return Uri.parse("channeli");
 });
 
-
+final initialdataProvider = FutureProvider<String>((ref) async {
+  Uri uri = ref.watch(uriProvider);
+  if (!uri.toString().contains("channeli")) {
+    var response = await http.get(uri);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      String token = jsonDecode(response.body).toString();
+      return token;
+    } else {
+      return "failed";
+    }
+  } else {
+    return "not done";
+  }
+});
 
 final finalTeamsProvider = StateProvider<dynamic>((ref) {
   return;

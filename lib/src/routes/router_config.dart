@@ -18,6 +18,7 @@ import '../screens/login_wview.dart';
 
 final router = GoRouter(routes: [
   GoRoute(name: "home", path: "/", builder: (context, state) => HomeScreen()),
+  GoRoute(path: "/home", builder: (context, state) => HomeScreen()),
   GoRoute(
       name: "login",
       path: "/login",

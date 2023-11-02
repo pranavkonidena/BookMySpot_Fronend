@@ -10,15 +10,39 @@ import '../services/storageManager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/string_extension.dart';
 import '../models/user.dart';
+import '../constants/constants.dart';
+import '../models/date.dart';
+
+final _selectedProvider = StateProvider<DateTime?>((ref) {
+  DateTime? _selectedDay;
+  return _selectedDay;
+});
+
+final focusedProvider = StateProvider<DateTime>((ref) {
+  DateTime _focusedDay = DateTime.now();
+  return _focusedDay;
+});
+
+final dateProvider = Provider<Date>((ref) {
+  final now = ref.watch(focusedProvider);
+  String year = "";
+  year += "${now.year % 100}";
+
+  Date _date = Date();
+  _date.date = "${now.day}th ${months[now.month]} '$year";
+  _date.day = days[now.weekday];
+  return _date;
+});
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final calendarState = ref.watch(calendarStateProvider);
     final bodywidgetsProvider = Provider<List<Widget>>((ref) {
       List<Widget> l = [];
       DateTime? _focusedDay = ref.watch(focusedProvider);
-      DateTime? _selectedDay = ref.watch(selectedProvider);
+      DateTime? _selectedDay = ref.watch(_selectedProvider);
       l.add(
         SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -44,20 +68,20 @@ class HomeScreen extends ConsumerWidget {
                   child: TableCalendar(
                     focusedDay: DateTime.now(),
                     firstDay: DateTime(2023, 10, 1),
-                    lastDay: DateTime(2023, 11, 1),
+                    lastDay: DateTime(2023, 11, 4),
                     selectedDayPredicate: (day) {
                       return isSameDay(_selectedDay, day);
                     },
                     onDaySelected: (selectedDay, focusedDay) {
                       if (!isSameDay(_selectedDay, selectedDay)) {
-                        ref.read(focusedProvider.notifier).state = focusedDay;
-                        ref.read(selectedProvider.notifier).state = selectedDay;
-
                         ref.read(calendarStateProvider.notifier).state = false;
+                        ref.read(focusedProvider.notifier).state = focusedDay;
+                        ref.read(_selectedProvider.notifier).state =
+                            selectedDay;
                       }
                     },
                   ),
-                  visible: ref.watch(calendarStateProvider),
+                  visible: calendarState,
                 ),
                 const BookingsListView(),
               ],
@@ -148,7 +172,9 @@ class HomeScreen extends ConsumerWidget {
         backgroundColor: const Color.fromARGB(168, 35, 187, 233),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              context.go("/grpcreate/home");
+            },
             child: const Text(
               "New team",
               style: TextStyle(
@@ -322,7 +348,7 @@ class BookingsListView extends ConsumerWidget {
     }, error: (error, stackTrace) {
       return const SizedBox();
     }, loading: () {
-      return const Center(child:  CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     });
   }
 }
