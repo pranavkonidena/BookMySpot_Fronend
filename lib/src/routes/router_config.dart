@@ -1,5 +1,6 @@
 import 'package:book_my_spot_frontend/src/screens/baseUser/amenity_eventteams.dart';
 import 'package:book_my_spot_frontend/src/screens/amenityHead/amenityhead_home.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/chat_scree.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/check_slots.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/confirm_booking.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/event_booking.dart';
@@ -15,7 +16,6 @@ import 'package:book_my_spot_frontend/src/screens/baseUser/teams_page.dart';
 import 'package:go_router/go_router.dart';
 import '../screens/baseUser/home.dart';
 import '../screens/auth/login_wview.dart';
-
 
 final router = GoRouter(routes: [
   GoRoute(name: "home", path: "/", builder: (context, state) => HomeScreen()),
@@ -74,8 +74,8 @@ final router = GoRouter(routes: [
   GoRoute(
     path: "/grpcreate/:fallBack",
     builder: (context, state) {
-      final fallBack = '/'+state.pathParameters["fallBack"]!;
-      
+      final fallBack = '/' + state.pathParameters["fallBack"]!;
+
       return GroupCreatePage(fallBack);
     },
   ),
@@ -102,6 +102,13 @@ final router = GoRouter(routes: [
     path: "/head/event/teams",
     builder: (context, state) {
       return AmenityEventTeamsList();
+    },
+  ),
+  GoRoute(
+    path: "/chat/:id",
+    builder: (context, state) {
+      final id = state.pathParameters["id"];
+      return ChatPage(id.toString());
     },
   ),
 ]);

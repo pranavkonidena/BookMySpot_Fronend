@@ -107,7 +107,12 @@ class TeamDetails extends ConsumerWidget {
                               Icons.delete_forever_rounded,
                               color: Colors.grey[600],
                             )))
-                    : SizedBox()
+                    : SizedBox(),
+                TextButton(
+                    onPressed: () {
+                      context.go("/chat/${value[0]["id"]}");
+                    },
+                    child: Text("Chat"))
               ],
             ),
             body: Column(children: [
