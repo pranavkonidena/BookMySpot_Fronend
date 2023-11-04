@@ -280,7 +280,7 @@ class EventsLister extends ConsumerWidget {
                     ),
                   );
                 })
-            : Center(
+            : const Center(
                 child: Text(
                   "No Upcoming events found!",
                   style: TextStyle(
@@ -295,7 +295,7 @@ class EventsLister extends ConsumerWidget {
       error: (error, stackTrace) {
         return const SizedBox();
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const Center(child: CircularProgressIndicator.adaptive()),
     );
   }
 }
