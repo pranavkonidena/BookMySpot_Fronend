@@ -1,13 +1,13 @@
 import 'dart:convert';
-import '../services/storageManager.dart';
+import '../../services/storageManager.dart';
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
-import 'package:book_my_spot_frontend/src/screens/make_reservation.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/make_reservation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:book_my_spot_frontend/src/screens/home.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/home.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import '../constants/constants.dart';
+import '../../constants/constants.dart';
 
 const List<Widget> bookingTypes = <Widget>[
   Text(

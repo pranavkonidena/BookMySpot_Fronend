@@ -61,7 +61,6 @@ class _WebViewLoginState extends ConsumerState<WebViewLogin> {
     }, error: (err, stack) {
       return const Text("Error occoured");
     }, data: (token) {
-      print(token);
       if (token != "not done") {
         if (token.toString() != "failed") {
           Future.microtask(() => {saveToken(token), context.go("/")});

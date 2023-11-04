@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:book_my_spot_frontend/src/screens/events_list.dart';
-import 'package:book_my_spot_frontend/src/screens/teams_detail.dart';
-import 'package:book_my_spot_frontend/src/screens/teams_page.dart';
+import 'package:book_my_spot_frontend/src/screens/amenityHead/events_list.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/teams_detail.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/teams_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import '../constants/constants.dart';
+import '../../constants/constants.dart';
 
 final _allTeamsInEventProvider = FutureProvider<dynamic>((ref) async {
   List<dynamic> teams = ref.watch(selectedEventIDProvider);

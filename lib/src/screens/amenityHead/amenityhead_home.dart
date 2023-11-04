@@ -1,16 +1,16 @@
 import 'dart:convert';
 
-import 'package:book_my_spot_frontend/src/screens/amenity_event.dart';
-import 'package:book_my_spot_frontend/src/screens/events_list.dart';
-import 'package:book_my_spot_frontend/src/screens/amenity_profile.dart';
-import 'package:book_my_spot_frontend/src/screens/individual_bookingdetails.dart';
+import 'package:book_my_spot_frontend/src/screens/amenityHead/amenity_event.dart';
+import 'package:book_my_spot_frontend/src/screens/amenityHead/events_list.dart';
+import 'package:book_my_spot_frontend/src/screens/amenityHead/amenity_profile.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/individual_bookingdetails.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import '../constants/constants.dart';
+import '../../constants/constants.dart';
 
 final allBookingsProvider = FutureProvider<dynamic>((ref) async {
   var response = await http
