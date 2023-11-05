@@ -2,8 +2,8 @@ String base_url_IITR_WIFI = "http://10.81.4.165:8000/api/";
 String base_url_IMG = "http://10.76.0.54:8000/api/";
 String base_url_Iphone =
     "http://10.74.2.186:8000/api/"; // this is of iirwidi really
-String IP = "10.76.0.54:8000";
-String using = base_url_IMG;
+String IP = "10.81.4.165:8000";
+String using = base_url_IITR_WIFI;
 String omniportURL =
     "https://channeli.in/oauth/authorise/?client_id=yjvukprsgUyGAHIrpBRRAkhYDe8EWWyfEserwFYL&redirect_uri=http://$IP/api/user/auth&state=random";
 
