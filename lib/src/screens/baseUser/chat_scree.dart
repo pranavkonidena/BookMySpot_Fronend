@@ -16,11 +16,11 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   final TextEditingController _controller = TextEditingController();
   final channel =WebSocketChannel.connect(Uri.parse("ws://${IP}/ws/chat/16"));
   @override
-  void initState() {
-    // TODO: implement initState
-    var channel =WebSocketChannel.connect(Uri.parse("ws://${IP}/ws/chat/16"));
-    super.initState();
-  }
+  // void initState() {
+  //   // TODO: implement initState
+  //   var channel =WebSocketChannel.connect(Uri.parse("ws://${IP}/ws/chat/16"));
+  //   super.initState();
+  // }
   void _sendMessage() {
     if (_controller.text.isNotEmpty) {
       channel.sink.add(
@@ -60,7 +60,6 @@ class _ChatPageState extends ConsumerState<ChatPage> {
         tooltip: 'Send message',
         child: const Icon(Icons.send),
       ), // This trailing comma mak
-          
         ],
       ),
     );
