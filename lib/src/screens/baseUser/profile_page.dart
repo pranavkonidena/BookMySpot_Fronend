@@ -1,3 +1,4 @@
+import 'package:book_my_spot_frontend/src/utils/helpers/auth_helper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/home.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
@@ -53,9 +54,7 @@ class ProfileScreen extends ConsumerWidget {
       ),
       ElevatedButton(
           onPressed: () async {
-            deleteToken();
-            ref.watch(currentIndexProvider.notifier).state = 0;
-            context.go("/login");
+            AuthHelper.userLogout(context, ref);
           },
           child: Text("Logout"))
     ]));

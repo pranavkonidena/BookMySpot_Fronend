@@ -32,7 +32,7 @@ class _WebViewLoginState extends ConsumerState<WebViewLogin> {
       if (response == null) {
       } else {
         try {
-          AuthHelper.UserAuth(response);
+          AuthHelper.userLogin(response);
           Future.microtask(() => context.go("/"));
         } on AuthException catch (e) {
           e.errorHandler(context , ref);
