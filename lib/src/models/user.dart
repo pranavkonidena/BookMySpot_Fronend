@@ -15,6 +15,8 @@ class User {
     this.token = token_given;
   }
 
+  
+
   _fetchUserData() async {
     dynamic response = await http.get(Uri.parse(using + "user?id=${token}"));
     dynamic data = jsonDecode(response.body.toString());

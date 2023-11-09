@@ -1,16 +1,20 @@
 import 'dart:convert';
-import 'package:book_my_spot_frontend/src/screens/teams_page.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/teams_page.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import '../constants/constants.dart';
-import '../models/user.dart';
+import '../../constants/constants.dart';
+import '../../models/user.dart';
 
 final _teamNameProvider = StateProvider<String>((ref) {
   return "";
+});
+
+final teamidChatProvider = StateProvider<int>((ref) {
+  return 0;
 });
 
 bool isAdmin = false;
@@ -107,7 +111,13 @@ class TeamDetails extends ConsumerWidget {
                               Icons.delete_forever_rounded,
                               color: Colors.grey[600],
                             )))
-                    : SizedBox()
+                    : SizedBox(),
+                TextButton(
+                    onPressed: () {
+                      
+                      context.go("/chat/${value[0]["id"]}");
+                    },
+                    child: Text("Chat"))
               ],
             ),
             body: Column(children: [

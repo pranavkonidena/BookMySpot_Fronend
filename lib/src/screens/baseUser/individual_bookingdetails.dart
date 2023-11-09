@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
-import 'package:book_my_spot_frontend/src/screens/home.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/home.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,10 +34,10 @@ class IndividualBookingDetails extends ConsumerWidget {
               onPressed: () {
                 context.go("/");
               },
-              icon: Icon(Icons.arrow_back_ios_new_outlined),
+              icon: const Icon(Icons.arrow_back_ios_new_outlined),
               color: Colors.grey[700],
             ),
-            title: Text(
+            title: const Text(
               "Booking Details",
               style: TextStyle(
                 color: Colors.black,

@@ -1,18 +1,18 @@
-import 'package:book_my_spot_frontend/src/screens/confirm_booking.dart';
-import 'package:book_my_spot_frontend/src/screens/make_reservation.dart';
-import 'package:book_my_spot_frontend/src/screens/profile_page.dart';
-import 'package:book_my_spot_frontend/src/screens/teams_page.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/confirm_booking.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/make_reservation.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/profile_page.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/teams_page.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:book_my_spot_frontend/src/screens/login.dart';
+import 'package:book_my_spot_frontend/src/screens/auth/login.dart';
 import 'package:flutter/material.dart';
-import '../services/storageManager.dart';
+import '../../services/storageManager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../services/string_extension.dart';
-import '../models/user.dart';
-import '../constants/constants.dart';
-import '../models/date.dart';
+import '../../services/string_extension.dart';
+import '../../models/user.dart';
+import '../../constants/constants.dart';
+import '../../models/date.dart';
 
 final _selectedProvider = StateProvider<DateTime?>((ref) {
   DateTime? _selectedDay;

@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
+
 String base_url_IITR_WIFI = "http://10.81.4.165:8000/api/";
-String base_url_IMG = "http://10.76.0.83:8000/api/";
+String base_url_IMG = "http://10.76.0.54:8000/api/";
 String base_url_Iphone =
-    "http://10.74.2.186:8000/api/"; // this is of iirwidi really
+    "http://10.74.2.7:8000/api/"; // this is of iirwifi really
 String IP = "10.81.4.165:8000";
 String using = base_url_IITR_WIFI;
 String omniportURL =
@@ -31,3 +33,4 @@ Map<int, String> months = {
   11: "Nov",
   12: "Dec",
 };
+

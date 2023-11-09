@@ -1,15 +1,15 @@
-import 'package:book_my_spot_frontend/src/screens/amenityhead_home.dart';
-import 'package:book_my_spot_frontend/src/screens/events_list.dart';
-import 'package:book_my_spot_frontend/src/screens/home.dart';
-import 'package:book_my_spot_frontend/src/screens/make_reservation.dart';
-import 'package:book_my_spot_frontend/src/screens/teams_page.dart';
+import 'package:book_my_spot_frontend/src/screens/amenityHead/amenityhead_home.dart';
+import 'package:book_my_spot_frontend/src/screens/amenityHead/events_list.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/home.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/make_reservation.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/teams_page.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import '../constants/constants.dart';
+import '../../constants/constants.dart';
 
 class EventBookingPage extends ConsumerWidget {
   const EventBookingPage({super.key});

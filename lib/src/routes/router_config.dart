@@ -1,21 +1,21 @@
-import 'package:book_my_spot_frontend/src/screens/amenity_eventteams.dart';
-import 'package:book_my_spot_frontend/src/screens/amenityhead_home.dart';
-import 'package:book_my_spot_frontend/src/screens/check_slots.dart';
-import 'package:book_my_spot_frontend/src/screens/confirm_booking.dart';
-import 'package:book_my_spot_frontend/src/screens/event_booking.dart';
-import 'package:book_my_spot_frontend/src/screens/group_bookingdetails.dart';
-import 'package:book_my_spot_frontend/src/screens/group_booking.dart';
-import 'package:book_my_spot_frontend/src/screens/group_creation.dart';
-import 'package:book_my_spot_frontend/src/screens/individual_bookingdetails.dart';
-import 'package:book_my_spot_frontend/src/screens/login.dart';
-import 'package:book_my_spot_frontend/src/screens/make_reservation.dart';
-import 'package:book_my_spot_frontend/src/screens/profile_page.dart';
-import 'package:book_my_spot_frontend/src/screens/teams_detail.dart';
-import 'package:book_my_spot_frontend/src/screens/teams_page.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/amenity_eventteams.dart';
+import 'package:book_my_spot_frontend/src/screens/amenityHead/amenityhead_home.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/chat_screen.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/check_slots.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/confirm_booking.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/event_booking.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/group_bookingdetails.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/group_booking.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/group_creation.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/individual_bookingdetails.dart';
+import 'package:book_my_spot_frontend/src/screens/auth/login.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/make_reservation.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/profile_page.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/teams_detail.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/teams_page.dart';
 import 'package:go_router/go_router.dart';
-import '../screens/home.dart';
-import '../screens/login_wview.dart';
-
+import '../screens/baseUser/home.dart';
+import '../screens/auth/login_wview.dart';
 
 final router = GoRouter(routes: [
   GoRoute(name: "home", path: "/", builder: (context, state) => HomeScreen()),
@@ -74,8 +74,8 @@ final router = GoRouter(routes: [
   GoRoute(
     path: "/grpcreate/:fallBack",
     builder: (context, state) {
-      final fallBack = '/'+state.pathParameters["fallBack"]!;
-      
+      final fallBack = '/' + state.pathParameters["fallBack"]!;
+
       return GroupCreatePage(fallBack);
     },
   ),
@@ -102,6 +102,13 @@ final router = GoRouter(routes: [
     path: "/head/event/teams",
     builder: (context, state) {
       return AmenityEventTeamsList();
+    },
+  ),
+  GoRoute(
+    path: "/chat/:id",
+    builder: (context, state) {
+      final id = state.pathParameters["id"];
+      return ChatPage(id.toString());
     },
   ),
 ]);

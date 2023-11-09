@@ -1,13 +1,13 @@
 import 'dart:convert';
-import '../services/storageManager.dart';
+import '../../services/storageManager.dart';
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
-import 'package:book_my_spot_frontend/src/screens/make_reservation.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/make_reservation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:book_my_spot_frontend/src/screens/home.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/home.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import '../constants/constants.dart';
+import '../../constants/constants.dart';
 
 const List<Widget> bookingTypes = <Widget>[
   Text(
@@ -68,15 +68,17 @@ class ConfirmBooking extends ConsumerWidget {
       "duration": duration.toString(),
       "date": "${date.year}-${date.month}-${date.day}"
     };
-
-    var response =
-        await http.post(Uri.parse(using + "booking/getSlots"), body: post_data);
-    var data = jsonDecode(response.body.toString());
-    if (data == "No Slots") {
-      return [];
-    } else {
-      print(data);
-      return data;
+    print(post_data);
+    if (duration != 0) {
+      var response = await http.post(Uri.parse(using + "booking/getSlots"),
+          body: post_data);
+      var data = jsonDecode(response.body.toString());
+      if (data == "No Slots") {
+        return [];
+      } else {
+        print(data);
+        return data;
+      }
     }
   }
 
@@ -175,7 +177,9 @@ class ConfirmBooking extends ConsumerWidget {
         future: fetchData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator()); // Show a loading indicator.
+            return Center(
+                child:
+                    CircularProgressIndicator()); // Show a loading indicator.
           } else if (snapshot.hasError) {
             return Text("Error: ${snapshot.error}");
           } else {
@@ -254,12 +258,12 @@ class ConfirmBooking extends ConsumerWidget {
                                     1;
                               },
                               child: Text("    Cancel    ")),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
                           ElevatedButton(
                               onPressed: () {
-                                var picked_s = ref.read(timeProvider);
+                                var picked_s = ref.watch(timeProvider);
                                 if (picked_s != TimeOfDay.now()) {
                                   var slots = ref.read(slotsProviderAmenity);
                                   var new_slots = [];
@@ -267,8 +271,6 @@ class ConfirmBooking extends ConsumerWidget {
                                     var hour = int.parse(slots[i]["start_time"]
                                         .toString()
                                         .substring(0, 2));
-
-                                    print("PICKED" + picked_s.hour.toString());
                                     if (picked_s.hour == hour) {
                                       new_slots.add(slots[i]);
                                     }
