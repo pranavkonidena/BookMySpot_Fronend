@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'routes/router_config.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class Bookify extends StatelessWidget {
+  const Bookify({super.key});
 
   @override
   Widget build(BuildContext context) {

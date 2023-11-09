@@ -34,10 +34,10 @@ class IndividualBookingDetails extends ConsumerWidget {
               onPressed: () {
                 context.go("/");
               },
-              icon: Icon(Icons.arrow_back_ios_new_outlined),
+              icon: const Icon(Icons.arrow_back_ios_new_outlined),
               color: Colors.grey[700],
             ),
-            title: Text(
+            title: const Text(
               "Booking Details",
               style: TextStyle(
                 color: Colors.black,

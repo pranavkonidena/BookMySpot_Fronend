@@ -1,6 +1,6 @@
 import 'package:book_my_spot_frontend/src/screens/baseUser/amenity_eventteams.dart';
 import 'package:book_my_spot_frontend/src/screens/amenityHead/amenityhead_home.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/chat_scree.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/chat_screen.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/check_slots.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/confirm_booking.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/event_booking.dart';

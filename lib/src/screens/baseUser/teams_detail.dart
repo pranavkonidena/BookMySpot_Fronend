@@ -13,6 +13,10 @@ final _teamNameProvider = StateProvider<String>((ref) {
   return "";
 });
 
+final teamidChatProvider = StateProvider<int>((ref) {
+  return 0;
+});
+
 bool isAdmin = false;
 Map<String, String> adminDp = {};
 Map<String, String> membersDp = {};
@@ -110,6 +114,7 @@ class TeamDetails extends ConsumerWidget {
                     : SizedBox(),
                 TextButton(
                     onPressed: () {
+                      
                       context.go("/chat/${value[0]["id"]}");
                     },
                     child: Text("Chat"))
