@@ -1,3 +1,3 @@
 enum ErrorTypes{
-  login,
+  auth,
 }
