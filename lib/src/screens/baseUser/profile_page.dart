@@ -53,6 +53,7 @@ class ProfileScreen extends ConsumerWidget {
           onPressed: () async {
             UserAPIEndpoint.userLogout(context, ref);
           },
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.red.shade400),
           child: const Text("Logout"))
     ]));
   }

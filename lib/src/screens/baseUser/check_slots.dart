@@ -1,16 +1,12 @@
 import 'package:book_my_spot_frontend/src/screens/baseUser/confirm_booking.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/home.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
-import 'package:book_my_spot_frontend/src/services/storageManager.dart';
-import 'package:book_my_spot_frontend/src/state/errors/error_handler.dart';
+import 'package:book_my_spot_frontend/src/utils/helpers/error_handler.dart';
 import 'package:book_my_spot_frontend/src/utils/api/booking_api.dart';
 import 'package:book_my_spot_frontend/src/utils/enums/error_types.dart';
-import 'package:book_my_spot_frontend/src/utils/errors/auth/auth_errors.dart';
 import 'package:book_my_spot_frontend/src/utils/errors/user/user_errors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
-import '../../constants/constants.dart';
 import 'package:go_router/go_router.dart';
 
 final indiDetailsProvider = StateProvider<dynamic>((ref) {

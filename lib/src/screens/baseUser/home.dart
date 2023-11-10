@@ -55,7 +55,7 @@ class HomeScreen extends ConsumerWidget {
                 const Text(
                   "Today's Bookings",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Color.fromRGBO(25,23,23,1),
                     fontSize: 35,
                     fontFamily: 'Thasadith',
                     fontWeight: FontWeight.w400,
@@ -104,7 +104,7 @@ class HomeScreen extends ConsumerWidget {
         AppBar(
           toolbarHeight: MediaQuery.of(context).size.height / 12,
           elevation: 0,
-          backgroundColor: const Color.fromARGB(168, 35, 187, 233),
+          backgroundColor: Color.fromARGB(168, 35, 187, 233),
           leadingWidth: 220,
           leading: Padding(
             padding: const EdgeInsets.only(left: 22.0, bottom: 12),
@@ -115,7 +115,7 @@ class HomeScreen extends ConsumerWidget {
                 Text(
                   date.date.toString(),
                   style: const TextStyle(
-                    color: Colors.black,
+                    color: Color.fromRGBO(37,42,52,1),
                     fontSize: 30,
                     fontFamily: 'Thasadith',
                   ),
@@ -216,6 +216,7 @@ class HomeScreen extends ConsumerWidget {
       return const LoginScreen();
     } else {
       return Scaffold(
+        backgroundColor: Color.fromRGBO(234,234,234,1),
         appBar: ref.read(appBarProvider)[currentIndex],
         body: currentIndex == 0
             ? SingleChildScrollView(
@@ -373,6 +374,7 @@ class _BottomNavBarState extends ConsumerState<BottomNavBar> {
       child: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
+        backgroundColor: Color.fromRGBO(241, 239, 239,1),
         selectedItemColor: Color.fromRGBO(33, 42, 62, 1),
         selectedFontSize: 0,
         unselectedItemColor: Color.fromRGBO(113, 111, 111, 1),
