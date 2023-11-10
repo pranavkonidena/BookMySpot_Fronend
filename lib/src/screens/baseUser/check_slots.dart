@@ -2,6 +2,11 @@ import 'package:book_my_spot_frontend/src/screens/baseUser/confirm_booking.dart'
 import 'package:book_my_spot_frontend/src/screens/baseUser/home.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
+import 'package:book_my_spot_frontend/src/state/errors/error_handler.dart';
+import 'package:book_my_spot_frontend/src/utils/api/booking_api.dart';
+import 'package:book_my_spot_frontend/src/utils/enums/error_types.dart';
+import 'package:book_my_spot_frontend/src/utils/errors/auth/auth_errors.dart';
+import 'package:book_my_spot_frontend/src/utils/errors/user/user_errors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -9,7 +14,7 @@ import '../../constants/constants.dart';
 import 'package:go_router/go_router.dart';
 
 final indiDetailsProvider = StateProvider<dynamic>((ref) {
-  return ;
+  return;
 });
 
 const snackBar = SnackBar(
@@ -48,11 +53,11 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
           scrollDirection: Axis.vertical,
           child: Column(
             children: [
-              data.length != 0
+              data.isNotEmpty
                   ? ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: data.length,
                       itemBuilder: (context, index) {
                         final dataObject = data[index];
@@ -79,8 +84,8 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
                             setState(() {});
                           },
                           child: Container(
-                            padding: EdgeInsets.all(16),
-                            margin: EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(16),
+                            margin: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? const Color.fromARGB(168, 35, 187, 233)
@@ -100,7 +105,7 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
                   : Padding(
                       padding: EdgeInsets.only(
                           top: MediaQuery.of(context).size.height / 3),
-                      child: Text("We are sorry , but no slots were found"),
+                      child: const Text("We are sorry , but no slots were found"),
                     ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -108,53 +113,33 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
                   ElevatedButton(
                       onPressed: () {
                         ref.read(currentIndexProvider.notifier).state = 0;
-                        ref.refresh(durationProvider);
-                        ref.refresh(selectedDateProvider);
-                        ref.refresh(timeProvider);
-                        ref.refresh(boolListProvider);
+                        ref.invalidate(durationProvider);
+                        ref.invalidate(selectedDateProvider);
+                        ref.invalidate(timeProvider);
+                        ref.invalidate(boolListProvider);
                         context.go("/");
                       },
-                      child: Text("Cancel")),
-                  data.length != 0
+                      child: const Text("Cancel")),
+                  data.isNotEmpty
                       ? ElevatedButton(
                           onPressed: () async {
-                            final date = ref.watch(selectedDateProvider);
-                            final data = ref.watch(slotsProviderAmenity);
-                            if (ref.read(indexProvider) < 0) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                            } else {
-                              print(data);
-                             
-                              var post_data = {
-                                "id_user": getToken().toString(),
-                                "date":
-                                    "${date.year}-${date.month}-${date.day}",
-                                "amenity_id": data[0]["amenity_id"].toString(),
-                                "start_time": data[ref.read(indexProvider)]
-                                        ["start_time"]
-                                    .toString(),
-                                "end_time": data[ref.read(indexProvider)]
-                                        ["end_time"]
-                                    .toString(),
-                                // "amenity_id" : data[]
-                              };
-                            
-                              print(post_data);
-                              var response = await http.post(
-                                  Uri.parse(
-                                      using + "booking/individual/bookSlot"),
-                                  body: post_data);
-                              print("RESP" + response.statusCode.toString());
-                              ref.refresh(userBookingsProvider);
-                              ref.refresh(currentIndexProvider);
-                              ref.refresh(durationProvider);
-                              ref.refresh(selectedDateProvider);
-                              ref.refresh(timeProvider);
-                              context.go("/");
+                            try {
+                              await BookingAPIEndpoint.makeBooking(ref);
+                              ref.invalidate(userBookingsProvider);
+                              ref.invalidate(currentIndexProvider);
+                              ref.invalidate(durationProvider);
+                              ref.invalidate(selectedDateProvider);
+                              ref.invalidate(timeProvider);
+                              Future.microtask(() => context.go("/"));
+                            } on UserException catch (e) {
+                              Future.microtask(
+                                  () => e.errorHandler(context, ref));
+                            } catch (e) {
+                              Future.microtask(() => ErrorManager.errorHandler(
+                                  ErrorTypes.unknown, context, ref));
                             }
                           },
-                          child: Text("Book"))
+                          child: const Text("Book"))
                       : const SizedBox(),
                 ],
               )
@@ -168,11 +153,11 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
           scrollDirection: Axis.vertical,
           child: Column(
             children: [
-              data.length != 0
+              data.isNotEmpty
                   ? ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: data.length,
                       itemBuilder: (context, index) {
                         final dataObject = data[index];
@@ -199,8 +184,8 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
                             setState(() {});
                           },
                           child: Container(
-                            padding: EdgeInsets.all(16),
-                            margin: EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(16),
+                            margin: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? const Color.fromARGB(168, 35, 187, 233)
@@ -220,7 +205,7 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
                   : Padding(
                       padding: EdgeInsets.only(
                           top: MediaQuery.of(context).size.height / 3),
-                      child: Text("We are sorry , but no slots were found"),
+                      child: const Text("We are sorry , but no slots were found"),
                     ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

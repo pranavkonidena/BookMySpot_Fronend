@@ -1,8 +1,5 @@
-import 'package:book_my_spot_frontend/src/utils/helpers/auth_helper.dart';
-import 'package:go_router/go_router.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/home.dart';
+import 'package:book_my_spot_frontend/src/utils/api/user_api.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
-import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/user.dart';
@@ -54,9 +51,9 @@ class ProfileScreen extends ConsumerWidget {
       ),
       ElevatedButton(
           onPressed: () async {
-            AuthHelper.userLogout(context, ref);
+            UserAPIEndpoint.userLogout(context, ref);
           },
-          child: Text("Logout"))
+          child: const Text("Logout"))
     ]));
   }
 }

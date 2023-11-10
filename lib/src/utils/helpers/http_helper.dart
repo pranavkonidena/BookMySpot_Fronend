@@ -1,15 +1,16 @@
 import 'dart:convert';
 
+import 'package:book_my_spot_frontend/src/utils/enums/request_types.dart';
+
 import '../enums/request_groups.dart';
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
 import 'package:http/http.dart' as http;
-import 'package:book_my_spot_frontend/src/models/response.dart';
+import 'package:book_my_spot_frontend/src/utils/helpers/response_helper.dart';
 
 class HttpHelper {
-  static Future<Response> getRequest(
-    RequestGroup type,
-    String suffix,
-  ) async {
+  static Future<Response> makeRequest(
+      RequestTypes types, RequestGroup type, String suffix,
+      [var postData]) async {
     late Uri url;
     switch (type) {
       case RequestGroup.amenity:
@@ -36,8 +37,17 @@ class HttpHelper {
         break;
     }
 
-    var response = await http.get(url);
-    return (Response(
-        response.statusCode, jsonDecode(response.body.toString())));
+    switch (types) {
+      case RequestTypes.get:
+        var response = await http.get(url);
+        return (Response(
+            response.statusCode, jsonDecode(response.body.toString())));
+      case RequestTypes.post:
+        var response = await http.post(url, body: postData);
+        return Response(
+            response.statusCode, jsonDecode(response.body.toString()));
+      default:
+        return Response(404, "Method not found");
+    }
   }
 }
