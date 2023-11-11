@@ -19,8 +19,9 @@ class AmenityAPIEndpoint {
     var authHeader = {"email": email, "password": password};
     Response response = await HttpHelper.makeRequest(
         RequestTypes.post, RequestGroup.amenity, "head/auth", authHeader);
-    saveAdminToken(response.data);
+
     if (response.statusCode == 200) {
+      saveAdminToken(response.data);
       Future.microtask(() => context.go("/head"));
     } else {
       throw AuthException("Invalid Credentials");
