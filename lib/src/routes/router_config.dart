@@ -15,15 +15,23 @@ import 'package:book_my_spot_frontend/src/screens/baseUser/make_reservation.dart
 import 'package:book_my_spot_frontend/src/screens/baseUser/profile_page.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/teams_detail.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/teams_page.dart';
+import 'package:book_my_spot_frontend/src/screens/loading/loading_screen.dart';
 import 'package:go_router/go_router.dart';
 import '../screens/baseUser/home.dart';
 import '../screens/auth/login_wview.dart';
 
 final router = GoRouter(
+    initialLocation: "/loadingscreen",
     errorBuilder: (context, state) {
       return GoRouteNotFoundPage();
     },
     routes: [
+      GoRoute(
+        path: "/initial",
+        builder: (context, state) {
+          return InitialScreen();
+        },
+      ),
       GoRoute(
           name: "home", path: "/", builder: (context, state) => HomeScreen()),
       GoRoute(path: "/home", builder: (context, state) => HomeScreen()),
@@ -118,6 +126,12 @@ final router = GoRouter(
         builder: (context, state) {
           final id = state.pathParameters["id"];
           return ChatPage(id.toString());
+        },
+      ),
+      GoRoute(
+        path: "/loadingscreen",
+        builder: (context, state) {
+          return LoadingScreen();
         },
       ),
     ]);

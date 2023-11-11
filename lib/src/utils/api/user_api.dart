@@ -19,6 +19,6 @@ class UserAPIEndpoint {
   static userLogout(BuildContext context, WidgetRef ref) {
     deleteToken();
     ref.watch(currentIndexProvider.notifier).state = 0;
-    context.go("/login");
+    context.go("/");
   }
 }

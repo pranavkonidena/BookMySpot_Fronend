@@ -45,7 +45,7 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   get_storage: ^2.1.1
   intl: ^0.18.1
-  flutter_svg: ^2.0.7
+  flutter_svg: ^2.0.9
   table_calendar: ^3.0.9
   flutter_form_builder: ^9.1.1
   easy_search_bar: ^2.5.0
@@ -53,6 +53,7 @@ dependencies:
   web_socket_channel: ^2.4.0
   socket_io_client: ^2.0.3+1
   google_fonts: ^6.1.0
+  animated_text_kit: ^4.2.2
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +71,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/svgs/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

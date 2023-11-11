@@ -1,7 +1,9 @@
 import 'package:book_my_spot_frontend/src/screens/baseUser/confirm_booking.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/initial_screen.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/make_reservation.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/profile_page.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/teams_page.dart';
+import 'package:book_my_spot_frontend/src/screens/loading/loading_screen.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
