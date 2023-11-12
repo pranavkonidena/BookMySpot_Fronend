@@ -2,6 +2,7 @@ import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/state/auth/auth_state.dart';
 import 'package:book_my_spot_frontend/src/utils/api/user_api.dart';
 import 'package:book_my_spot_frontend/src/utils/errors/auth/auth_errors.dart';
+import 'package:book_my_spot_frontend/src/utils/helpers/error_handler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class _WebViewLoginState extends ConsumerState<WebViewLogin> {
 
   @override
   Widget build(BuildContext context) {
+
     final uri = ref.watch(uriProvider);
     AsyncValue<Response?> response = ref.watch(authTokenProvider);
     response.whenData((response) {
@@ -35,7 +37,7 @@ class _WebViewLoginState extends ConsumerState<WebViewLogin> {
           UserAPIEndpoint.userLogin(response);
           Future.microtask(() => context.go("/"));
         } on AuthException catch (e) {
-          e.errorHandler(context, ref);
+          e.errorHandler(ref);
         }
       }
     });

@@ -1,3 +1,4 @@
+import 'package:book_my_spot_frontend/src/state/errors/error_state.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/error_handler.dart';
 import 'package:book_my_spot_frontend/src/utils/enums/error_types.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ class AuthException implements Exception {
     return "Oops , Error : ${error}";
   }
 
-  void errorHandler(BuildContext context, WidgetRef ref) {
-    ErrorManager.errorHandler(ErrorTypes.auth, context, ref);
+  void errorHandler(WidgetRef ref) {
+    ref.watch(errorStreamControllerProvider).add(ErrorTypes.auth);
   }
 }

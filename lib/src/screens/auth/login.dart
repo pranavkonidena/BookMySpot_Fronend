@@ -34,6 +34,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   void initState() {
+    
     super.initState();
   }
 
@@ -188,7 +189,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             await AmenityAPIEndpoint.AmenityAuth(context, ref);
                           } on AuthException catch (e) {
                             Future.microtask(
-                                () => e.errorHandler(context, ref));
+                                () => e.errorHandler(ref));
                           }
                         },
                         child: Text(

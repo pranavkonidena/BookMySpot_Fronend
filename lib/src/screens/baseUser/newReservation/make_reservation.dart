@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:go_router/go_router.dart';
-import '../../models/user.dart';
+import '../../../models/user.dart';
 
 var finalTeams = [];
 

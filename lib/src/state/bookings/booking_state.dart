@@ -33,7 +33,7 @@ class BookingNotifier extends StateNotifier<List<Booking>> {
       return userBookings;
     } on UserException catch (e) {
       if (context.mounted) {
-        e.errorHandler(context, ref);
+        e.errorHandler(ref);
       }
     }
     return null;
@@ -49,7 +49,7 @@ class BookingNotifier extends StateNotifier<List<Booking>> {
       
     } on UserException catch (e) {
       if (context.mounted) {
-        e.errorHandler(context, ref);
+        e.errorHandler(ref);
       }
     }
   }

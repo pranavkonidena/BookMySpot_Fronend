@@ -1,5 +1,5 @@
-import 'package:book_my_spot_frontend/src/screens/baseUser/confirm_booking.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/home.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/confirm_booking.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/home/home.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/state/bookings/booking_state.dart';
 import 'package:book_my_spot_frontend/src/state/navbar/navbar_state.dart';
@@ -103,7 +103,8 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
                   : Padding(
                       padding: EdgeInsets.only(
                           top: MediaQuery.of(context).size.height / 3),
-                      child: const Text("We are sorry , but no slots were found"),
+                      child:
+                          const Text("We are sorry , but no slots were found"),
                     ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -130,11 +131,7 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
                               ref.invalidate(timeProvider);
                               Future.microtask(() => context.go("/"));
                             } on UserException catch (e) {
-                              Future.microtask(
-                                  () => e.errorHandler(context, ref));
-                            } catch (e) {
-                              Future.microtask(() => ErrorManager.errorHandler(
-                                  ErrorTypes.unknown, context, ref));
+                              e.errorHandler(ref);
                             }
                           },
                           child: const Text("Book"))
@@ -203,7 +200,8 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
                   : Padding(
                       padding: EdgeInsets.only(
                           top: MediaQuery.of(context).size.height / 3),
-                      child: const Text("We are sorry , but no slots were found"),
+                      child:
+                          const Text("We are sorry , but no slots were found"),
                     ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

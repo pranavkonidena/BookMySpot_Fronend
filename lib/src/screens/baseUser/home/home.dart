@@ -1,20 +1,21 @@
 import 'package:book_my_spot_frontend/src/models/booking.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/make_reservation.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/profile_page.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/teams_page.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/make_reservation.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/profile/profile_page.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/teams/teams_page.dart';
 import 'package:book_my_spot_frontend/src/screens/loading/loading_screen.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/state/bookings/booking_state.dart';
 import 'package:book_my_spot_frontend/src/state/date/date_state.dart';
 import 'package:book_my_spot_frontend/src/state/navbar/navbar_state.dart';
 import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
+import 'package:book_my_spot_frontend/src/utils/helpers/error_handler.dart';
 import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
-import '../../services/storageManager.dart';
+import '../../../services/storageManager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../services/string_extension.dart';
-import '../../models/user.dart';
+import '../../../services/string_extension.dart';
+import '../../../models/user.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -39,6 +40,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ErrorManager.errorHandler(ref, context);
     final date = ref.watch(dateProvider);
     final currentIndex = ref.watch(currentIndexProvider);
     List<Widget> bodyWidgets = [];
@@ -342,7 +344,8 @@ class BookingsListView extends ConsumerWidget {
             );
           }
         } else {
-          bookingsWidget = const Center(child:CircularProgressIndicator.adaptive());
+          bookingsWidget =
+              const Center(child: CircularProgressIndicator.adaptive());
         }
         return bookingsWidget;
       },

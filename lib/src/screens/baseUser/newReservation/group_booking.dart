@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:book_my_spot_frontend/src/screens/baseUser/check_slots.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/confirm_booking.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/group_creation.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/home.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/check_slots.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/confirm_booking.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/group_creation.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/home/home.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:book_my_spot_frontend/src/state/bookings/booking_state.dart';
@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import '../../constants/constants.dart';
+import '../../../constants/constants.dart';
 
 final groupNameProvider = StateProvider<String>((ref) {
   return "";

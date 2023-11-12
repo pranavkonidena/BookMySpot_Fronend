@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:book_my_spot_frontend/src/screens/amenityHead/amenity_event.dart';
 import 'package:book_my_spot_frontend/src/screens/amenityHead/events_list.dart';
 import 'package:book_my_spot_frontend/src/screens/amenityHead/amenity_profile.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/individual_bookingdetails.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/bookingDetails/individual_bookingdetails.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

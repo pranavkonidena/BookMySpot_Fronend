@@ -1,23 +1,23 @@
 import 'package:book_my_spot_frontend/src/screens/error/404_screen.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/amenity_eventteams.dart';
+import 'package:book_my_spot_frontend/src/screens/amenityHead/amenity_eventteams.dart';
 import 'package:book_my_spot_frontend/src/screens/amenityHead/amenityhead_home.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/chat_screen.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/check_slots.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/confirm_booking.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/event_booking.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/group_bookingdetails.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/group_booking.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/group_creation.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/individual_bookingdetails.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/teams/chat_screen.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/check_slots.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/confirm_booking.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/event_booking.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/bookingDetails/group_bookingdetails.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/group_booking.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/group_creation.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/bookingDetails/individual_bookingdetails.dart';
 import 'package:book_my_spot_frontend/src/screens/auth/login.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/initial_screen.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/make_reservation.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/profile_page.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/teams_detail.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/teams_page.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/make_reservation.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/profile/profile_page.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/teams/teams_detail.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/teams/teams_page.dart';
 import 'package:book_my_spot_frontend/src/screens/loading/loading_screen.dart';
 import 'package:go_router/go_router.dart';
-import '../screens/baseUser/home.dart';
+import '../screens/baseUser/home/home.dart';
 import '../screens/auth/login_wview.dart';
 
 final router = GoRouter(

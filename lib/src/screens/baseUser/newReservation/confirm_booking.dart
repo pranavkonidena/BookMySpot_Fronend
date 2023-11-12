@@ -1,15 +1,15 @@
 import 'dart:convert';
 import 'package:book_my_spot_frontend/src/state/navbar/navbar_state.dart';
 
-import '../../services/storageManager.dart';
+import '../../../services/storageManager.dart';
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/make_reservation.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/make_reservation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/home.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/home/home.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import '../../constants/constants.dart';
+import '../../../constants/constants.dart';
 
 const List<Widget> bookingTypes = <Widget>[
   Text(
@@ -93,7 +93,6 @@ class ConfirmBooking extends ConsumerWidget {
 
     if (picked_s != null) {
       ref.watch(timeProvider.notifier).state = picked_s;
-      print(picked_s.hour);
       var slots = ref.read(slotsProviderAmenity);
       var new_slots = [];
       for (int i = 0; i < slots.length; i++) {
@@ -107,15 +106,15 @@ class ConfirmBooking extends ConsumerWidget {
       ref.read(slotsProviderAmenity.notifier).state = new_slots;
     } else {
       var slots = ref.read(slotsProviderAmenity);
-      var new_slots = [];
+      var newSlots = [];
       for (int i = 0; i < slots.length; i++) {
         var hour = int.parse(slots[i]["start_time"].toString().substring(0, 2));
 
         if (TimeOfDay.now().hour == hour) {
-          new_slots.add(slots[i]);
+          newSlots.add(slots[i]);
         }
       }
-      ref.read(slotsProviderAmenity.notifier).state = new_slots;
+      ref.read(slotsProviderAmenity.notifier).state = newSlots;
     }
   }
 
@@ -127,7 +126,7 @@ class ConfirmBooking extends ConsumerWidget {
       initialDate: selectedDate,
       firstDate: DateTime.now(), // The earliest date that can be selected.
       lastDate: DateTime.now()
-          .add(Duration(days: 7)), // The latest date that can be selected.
+          .add(const Duration(days: 7)), // The latest date that can be selected.
     );
 
     if (picked != null && picked != selectedDate) {
@@ -179,7 +178,7 @@ class ConfirmBooking extends ConsumerWidget {
         future: fetchData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
                 child:
                     CircularProgressIndicator()); // Show a loading indicator.
           } else if (snapshot.hasError) {
@@ -195,7 +194,7 @@ class ConfirmBooking extends ConsumerWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    ToggleButtonWidget(),
+                    const ToggleButtonWidget(),
                     Padding(
                       padding: EdgeInsets.only(
                           top: MediaQuery.of(context).size.height / 14),
@@ -204,7 +203,7 @@ class ConfirmBooking extends ConsumerWidget {
                         children: [
                           Text(
                             data[0]["name"],
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black,
                               fontSize: 30,
                               fontFamily: 'Thasadith',
@@ -219,7 +218,7 @@ class ConfirmBooking extends ConsumerWidget {
                       children: [
                         Text(
                           data[0]["venue"],
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 30,
                             fontFamily: 'Thasadith',
@@ -234,7 +233,7 @@ class ConfirmBooking extends ConsumerWidget {
                         children: [
                           Text(
                             "${date.day}th ${months[date.month]} ${date.year}",
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black,
                               fontSize: 20,
                               fontFamily: 'Thasadith',

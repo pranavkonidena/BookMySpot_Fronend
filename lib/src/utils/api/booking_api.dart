@@ -1,5 +1,5 @@
-import 'package:book_my_spot_frontend/src/screens/baseUser/check_slots.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/confirm_booking.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/check_slots.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/confirm_booking.dart';
 import 'package:book_my_spot_frontend/src/utils/enums/error_types.dart';
 import 'package:book_my_spot_frontend/src/utils/enums/request_groups.dart';
 import 'package:book_my_spot_frontend/src/utils/enums/request_types.dart';
