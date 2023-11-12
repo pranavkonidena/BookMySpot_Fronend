@@ -26,7 +26,7 @@ class TeamScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(teamsListProvider);
     return data.when(
-      loading: () => const LoadingScreen(),
+      loading: () => const Center(child: CircularProgressIndicator.adaptive(),),
       error: (error, stackTrace) {
         return const SizedBox();
       },

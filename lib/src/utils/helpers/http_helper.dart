@@ -46,6 +46,10 @@ class HttpHelper {
         var response = await http.post(url, body: postData);
         return Response(
             response.statusCode, jsonDecode(response.body.toString()));
+      case RequestTypes.delete:
+        var response = await http.delete(url, body: postData);
+        return Response(
+            response.statusCode, jsonDecode(response.body.toString()));
       default:
         return Response(404, "Method not found");
     }

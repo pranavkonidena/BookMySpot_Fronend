@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
+import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;

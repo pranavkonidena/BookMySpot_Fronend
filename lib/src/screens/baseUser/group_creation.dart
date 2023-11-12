@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
+
 import '../../models/user.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/check_slots.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/teams_detail.dart';

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:book_my_spot_frontend/src/models/user.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
+import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

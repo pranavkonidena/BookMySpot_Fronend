@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:book_my_spot_frontend/src/screens/baseUser/home.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
+import 'package:book_my_spot_frontend/src/state/bookings/booking_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;

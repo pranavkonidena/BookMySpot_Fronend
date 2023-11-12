@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:book_my_spot_frontend/src/state/navbar/navbar_state.dart';
+
 import '../../services/storageManager.dart';
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/make_reservation.dart';

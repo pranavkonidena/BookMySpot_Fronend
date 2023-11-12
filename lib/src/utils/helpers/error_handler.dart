@@ -1,3 +1,4 @@
+import 'package:book_my_spot_frontend/src/constants/snackbars/booking_snackbar.dart';
 import 'package:book_my_spot_frontend/src/constants/snackbars/insufcred_snackbar.dart';
 import 'package:book_my_spot_frontend/src/constants/snackbars/noslotselected_snackbar.dart';
 import 'package:book_my_spot_frontend/src/constants/snackbars/unknownerror_snackbar.dart';
@@ -21,6 +22,8 @@ class ErrorManager {
         ScaffoldMessenger.of(context).showSnackBar(insufcredSnackbar);
       case ErrorTypes.noSlotSelected:
         ScaffoldMessenger.of(context).showSnackBar(noSlotSelectedSnackbar);
+      case ErrorTypes.bookings:
+        ScaffoldMessenger.of(context).showSnackBar(bookingErrorSnackbar);
       case ErrorTypes.unknown:
         ScaffoldMessenger.of(context).showSnackBar(unknownerrorSnackbar);
       default:

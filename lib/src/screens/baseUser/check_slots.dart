@@ -1,6 +1,8 @@
 import 'package:book_my_spot_frontend/src/screens/baseUser/confirm_booking.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/home.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
+import 'package:book_my_spot_frontend/src/state/bookings/booking_state.dart';
+import 'package:book_my_spot_frontend/src/state/navbar/navbar_state.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/error_handler.dart';
 import 'package:book_my_spot_frontend/src/utils/api/booking_api.dart';
 import 'package:book_my_spot_frontend/src/utils/enums/error_types.dart';
@@ -121,7 +123,7 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
                           onPressed: () async {
                             try {
                               await BookingAPIEndpoint.makeBooking(ref);
-                              ref.invalidate(userBookingsProvider);
+                              // ref.invalidate(userBookingsProvider);
                               ref.invalidate(currentIndexProvider);
                               ref.invalidate(durationProvider);
                               ref.invalidate(selectedDateProvider);

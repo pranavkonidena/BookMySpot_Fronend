@@ -1,4 +1,4 @@
-import 'package:book_my_spot_frontend/src/screens/baseUser/404_screen.dart';
+import 'package:book_my_spot_frontend/src/screens/error/404_screen.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/amenity_eventteams.dart';
 import 'package:book_my_spot_frontend/src/screens/amenityHead/amenityhead_home.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/chat_screen.dart';

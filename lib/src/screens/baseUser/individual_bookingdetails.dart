@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/home.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
+import 'package:book_my_spot_frontend/src/state/bookings/booking_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -55,9 +56,9 @@ class IndividualBookingDetails extends ConsumerWidget {
               ),
               ElevatedButton(
                   onPressed: () async {
-                    await http.get(Uri.parse(using +
-                        "booking/individual/cancelSlot?booking_id=${id}"));
-                    ref.refresh(userBookingsProvider);
+                    await ref
+                        .read(userBookingsProvider.notifier)
+                        .cancelBooking(context, ref, int.parse(id));
                     context.go("/");
                   },
                   child: Text("Cancel"))

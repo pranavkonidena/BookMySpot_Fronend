@@ -1,3 +1,4 @@
+import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
 import 'package:book_my_spot_frontend/src/utils/api/user_api.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:flutter/material.dart';

@@ -6,6 +6,8 @@ import 'package:book_my_spot_frontend/src/screens/baseUser/group_creation.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/home.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
+import 'package:book_my_spot_frontend/src/state/bookings/booking_state.dart';
+import 'package:book_my_spot_frontend/src/state/navbar/navbar_state.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

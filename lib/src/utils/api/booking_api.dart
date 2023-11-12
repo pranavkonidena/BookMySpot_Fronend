@@ -29,7 +29,8 @@ class BookingAPIEndpoint {
       Response response = await HttpHelper.makeRequest(RequestTypes.post,
           RequestGroup.booking, "individual/bookSlot", postData);
       if (response.statusCode == 412) {
-        throw UserException(ErrorTypes.insufficientCredits, "Insufficient Credits");
+        throw UserException(
+            ErrorTypes.insufficientCredits, "Insufficient Credits");
       } else {
         if (response.statusCode == 200) {
           return response;
@@ -37,6 +38,15 @@ class BookingAPIEndpoint {
           throw UserException(ErrorTypes.unknown, response.data);
         }
       }
+    }
+  }
+
+  static cancelBooking(int bookingId) async {
+    var deleteData = {"booking_id": bookingId.toString()};
+    Response response = await HttpHelper.makeRequest(
+        RequestTypes.delete, RequestGroup.booking, "individual/cancelSlot", deleteData);
+    if (response.statusCode != 200) {
+      throw UserException(ErrorTypes.unknown, "Unknown Error occoured!");
     }
   }
 }
