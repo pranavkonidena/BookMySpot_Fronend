@@ -1,15 +1,33 @@
+import 'dart:async';
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 
-
-class InitialScreen extends StatefulWidget {
-  const InitialScreen({super.key});
+class LoadingScreen extends StatefulWidget {
+  const LoadingScreen({super.key});
 
   @override
-  State<InitialScreen> createState() => _InitialScreenState();
+  State<LoadingScreen> createState() => _LoadingScreenState();
 }
 
-class _InitialScreenState extends State<InitialScreen> {
+class _LoadingScreenState extends State<LoadingScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Timer(const Duration(seconds: 2), () {
+      String? token = getToken();
+      String? admintoken = getAdminToken();
+      if (admintoken != "null") {
+        context.go("/head");
+      } else if (token != "null") {
+        context.go("/");
+      } else {
+        context.go("/login");
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,8 +39,7 @@ class _InitialScreenState extends State<InitialScreen> {
           children: [
             Text("Bookify",
                 style: GoogleFonts.poppins(
-                    textStyle:
-                        const TextStyle(fontSize: 62, color: Colors.white))),
+                    textStyle: const TextStyle(fontSize: 62, color: Colors.white))),
             Text(
               "Making Life easy , One booking at a time",
               style: GoogleFonts.poppins(

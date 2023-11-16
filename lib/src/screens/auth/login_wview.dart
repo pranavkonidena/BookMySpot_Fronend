@@ -1,3 +1,5 @@
+import 'package:book_my_spot_frontend/src/screens/loading/loading_screen.dart';
+import 'package:book_my_spot_frontend/src/screens/splash/splash_screen.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/state/auth/auth_state.dart';
 import 'package:book_my_spot_frontend/src/utils/api/user_api.dart';
@@ -56,7 +58,7 @@ class _WebViewLoginState extends ConsumerState<WebViewLogin> {
                 }
               },
             )
-          : const Center(child: CircularProgressIndicator()),
+          : const InitialScreen(),
     );
   }
 }

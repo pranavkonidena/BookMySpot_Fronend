@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:book_my_spot_frontend/src/screens/amenityHead/events_list.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/teams/teams_detail.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/teams/teams_page.dart';
@@ -11,14 +10,14 @@ import '../../constants/constants.dart';
 
 final _allTeamsInEventProvider = FutureProvider<dynamic>((ref) async {
   List<dynamic> teams = ref.watch(selectedEventIDProvider);
-  List<dynamic> team_details = [];
+  List<dynamic> teamDetails = [];
   for (int i = 0; i < teams.length; i++) {
     var response = await http.get(Uri.parse("${using}team/i?id=${teams[i]}"));
     var data = jsonDecode(response.body.toString());
-    team_details.add(data);
+    teamDetails.add(data);
   }
 
-  return team_details;
+  return teamDetails;
 });
 
 class AmenityEventTeamsList extends ConsumerWidget {
@@ -85,7 +84,7 @@ class AmenityEventTeamsList extends ConsumerWidget {
                     title: Center(
                         child: Text(
                       data[index][0]["name"],
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 35,
                         fontFamily: 'Thasadith',

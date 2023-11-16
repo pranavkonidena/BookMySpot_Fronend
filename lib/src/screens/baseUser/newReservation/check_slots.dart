@@ -1,12 +1,12 @@
+import 'dart:convert';
+
+import 'package:book_my_spot_frontend/src/models/booking.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/confirm_booking.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/home/home.dart';
-import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/state/bookings/booking_state.dart';
 import 'package:book_my_spot_frontend/src/state/navbar/navbar_state.dart';
-import 'package:book_my_spot_frontend/src/utils/helpers/error_handler.dart';
 import 'package:book_my_spot_frontend/src/utils/api/booking_api.dart';
-import 'package:book_my_spot_frontend/src/utils/enums/error_types.dart';
 import 'package:book_my_spot_frontend/src/utils/errors/user/user_errors.dart';
+import 'package:book_my_spot_frontend/src/utils/helpers/response_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -124,13 +124,13 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
                           onPressed: () async {
                             try {
                               await BookingAPIEndpoint.makeBooking(ref);
-                              // ref.invalidate(userBookingsProvider);
                               ref.invalidate(currentIndexProvider);
                               ref.invalidate(durationProvider);
                               ref.invalidate(selectedDateProvider);
                               ref.invalidate(timeProvider);
                               Future.microtask(() => context.go("/"));
                             } on UserException catch (e) {
+                              print(e.errorMessage());
                               e.errorHandler(ref);
                             }
                           },

@@ -15,7 +15,8 @@ class BookingAPIEndpoint {
   static makeBooking(WidgetRef ref) async {
     final date = ref.watch(selectedDateProvider);
     final data = ref.watch(slotsProviderAmenity);
-    if (ref.read(indexProvider) < 0) {
+    print(ref.watch(indexProvider));
+    if (ref.watch(indexProvider) < 0) {
       throw UserException(ErrorTypes.noSlotSelected, "No slot selected");
     } else {
       var postData = {
@@ -29,6 +30,11 @@ class BookingAPIEndpoint {
       Response response = await HttpHelper.makeRequest(RequestTypes.post,
           RequestGroup.booking, "individual/bookSlot", postData);
       if (response.statusCode == 412) {
+        ref.invalidate(indexProvider);
+        ref.invalidate(durationProvider);
+        ref.invalidate(selectedDateProvider);
+        ref.invalidate(timeProvider);
+        print("Error thrown , insuff credits");
         throw UserException(
             ErrorTypes.insufficientCredits, "Insufficient Credits");
       } else {
@@ -41,12 +47,31 @@ class BookingAPIEndpoint {
     }
   }
 
-  static cancelBooking(int bookingId) async {
+  static cancelIndividualBooking(int bookingId) async {
     var deleteData = {"booking_id": bookingId.toString()};
-    Response response = await HttpHelper.makeRequest(
-        RequestTypes.delete, RequestGroup.booking, "individual/cancelSlot", deleteData);
+    Response response = await HttpHelper.makeRequest(RequestTypes.delete,
+        RequestGroup.booking, "individual/cancelSlot", deleteData);
     if (response.statusCode != 200) {
       throw UserException(ErrorTypes.unknown, "Unknown Error occoured!");
+    }
+  }
+  
+  static cancelGroupBooking(int bookingId) async {
+    var deleteData = {"booking_id": bookingId.toString()};
+    Response response = await HttpHelper.makeRequest(RequestTypes.delete,
+        RequestGroup.booking, "group/cancelSlot", deleteData);
+    if (response.statusCode != 200) {
+      throw UserException(ErrorTypes.unknown, "Unknown Error occoured!");
+    }
+  }
+
+  static fetchBooking(int bookingId) async {
+    Response response = await HttpHelper.makeRequest(
+        RequestTypes.get, RequestGroup.user, "getBooking?id=$bookingId");
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      throw UserException(ErrorTypes.bookings, "Error fetching bookings!");
     }
   }
 }

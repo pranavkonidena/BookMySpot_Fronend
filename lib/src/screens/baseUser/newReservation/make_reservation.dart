@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
+import 'package:book_my_spot_frontend/src/state/navbar/navbar_state.dart';
 import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,8 +23,28 @@ class MakeReservationPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Scaffold(
-      body: Padding(
+    return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: MediaQuery.of(context).size.height / 12,
+        elevation: 0,
+        backgroundColor: const Color.fromARGB(168, 35, 187, 233),
+        title: const Text(
+          "Make a Reservation",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 40,
+            fontFamily: 'Thasadith',
+          ),
+        ),
+        leading: 
+          IconButton(
+              onPressed: () {
+                context.go("/");
+                ref.read(currentIndexProvider.notifier).state = 0;
+              },
+              icon: Icon(Icons.arrow_back_ios_new , color: Colors.grey[700],))
+      ),
+      body: const Padding(
         padding: EdgeInsets.only(left: 20.0, top: 18, right: 20),
         child: SingleChildScrollView(
           child: Column(
