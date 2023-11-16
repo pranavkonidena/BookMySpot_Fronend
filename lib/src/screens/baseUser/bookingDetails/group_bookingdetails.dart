@@ -161,10 +161,10 @@ class GroupBookingDetails extends ConsumerWidget {
                                         i++)
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Padding(
-                                            padding: const EdgeInsets.all(8.0),
+                                            padding: const EdgeInsets.all(4.0),
                                             child: Container(
                                               clipBehavior: Clip.antiAlias,
                                               decoration: const BoxDecoration(
@@ -173,9 +173,8 @@ class GroupBookingDetails extends ConsumerWidget {
                                               child: Image.network(
                                                 booking
                                                     .groupMembers[i].profilePic,
-                                                // booking.groupMembers[i].profilePic.contains("github") ? booking.groupMembers[i].profilePic : "https://channeli.in" + booking.groupMembers[i].profilePic,
-                                                height: 26,
-                                                width: 26,
+                                                height: 36,
+                                                width: 36,
                                               ),
                                             ),
                                           ),
@@ -205,10 +204,10 @@ class GroupBookingDetails extends ConsumerWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 38.0),
+            padding: const EdgeInsets.only(top: 18.0),
             child: QrImageView(
               data: booking.id.toString(),
-              size: 200,
+              size: 300,
             ),
           ),
           Expanded(

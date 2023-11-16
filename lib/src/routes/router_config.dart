@@ -1,7 +1,7 @@
 import 'package:book_my_spot_frontend/src/screens/error/404_screen.dart';
 import 'package:book_my_spot_frontend/src/screens/amenityHead/amenity_eventteams.dart';
 import 'package:book_my_spot_frontend/src/screens/amenityHead/amenityhead_home.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/teams/chat_screen.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/teams/chat/chat_screen.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/check_slots.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/confirm_booking.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/event_booking.dart';

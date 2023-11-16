@@ -28,19 +28,23 @@ class ErrorManager {
           Future.microtask(() => router.go("/"));
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(insufcredSnackbar);
+            break;
           }
         case ErrorTypes.noSlotSelected:
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(noSlotSelectedSnackbar);
+            break;
           }
-          break;
+
         case ErrorTypes.bookings:
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(bookingErrorSnackbar);
+            break;
           }
         case ErrorTypes.unknown:
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(unknownerrorSnackbar);
+            break;
           }
         default:
       }
