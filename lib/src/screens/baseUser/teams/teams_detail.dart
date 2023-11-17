@@ -3,6 +3,8 @@ import 'package:book_my_spot_frontend/src/screens/baseUser/teams/teams_page.dart
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
+import 'package:book_my_spot_frontend/src/utils/api/team_api.dart';
+import 'package:book_my_spot_frontend/src/utils/errors/user/user_errors.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -60,6 +62,7 @@ class TeamDetails extends ConsumerWidget {
   String? id;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    User user = ref.watch(userProvider);
     final data = ref.watch(teamdetailsProvider);
     return data.when(
       loading: () => const Center(child: const CircularProgressIndicator()),
@@ -114,16 +117,49 @@ class TeamDetails extends ConsumerWidget {
                             )))
                     : SizedBox(),
                 TextButton(
+                    onPressed: () async {
+                      await showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog.adaptive(
+                            content: Text("Do you want to leave the team?"),
+                            actions: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    context.pop();
+                                  },
+                                  child: Text("No")),
+                              ElevatedButton(
+                                  onPressed: () async {
+                                    try {
+                                      await TeamAPIEndpoint.leaveTeam(
+                                          ref.watch(_teamNameProvider));
+                                      ref.refresh(teamsListProvider);
+                                      context.go("/");
+                                    } on UserException catch (e) {
+                                      context.pop();
+                                      e.errorHandler(ref);
+                                    } catch (e) {
+                                      print("Unknown error occoured!");
+                                    }
+                                  },
+                                  child: Text("Yes"))
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Text("Leave")),
+                TextButton(
                     onPressed: () {
-                      
                       context.go("/chat/${value[0]["id"]}");
                     },
                     child: Text("Chat"))
               ],
             ),
             body: Column(children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 18.0, top: 18),
+              const Padding(
+                padding: EdgeInsets.only(left: 18.0, top: 18),
                 child: Row(
                   children: [
                     Text(
@@ -146,8 +182,13 @@ class TeamDetails extends ConsumerWidget {
                   child: ListTile(
                     title: Padding(
                       padding: const EdgeInsets.only(left: 18.0),
-                      child: Text(
-                        adminDp[value[0]["admin_id"][i].toString() + "name"]!,
+                      child: Row(
+                        children: [
+                          Text(
+                            adminDp[
+                                value[0]["admin_id"][i].toString() + "name"]!,
+                          ),
+                        ],
                       ),
                     ),
                     leading: Container(

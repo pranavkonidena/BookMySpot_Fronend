@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:book_my_spot_frontend/src/constants/snackbars/booking_snackbar.dart';
 import 'package:book_my_spot_frontend/src/constants/snackbars/insufcred_snackbar.dart';
 import 'package:book_my_spot_frontend/src/constants/snackbars/noslotselected_snackbar.dart';
+import 'package:book_my_spot_frontend/src/constants/snackbars/teamleaving_snackbar.dart';
 import 'package:book_my_spot_frontend/src/constants/snackbars/unknownerror_snackbar.dart';
 import 'package:book_my_spot_frontend/src/routes/router_config.dart';
 import 'package:book_my_spot_frontend/src/state/errors/error_state.dart';
@@ -44,6 +45,11 @@ class ErrorManager {
         case ErrorTypes.unknown:
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(unknownerrorSnackbar);
+            break;
+          }
+        case ErrorTypes.leavingTeam:
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(teamleavingSnackbar);
             break;
           }
         default:

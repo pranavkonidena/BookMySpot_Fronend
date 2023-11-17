@@ -3,5 +3,6 @@ enum ErrorTypes{
   insufficientCredits,
   noSlotSelected,
   bookings,
-  unknown
+  unknown,
+  leavingTeam,
 }

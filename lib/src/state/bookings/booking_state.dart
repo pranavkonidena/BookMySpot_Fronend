@@ -37,6 +37,8 @@ class BookingNotifier extends StateNotifier<List<Booking>> {
       if (context.mounted) {
         e.errorHandler(ref);
       }
+    } catch (e) {
+      print(e);
     }
     return null;
   }
