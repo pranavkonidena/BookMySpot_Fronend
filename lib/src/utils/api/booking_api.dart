@@ -55,7 +55,7 @@ class BookingAPIEndpoint {
       throw UserException(ErrorTypes.unknown, "Unknown Error occoured!");
     }
   }
-  
+
   static cancelGroupBooking(int bookingId) async {
     var deleteData = {"booking_id": bookingId.toString()};
     Response response = await HttpHelper.makeRequest(RequestTypes.delete,

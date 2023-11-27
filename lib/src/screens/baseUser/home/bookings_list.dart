@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:book_my_spot_frontend/src/models/user.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/state/bookings/booking_state.dart';
@@ -70,43 +71,38 @@ class BookingsListView extends ConsumerWidget {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Image.network(
-                                "https://github-production-user-asset-6210df.s3.amazonaws.com/122373207/275466089-4e5a891c-8afd-4e9b-a0da-04ff0c39687c.png",
-                                height: 30)
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              bookings[index].amenityName,
-                              style: const TextStyle(
-                                color: Color(0xFF606C5D),
-                                fontSize: 30,
-                                fontFamily: 'Thasadith',
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            Text(
-                              "${bookings[index].timeOfSlot.hour}:${bookings[index].timeOfSlot.minute}-${bookings[index].endOfSlot.hour}:${bookings[index].endOfSlot.minute}",
-                              style: const TextStyle(
-                                color: Color(0xFF606C5D),
-                                fontSize: 25,
-                                fontFamily: 'Thasadith',
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            Text(
-                              bookings[index].amenityVenue,
-                              style: const TextStyle(
-                                color: Color(0xFF606C5D),
-                                fontSize: 15,
-                                fontFamily: 'Thasadith',
-                                fontWeight: FontWeight.w400,
-                              ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Image.network(
+                                  "https://github-production-user-asset-6210df.s3.amazonaws.com/122373207/275466089-4e5a891c-8afd-4e9b-a0da-04ff0c39687c.png",
+                                  height: 30),
                             )
                           ],
+                        ),
+                        const SizedBox(width: 20,),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AutoSizeText(
+                                bookings[index].amenityName,
+                                style: Theme.of(context).textTheme.bodyLarge,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              AutoSizeText(
+                                "${bookings[index].timeOfSlot.hour}:${bookings[index].timeOfSlot.minute}-${bookings[index].endOfSlot.hour}:${bookings[index].endOfSlot.minute}",
+                                style: Theme.of(context).textTheme.bodyMedium,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              AutoSizeText(
+                                bookings[index].amenityVenue,
+                                style: Theme.of(context).textTheme.bodySmall,
+                                overflow: TextOverflow.ellipsis,
+                                minFontSize: 10,
+                              )
+                            ],
+                          ),
                         ),
                         const VerticalDivider(
                           color: Color(0xFF606C5D),
@@ -114,13 +110,13 @@ class BookingsListView extends ConsumerWidget {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              bookings[index].type.toString().capitalize(),
-                              style: const TextStyle(
-                                color: Color(0xFF606C5D),
-                                fontSize: 25,
-                                fontFamily: 'Thasadith',
-                                fontWeight: FontWeight.w400,
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: AutoSizeText(
+                                bookings[index].type.toString().capitalize(),
+                                style: Theme.of(context).textTheme.bodyLarge,
+                                minFontSize: 15,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             )
                           ],

@@ -12,9 +12,7 @@ import 'package:go_router/go_router.dart';
 class AmenityAPIEndpoint {
   AmenityAPIEndpoint._();
 
-  static AmenityAuth(BuildContext context, WidgetRef ref) async {
-    String email = ref.watch(emailProvider);
-    String password = ref.watch(passwordProvider);
+  static AmenityAuth(BuildContext context, String email , String password) async {
 
     var authHeader = {"email": email, "password": password};
     Response response = await HttpHelper.makeRequest(

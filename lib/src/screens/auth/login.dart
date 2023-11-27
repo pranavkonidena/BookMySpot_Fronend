@@ -1,50 +1,34 @@
-import 'dart:convert';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:book_my_spot_frontend/src/utils/api/amenity_api.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
 import '../../services/storageManager.dart';
-import '../../constants/constants.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:book_my_spot_frontend/src/utils/errors/auth/auth_errors.dart';
 
-final emailProvider = StateProvider<String>((ref) => "default");
-final passwordProvider = StateProvider<String>((ref) => "default");
-
 class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+
+  late String email;
+  late String password;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  Future<void> checkTokenAndNavigate() async {
-    String? token = getToken();
-    String? admintoken = getAdminToken();
-    if (admintoken != "null") {
-      context.go("/head");
-    } else if (token != "null") {
-      context.go("/");
-    }
-  }
-
   @override
   void initState() {
-    
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var email = ref.watch(emailProvider);
-    var password = ref.watch(passwordProvider);
     return Scaffold(
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child: Column(
@@ -54,12 +38,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   height: MediaQuery.of(context).size.height / 5,
                 ),
                 Center(
-                  child: Text(
+                  child: AutoSizeText(
                     'Login',
-                    style: GoogleFonts.poppins(
-                        color: Colors.black,
-                        fontSize: 29,
-                        fontWeight: FontWeight.w600),
+                    style: Theme.of(context).textTheme.titleLarge,
+                    minFontSize: 25,
+                    maxFontSize: 30,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 SizedBox(
@@ -67,13 +51,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 28.0),
-                  child: Text(
+                  child: AutoSizeText(
                     'Email',
-                    style: GoogleFonts.poppins(
-                      color: const Color(0xFF747474),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: Theme.of(context).textTheme.labelMedium,
                   ),
                 ),
                 const SizedBox(
@@ -85,20 +65,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       padding: const EdgeInsets.only(left: 28.0, right: 28),
                       child: TextField(
                         onChanged: (value) {
-                          ref.read(emailProvider.notifier).state = value;
+                          setState(() {
+                            widget.email = value;
+                          });
                         },
                         decoration: InputDecoration(
                             fillColor: const Color(0xFFEDF8FF),
                             enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   color: Color(0xFFC8E3FF),
                                 ),
                                 borderRadius: BorderRadius.circular(9)),
                             hintText: 'Enter Your email',
-                            hintStyle: GoogleFonts.poppins(
-                              fontSize: 10,
-                              color: Color(0xFF747474),
-                            ),
+                            hintStyle: Theme.of(context).textTheme.labelSmall,
                             filled: true),
                       ),
                     )),
@@ -107,14 +86,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 28.0),
-                  child: Text(
-                    'Password',
-                    style: GoogleFonts.poppins(
-                      color: const Color(0xFF747474),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  child: Text('Password',
+                      style: Theme.of(context).textTheme.labelMedium),
                 ),
                 const SizedBox(
                   height: 4,
@@ -126,7 +99,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       child: TextField(
                         obscureText: true,
                         onChanged: (value) {
-                          ref.read(passwordProvider.notifier).state = value;
+                          setState(() {
+                            widget.password = value;
+                          });
                         },
                         decoration: InputDecoration(
                             fillColor: const Color(0xFFEDF8FF),
@@ -137,10 +112,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               borderRadius: BorderRadius.circular(9),
                             ),
                             hintText: 'Enter Your Password',
-                            hintStyle: GoogleFonts.poppins(
-                              fontSize: 10,
-                              color: const Color(0xFF747474),
-                            ),
+                            hintStyle: Theme.of(context).textTheme.labelSmall,
                             filled: true),
                       ),
                     )),
@@ -185,11 +157,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             backgroundColor: const Color(0xFF4898C6)),
                         onPressed: () async {
                           try {
-                            
-                            await AmenityAPIEndpoint.AmenityAuth(context, ref);
+                            await AmenityAPIEndpoint.AmenityAuth(
+                                context, widget.email, widget.password);
                           } on AuthException catch (e) {
-                            Future.microtask(
-                                () => e.errorHandler(ref));
+                            Future.microtask(() => e.errorHandler(ref));
                           }
                         },
                         child: Text(

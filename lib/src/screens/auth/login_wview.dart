@@ -1,10 +1,8 @@
 import 'package:book_my_spot_frontend/src/screens/loading/loading_screen.dart';
-import 'package:book_my_spot_frontend/src/screens/splash/splash_screen.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/state/auth/auth_state.dart';
 import 'package:book_my_spot_frontend/src/utils/api/user_api.dart';
 import 'package:book_my_spot_frontend/src/utils/errors/auth/auth_errors.dart';
-import 'package:book_my_spot_frontend/src/utils/helpers/error_handler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
 import 'package:flutter/material.dart';
@@ -20,16 +18,15 @@ class WebViewLogin extends ConsumerStatefulWidget {
 }
 
 class _WebViewLoginState extends ConsumerState<WebViewLogin> {
-  @override
-  initState() {
-    ref.refresh(authTokenProvider);
-    ref.refresh(uriProvider);
-    super.initState();
-  }
+  // @override
+  // initState() {
+  //   ref.refresh(authTokenProvider);
+  //   ref.refresh(uriProvider);
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
-
     final uri = ref.watch(uriProvider);
     AsyncValue<Response?> response = ref.watch(authTokenProvider);
     response.whenData((response) {

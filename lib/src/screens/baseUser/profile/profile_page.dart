@@ -33,19 +33,19 @@ class ProfileScreen extends ConsumerWidget {
       ),
       Text(
         user.name,
-        style: TextStyle(fontSize: 26),
+        style: Theme.of(context).textTheme.headlineMedium
       ),
       const SizedBox(
         height: 10,
       ),
       Text(
         user.branchName,
-        style: TextStyle(fontSize: 16),
+        style: Theme.of(context).textTheme.headlineSmall,
       ),
       const SizedBox(
         height: 10,
       ),
-      Text(user.enrollNumber.toString()),
+      Text(user.enrollNumber.toString() , style: Theme.of(context).textTheme.headlineSmall,),
       const SizedBox(
         height: 50,
       ),

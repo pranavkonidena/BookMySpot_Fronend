@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:book_my_spot_frontend/src/screens/baseUser/teams/teams_detail.dart';
 import 'package:go_router/go_router.dart';
-import 'package:book_my_spot_frontend/src/screens/splash/splash_screen.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

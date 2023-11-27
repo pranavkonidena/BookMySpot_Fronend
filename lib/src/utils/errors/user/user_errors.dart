@@ -11,6 +11,6 @@ class UserException implements Exception {
   }
 
   void errorHandler(WidgetRef ref) {
-    ref.watch(errorStreamControllerProvider).add(types);
+    ref.read(errorStreamControllerProvider.notifier).state.add(types);
   }
 }

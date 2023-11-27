@@ -43,7 +43,9 @@ class ErrorManager {
             break;
           }
         case ErrorTypes.unknown:
+          print("OUTSIDE FN CALL");
           if (context.mounted) {
+            print("INSIDE SNACKBAR CODE");
             ScaffoldMessenger.of(context).showSnackBar(unknownerrorSnackbar);
             break;
           }

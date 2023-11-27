@@ -1,6 +1,4 @@
 import 'package:book_my_spot_frontend/src/models/booking.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/confirm_booking.dart';
-import 'package:book_my_spot_frontend/src/state/navbar/navbar_state.dart';
 import 'package:book_my_spot_frontend/src/utils/api/booking_api.dart';
 import 'package:book_my_spot_frontend/src/utils/api/user_api.dart';
 import 'package:book_my_spot_frontend/src/utils/errors/user/user_errors.dart';
@@ -38,7 +36,7 @@ class BookingNotifier extends StateNotifier<List<Booking>> {
         e.errorHandler(ref);
       }
     } catch (e) {
-      print(e);
+      print("Error handline!");
     }
     return null;
   }
@@ -56,6 +54,7 @@ class BookingNotifier extends StateNotifier<List<Booking>> {
           if (booking.id != bookingId) booking
       ];
     } on UserException catch (e) {
+      print("ERROR HANDLING IN PLACE");
       if (context.mounted) {
         e.errorHandler(ref);
       }

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/home/bookings_list.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/home/bottom_nav.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/profile/profile_page.dart';
@@ -6,7 +7,6 @@ import 'package:book_my_spot_frontend/src/state/date/date_state.dart';
 import 'package:book_my_spot_frontend/src/state/navbar/navbar_state.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/error_handler.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
 import '../../../services/storageManager.dart';
@@ -52,13 +52,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              AutoSizeText(
                 date.date.toString(),
-                style: Theme.of(context).appBarTheme.titleTextStyle
+                style: Theme.of(context).appBarTheme.titleTextStyle,
+                minFontSize: 10,
+                overflow: TextOverflow.ellipsis,
               ),
-              Text(
+              AutoSizeText(
                 date.day.toString(),
-                style: Theme.of(context).textTheme.titleMedium
+                style: Theme.of(context).textTheme.titleSmall,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
@@ -76,8 +79,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       });
                     },
                     icon: const Icon(Icons.calendar_month_outlined),
-                    iconSize: 30,
-                    color: Colors.grey.shade700),
+                    color: Theme.of(context).iconTheme.color,
+                    iconSize: Theme.of(context).iconTheme.size,
+                    ),
               ),
             ],
           ),
@@ -86,11 +90,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               Padding(
                 padding: const EdgeInsets.only(right: 18.0),
                 child: TextButton(
-                    child: Text("Reserve" , style: GoogleFonts.poppins(color: Colors.black),),
-                    onPressed: () {
-                      context.go("/new");
-                    },
-                   ),
+                  child: Text(
+                    "Reserve",
+                    style: Theme.of(context).textTheme.headlineSmall
+                  ),
+                  onPressed: () {
+                    context.go("/new");
+                  },
+                ),
               ),
             ],
           )
@@ -106,29 +113,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           onPressed: () {
             context.go("/grpcreate/home");
           },
-          child: Text(
-            "New team",
-            style: Theme.of(context).textTheme.displayMedium
-          ),
+          child: Text("New team",
+              style: Theme.of(context).textTheme.headlineSmall),
         )
       ],
-      title: Text(
-        "Teams",
-        style: Theme.of(context).textTheme.displayLarge
-      ),
+      title: Text("Teams", style: Theme.of(context).textTheme.headlineLarge),
     ));
     appBarWidgets.add(AppBar(
       toolbarHeight: MediaQuery.of(context).size.height / 12,
       elevation: 0,
       backgroundColor: const Color.fromARGB(168, 35, 187, 233),
       leadingWidth: 220,
-      title: const Text(
+      title: Text(
         "Profile",
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 40,
-          fontFamily: 'Thasadith',
-        ),
+        style: Theme.of(context).textTheme.headlineLarge,
       ),
     ));
     bodyWidgets.add(SingleChildScrollView(
@@ -139,10 +137,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 Text(
-                  "Today's Bookings",
-                  style: Theme.of(context).textTheme.bodyLarge
-                ),
+                Text("Today's Bookings",
+                    style: Theme.of(context).textTheme.headlineLarge),
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 32,
                 ),
