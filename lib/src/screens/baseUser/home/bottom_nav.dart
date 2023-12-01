@@ -29,8 +29,8 @@ class _BottomNavBarState extends ConsumerState<BottomNavBar> {
               Icons.home,
             ),
             label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.add), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.groups), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: "")
       ],
     );
   }

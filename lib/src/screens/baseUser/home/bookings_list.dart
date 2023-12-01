@@ -1,8 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:book_my_spot_frontend/src/models/user.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/state/bookings/booking_state.dart';
-import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:book_my_spot_frontend/src/models/booking.dart';

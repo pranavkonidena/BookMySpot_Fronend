@@ -11,10 +11,10 @@ class User {
 
   User(String tokenGiven) {
     token = tokenGiven;
-    userFromJSON();
   }
 
   _fetchUserData() async {
+    print("FETCH CALLED");
     dynamic response = await http.get(Uri.parse(using + "user?id=${token}"));
     dynamic data = jsonDecode(response.body.toString());
     return data;

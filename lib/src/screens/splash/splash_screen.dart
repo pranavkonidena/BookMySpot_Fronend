@@ -24,6 +24,8 @@ class _LoadingScreenState extends ConsumerState<LoadingScreen> {
       if (admintoken != "null") {
         context.go("/head");
       } else if (token != "null") {
+        User user = await ref.watch(userFutureProvider.future);
+        ref.read(userProvider.notifier).state = user;
         Future.microtask(() => context.go("/"));
       } else {
         context.go("/login");

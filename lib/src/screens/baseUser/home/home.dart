@@ -1,14 +1,14 @@
-import 'package:book_my_spot_frontend/src/models/user.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/home/bookings_list.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/home/bottom_nav.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/home/horizontal_calendar.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/profile/profile_page.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/make_reservation.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/teams/teams_page.dart';
 import 'package:book_my_spot_frontend/src/state/date/date_state.dart';
 import 'package:book_my_spot_frontend/src/state/navbar/navbar_state.dart';
 import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/error_handler.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
 import '../../../services/storageManager.dart';
@@ -45,28 +45,43 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 12,
         elevation: 0,
-        title: Text("Bookify"),
+        title: Text(
+          "Bookify",
+          style: GoogleFonts.openSans(),
+        ),
         actions: [
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: InkWell(
-          //     onTap: () {},
-          //     child: Container(
-          //       clipBehavior: Clip.antiAlias,
-          //       decoration: const BoxDecoration(
-          //         shape: BoxShape.circle,
-          //       ),
-          //       child: Image.network(
-          //         ref.watch(userProvider).profilePic,
-          //         height: 56,
-          //         width: 56,
-          //       ),
-          //     ),
-          //   ),
-          // ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: () {
+                context.go("/profile");
+              },
+              child: Container(
+                clipBehavior: Clip.antiAlias,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                child: Image.network(
+                  ref.watch(userProvider).profilePic,
+                  height: 56,
+                  width: 56,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
+    appBarWidgets.add(AppBar(
+      toolbarHeight: MediaQuery.of(context).size.height / 12,
+      elevation: 0,
+      backgroundColor: const Color.fromARGB(168, 35, 187, 233),
+      leadingWidth: 220,
+      title: Text(
+        "Make a reservation",
+        style: Theme.of(context).textTheme.headlineLarge,
+      ),
+    ));
     appBarWidgets.add(AppBar(
       toolbarHeight: MediaQuery.of(context).size.height / 12,
       elevation: 0,
@@ -82,16 +97,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ],
       title: Text("Teams", style: Theme.of(context).textTheme.headlineLarge),
     ));
-    appBarWidgets.add(AppBar(
-      toolbarHeight: MediaQuery.of(context).size.height / 12,
-      elevation: 0,
-      backgroundColor: const Color.fromARGB(168, 35, 187, 233),
-      leadingWidth: 220,
-      title: Text(
-        "Profile",
-        style: Theme.of(context).textTheme.headlineLarge,
-      ),
-    ));
+    
     bodyWidgets.add(Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -138,8 +144,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ],
     ));
+    bodyWidgets.add(const MakeReservationPage());
     bodyWidgets.add(const TeamScreen());
-    bodyWidgets.add(const ProfileScreen());
+    
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(234, 234, 234, 1),
