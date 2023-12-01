@@ -1,8 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:book_my_spot_frontend/src/models/user.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/state/bookings/booking_state.dart';
-import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:book_my_spot_frontend/src/models/booking.dart';
@@ -16,12 +14,7 @@ class BookingsListView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Future<List<Booking>?> bookings =
         ref.watch(userBookingsProvider.notifier).getUserBookings(context, ref);
-    Future<User> futureUser = ref.watch(userFutureProvider.future);
-    futureUser.then(
-      (value) {
-        ref.read(userProvider.notifier).state = value;
-      },
-    );
+    
     Widget bookingsWidget;
     return FutureBuilder(
       future: bookings,
@@ -107,19 +100,21 @@ class BookingsListView extends ConsumerWidget {
                         const VerticalDivider(
                           color: Color(0xFF606C5D),
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: AutoSizeText(
-                                bookings[index].type.toString().capitalize(),
-                                style: Theme.of(context).textTheme.bodyLarge,
-                                minFontSize: 15,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            )
-                          ],
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: AutoSizeText(
+                                  bookings[index].type.toString().capitalize(),
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                  minFontSize: 15,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     ),

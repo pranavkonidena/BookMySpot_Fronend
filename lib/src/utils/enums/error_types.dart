@@ -5,4 +5,10 @@ enum ErrorTypes{
   bookings,
   unknown,
   leavingTeam,
+  fetchingTeams,
+  deletingTeam,
+  notAdmin,
+  removingUserfromTeam,
+  invalidTeamName,
+  teamCreation
 }

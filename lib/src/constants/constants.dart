@@ -1,9 +1,10 @@
 String base_url_IITR_WIFI = "http://10.81.4.165:8000/api/";
-String base_url_IMG = "http://10.76.0.51:8000/api/";
+String base_url_IMG = "http://10.76.0.58:8000/api/";
 String base_url_Iphone =
     "http://10.74.2.7:8000/api/"; // this is of iirwifi really
-String IP = "10.81.4.165:8000";
-String using = base_url_IITR_WIFI;
+String IP = "192.168.0.120:8000";
+String base_url_SPA_HOME = "http://192.168.0.120:8000/api/";
+String using = base_url_SPA_HOME;
 String omniportURL =
     "https://channeli.in/oauth/authorise/?client_id=yjvukprsgUyGAHIrpBRRAkhYDe8EWWyfEserwFYL&redirect_uri=http://$IP/api/user/auth&state=random";
 
@@ -31,4 +32,3 @@ Map<int, String> months = {
   11: "Nov",
   12: "Dec",
 };
-

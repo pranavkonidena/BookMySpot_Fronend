@@ -1,27 +1,32 @@
 import 'dart:async';
+import 'package:book_my_spot_frontend/src/models/user.dart';
+import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoadingScreen extends StatefulWidget {
+class LoadingScreen extends ConsumerStatefulWidget {
   const LoadingScreen({super.key});
 
   @override
-  State<LoadingScreen> createState() => _LoadingScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _LoadingScreenState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen> {
+class _LoadingScreenState extends ConsumerState<LoadingScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 2), () async {
       String? token = getToken();
       String? admintoken = getAdminToken();
       if (admintoken != "null") {
         context.go("/head");
       } else if (token != "null") {
-        context.go("/");
+        User user = await ref.watch(userFutureProvider.future);
+        ref.read(userProvider.notifier).state = user;
+        Future.microtask(() => context.go("/"));
       } else {
         context.go("/login");
       }
@@ -39,7 +44,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
           children: [
             Text("Bookify",
                 style: GoogleFonts.poppins(
-                    textStyle: const TextStyle(fontSize: 62, color: Colors.white))),
+                    textStyle:
+                        const TextStyle(fontSize: 62, color: Colors.white))),
             Text(
               "Making Life easy , One booking at a time",
               style: GoogleFonts.poppins(

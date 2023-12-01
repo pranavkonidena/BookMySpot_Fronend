@@ -44,9 +44,9 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
   void _sendMessage() {
     if (_controller.text.isNotEmpty) {
-      User user = ref.watch(userProvider);
+      User? user = ref.watch(userProvider);
       channel.sink.add(jsonEncode(
-          {"message": _controller.text.toString(), "id": user.token}));
+          {"message": _controller.text.toString(), "id": user!.token}));
       _controller.text = "";
       scrollController.animateTo(
         0,
@@ -90,7 +90,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                 final chats = jsonDecode(snapshot.data.toString());
                 for (int i = 0; i < chats.length; i++)
                   chats[i] = jsonDecode(chats[i].toString());
-                User user = ref.watch(userProvider);
+                User? user = ref.watch(userProvider);
                 return Expanded(
                   child: Align(
                     alignment: Alignment.topCenter,
@@ -113,7 +113,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                           return ChatBubble(
                               text: chats[index]["message"].toString(),
                               isCurrentUser:
-                                  chats[index]["sender"] == user.name,
+                                  chats[index]["sender"] == user!.name,
                               sender: chats[index]["sender"],
                               timeStamp: DateTime.parse(chats[index]["timestamp"]));
                         },

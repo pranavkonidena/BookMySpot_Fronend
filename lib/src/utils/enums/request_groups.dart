@@ -5,5 +5,6 @@ enum RequestGroup{
   group,
   team,
   user,
-  other
+  other,
+  full
 }

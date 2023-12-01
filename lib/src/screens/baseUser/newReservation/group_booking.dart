@@ -1,10 +1,7 @@
 import 'dart:convert';
-
 import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/check_slots.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/confirm_booking.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/group_creation.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/home/home.dart';
-import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:book_my_spot_frontend/src/state/bookings/booking_state.dart';
 import 'package:book_my_spot_frontend/src/state/navbar/navbar_state.dart';

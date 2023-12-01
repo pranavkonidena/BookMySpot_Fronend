@@ -9,7 +9,7 @@ final authTokenProvider = FutureProvider<Response?>((ref) async {
   Uri uri = ref.watch(uriProvider);
   if (!uri.toString().contains("channeli")) {
     Response response =
-        await HttpHelper.makeRequest(RequestTypes.get,RequestGroup.other, uri.toString());
+        await HttpHelper.makeRequest(RequestTypes.get,RequestGroup.full, uri.toString());
     return Response(response.statusCode, response.data);
   } else {
     return null;
