@@ -16,12 +16,7 @@ class BookingsListView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Future<List<Booking>?> bookings =
         ref.watch(userBookingsProvider.notifier).getUserBookings(context, ref);
-    Future<User> futureUser = ref.watch(userFutureProvider.future);
-    futureUser.then(
-      (value) {
-        ref.read(userProvider.notifier).state = value;
-      },
-    );
+    
     Widget bookingsWidget;
     return FutureBuilder(
       future: bookings,
@@ -107,19 +102,21 @@ class BookingsListView extends ConsumerWidget {
                         const VerticalDivider(
                           color: Color(0xFF606C5D),
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: AutoSizeText(
-                                bookings[index].type.toString().capitalize(),
-                                style: Theme.of(context).textTheme.bodyLarge,
-                                minFontSize: 15,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            )
-                          ],
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: AutoSizeText(
+                                  bookings[index].type.toString().capitalize(),
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                  minFontSize: 15,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     ),

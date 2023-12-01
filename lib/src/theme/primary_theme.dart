@@ -3,13 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 
 final ThemeData primaryTheme = ThemeData(
   primarySwatch: Colors.blue,
+  cardColor: const Color.fromRGBO(234, 234, 234, 1),
   iconTheme: const IconThemeData(color: Colors.black, size: 30),
   appBarTheme: AppBarTheme(
     titleTextStyle: GoogleFonts.thasadith(
         color: const Color.fromRGBO(37, 42, 52, 1),
         fontSize: 30,
         fontWeight: FontWeight.w600),
-    backgroundColor: const Color.fromARGB(168, 35, 187, 233),
+    backgroundColor: Color(0x74B3CE),
   ),
   textTheme: TextTheme(
     titleLarge: GoogleFonts.poppins(
@@ -47,6 +48,7 @@ final ThemeData primaryTheme = ThemeData(
         fontSize: 15,
         color: const Color(0xFF606C5D),
         fontWeight: FontWeight.w400),
+    displayMedium: GoogleFonts.thasadith(fontSize: 20)
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: Color.fromRGBO(241, 239, 239, 1),

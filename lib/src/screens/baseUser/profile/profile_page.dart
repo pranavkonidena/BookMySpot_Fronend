@@ -9,7 +9,7 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    User user = ref.watch(userProvider);
+    User? user = ref.watch(userProvider);
     return Scaffold(
         body: Column(children: [
       const SizedBox(
@@ -22,7 +22,7 @@ class ProfileScreen extends ConsumerWidget {
         ),
         child: Center(
           child: Image.network(
-            user.profilePic,
+            user!.profilePic,
             height: 100,
             width: 100,
           ),

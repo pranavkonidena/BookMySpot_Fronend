@@ -1,13 +1,9 @@
-import 'dart:convert';
 import 'package:book_my_spot_frontend/src/services/string_extension.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:book_my_spot_frontend/src/models/booking.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/home/home.dart';
-import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/state/bookings/booking_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
 import 'package:qr_flutter/qr_flutter.dart';
 import '../../../constants/constants.dart';
 import 'package:go_router/go_router.dart';

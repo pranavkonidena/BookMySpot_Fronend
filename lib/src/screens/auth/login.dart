@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/utils/api/amenity_api.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';

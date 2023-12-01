@@ -25,19 +25,14 @@ class IndividualBookingDetails extends ConsumerWidget {
         backgroundColor: const Color.fromARGB(168, 35, 187, 233),
         // leadingWidth: 220,
         leading: IconButton(
-          onPressed: () {
-            context.go("/");
-          },
-          icon: const Icon(Icons.arrow_back_ios_new_outlined),
-          color: Colors.grey[700],
-        ),
-        title: const Text(
+            onPressed: () {
+              context.go("/");
+            },
+            icon: const Icon(Icons.arrow_back_ios_new_outlined),
+            color: Theme.of(context).iconTheme.color),
+        title: Text(
           "Booking Details",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 40,
-            fontFamily: 'Thasadith',
-          ),
+          style: Theme.of(context).textTheme.headlineLarge,
         ),
       ),
       body: Column(
@@ -47,16 +42,11 @@ class IndividualBookingDetails extends ConsumerWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                Text("Time Of Slot",
+                    style: Theme.of(context).textTheme.titleMedium),
                 Text(
-                  "Time Of Slot",
-                  style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w400, fontSize: 18),
-                ),
-                Text(
-                  "${booking!.timeOfSlot.day} ${months[booking.timeOfSlot.month]} ${booking.timeOfSlot.year} , ${booking.timeOfSlot.hour} : ${booking.timeOfSlot.minute} - ${booking.endOfSlot.hour} : ${booking.endOfSlot.minute}",
-                  style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w400, fontSize: 18),
-                ),
+                    "${booking!.timeOfSlot.day} ${months[booking.timeOfSlot.month]} ${booking.timeOfSlot.year} , ${booking.timeOfSlot.hour} : ${booking.timeOfSlot.minute} - ${booking.endOfSlot.hour} : ${booking.endOfSlot.minute}",
+                    style: Theme.of(context).textTheme.titleSmall),
               ],
             ),
           ),
@@ -65,16 +55,11 @@ class IndividualBookingDetails extends ConsumerWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                Text("Booked At",
+                    style: Theme.of(context).textTheme.titleMedium),
                 Text(
-                  "Booked At",
-                  style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w400, fontSize: 18),
-                ),
-                Text(
-                  "${booking!.timestampOfBooking.day} ${months[booking.timestampOfBooking.month]} ${booking.timestampOfBooking.year} , ${booking.timestampOfBooking.hour} : ${booking.timestampOfBooking.minute}",
-                  style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w400, fontSize: 18),
-                ),
+                    "${booking!.timestampOfBooking.day} ${months[booking.timestampOfBooking.month]} ${booking.timestampOfBooking.year} , ${booking.timestampOfBooking.hour} : ${booking.timestampOfBooking.minute}",
+                    style: Theme.of(context).textTheme.titleSmall),
               ],
             ),
           ),
@@ -87,11 +72,8 @@ class IndividualBookingDetails extends ConsumerWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 13.0),
                     child: Center(
-                      child: Text(
-                        booking.amenityName,
-                        style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w400, fontSize: 22),
-                      ),
+                      child: Text(booking.amenityName,
+                          style: Theme.of(context).textTheme.headlineMedium),
                     ),
                   ),
                   Padding(
@@ -100,14 +82,10 @@ class IndividualBookingDetails extends ConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Venue",
-                          style: GoogleFonts.poppins(
-                              fontSize: 16, fontWeight: FontWeight.w300),
-                        ),
+                        Text("Venue",
+                            style: Theme.of(context).textTheme.headlineSmall),
                         Text(booking.amenityVenue,
-                            style: GoogleFonts.poppins(
-                                fontSize: 16, fontWeight: FontWeight.w300)),
+                            style: Theme.of(context).textTheme.headlineSmall),
                       ],
                     ),
                   ),
@@ -117,14 +95,10 @@ class IndividualBookingDetails extends ConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Type",
-                          style: GoogleFonts.poppins(
-                              fontSize: 16, fontWeight: FontWeight.w300),
-                        ),
+                        Text("Type",
+                            style: Theme.of(context).textTheme.headlineSmall),
                         Text(booking.type.capitalize(),
-                            style: GoogleFonts.poppins(
-                                fontSize: 16, fontWeight: FontWeight.w300)),
+                            style: Theme.of(context).textTheme.headlineSmall),
                       ],
                     ),
                   )
@@ -133,10 +107,13 @@ class IndividualBookingDetails extends ConsumerWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top : 36.0),
+            padding: const EdgeInsets.only(top: 36.0),
             child: Text(
               "Present this QR to avail booking",
-              style: GoogleFonts.poppins(fontStyle: FontStyle.italic , fontWeight: FontWeight.w300 , fontSize: 13),
+              style: GoogleFonts.poppins(
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w300,
+                  fontSize: 13),
             ),
           ),
           Padding(

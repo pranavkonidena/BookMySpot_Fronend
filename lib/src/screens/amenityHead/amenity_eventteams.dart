@@ -78,7 +78,6 @@ class AmenityEventTeamsList extends ConsumerWidget {
                           data[index][0]["id"];
                           
                       context.go("/teamDetails${data[index][0]["id"]}");
-                      ref.refresh(teamdetailsProvider);
                     },
                     tileColor: Color.fromRGBO(217, 217, 217, 0.3),
                     title: Center(

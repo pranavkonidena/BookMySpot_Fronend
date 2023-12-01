@@ -1,7 +1,13 @@
 import 'dart:async';
 import 'package:book_my_spot_frontend/src/constants/snackbars/booking_snackbar.dart';
+import 'package:book_my_spot_frontend/src/constants/snackbars/deleteteam_snackbar.dart';
+import 'package:book_my_spot_frontend/src/constants/snackbars/fetchingteams_snackbar.dart';
 import 'package:book_my_spot_frontend/src/constants/snackbars/insufcred_snackbar.dart';
+import 'package:book_my_spot_frontend/src/constants/snackbars/invalidteamname_snackbar.dart';
 import 'package:book_my_spot_frontend/src/constants/snackbars/noslotselected_snackbar.dart';
+import 'package:book_my_spot_frontend/src/constants/snackbars/notadmin_snackbar.dart';
+import 'package:book_my_spot_frontend/src/constants/snackbars/removinguserfrmteam_snackbar.dart';
+import 'package:book_my_spot_frontend/src/constants/snackbars/teamcreation_snackbar.dart';
 import 'package:book_my_spot_frontend/src/constants/snackbars/teamleaving_snackbar.dart';
 import 'package:book_my_spot_frontend/src/constants/snackbars/unknownerror_snackbar.dart';
 import 'package:book_my_spot_frontend/src/routes/router_config.dart';
@@ -43,9 +49,7 @@ class ErrorManager {
             break;
           }
         case ErrorTypes.unknown:
-          print("OUTSIDE FN CALL");
           if (context.mounted) {
-            print("INSIDE SNACKBAR CODE");
             ScaffoldMessenger.of(context).showSnackBar(unknownerrorSnackbar);
             break;
           }
@@ -54,7 +58,42 @@ class ErrorManager {
             ScaffoldMessenger.of(context).showSnackBar(teamleavingSnackbar);
             break;
           }
+        case ErrorTypes.fetchingTeams:
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(fetchingTeamsSnackbar);
+          }
+          break;
+        case ErrorTypes.notAdmin:
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(notAdminSnackbar);
+          }
+          break;
+        case ErrorTypes.deletingTeam:
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(deleteteamSnackbar);
+          }
+          break;
+        case ErrorTypes.removingUserfromTeam:
+          if (context.mounted) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(removeuserFromTeamSnackbar);
+          }
+          break;
+        case ErrorTypes.invalidTeamName:
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(invalidteamnameSnackbar);
+          }
+          break;
+        case ErrorTypes.teamCreation:
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(teamcreationSnackbar);
+          }
+          break;
         default:
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(unknownerrorSnackbar);
+          }
+          break;
       }
     });
   }

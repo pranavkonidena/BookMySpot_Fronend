@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
-import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:http/http.dart' as http;
 
 class User {
@@ -11,11 +9,10 @@ class User {
   late int enrollNumber;
   late String profilePic;
 
-  User(String token_given) {
-    this.token = token_given;
+  User(String tokenGiven) {
+    token = tokenGiven;
+    userFromJSON();
   }
-
-  
 
   _fetchUserData() async {
     dynamic response = await http.get(Uri.parse(using + "user?id=${token}"));
@@ -25,7 +22,7 @@ class User {
 
   userFromJSON() async {
     dynamic data = await _fetchUserData();
-    User u = User(getToken());
+    User u = User(token);
     u.branchName = data[0]["branch"];
     u.enrollNumber = data[0]["enroll_number"];
     u.name = data[0]["name"];

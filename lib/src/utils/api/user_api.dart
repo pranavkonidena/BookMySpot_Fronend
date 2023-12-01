@@ -32,8 +32,8 @@ class UserAPIEndpoint {
   }
 
   static fetchUserBookings(WidgetRef ref) async {
-    User user = ref.watch(userProvider);
-    String token = user.token;
+    User? user = ref.watch(userProvider);
+    String token = user!.token;
     final date = ref.watch(focusedProvider);
     var postBody = {
       "id": token,

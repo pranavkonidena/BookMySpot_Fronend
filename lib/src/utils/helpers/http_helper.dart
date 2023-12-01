@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:book_my_spot_frontend/src/utils/enums/request_types.dart';
-
 import '../enums/request_groups.dart';
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
 import 'package:http/http.dart' as http;
@@ -32,6 +30,8 @@ class HttpHelper {
         url = Uri.parse(using + "user/" + suffix);
         break;
       case RequestGroup.other:
+        url = Uri.parse(using + suffix);
+      case RequestGroup.full:
         url = Uri.parse(suffix);
       default:
         break;

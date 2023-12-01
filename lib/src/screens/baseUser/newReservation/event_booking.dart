@@ -1,8 +1,4 @@
-import 'package:book_my_spot_frontend/src/screens/amenityHead/amenityhead_home.dart';
-import 'package:book_my_spot_frontend/src/screens/amenityHead/events_list.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/home/home.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/make_reservation.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/teams/teams_page.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:book_my_spot_frontend/src/state/navbar/navbar_state.dart';
@@ -18,7 +14,6 @@ class EventBookingPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(finalTeamsProvider);
-    print(data);
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 12,

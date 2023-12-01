@@ -25,27 +25,22 @@ class MakeReservationPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: MediaQuery.of(context).size.height / 12,
-        elevation: 0,
-        backgroundColor: const Color.fromARGB(168, 35, 187, 233),
-        title: const Text(
-          "Make a Reservation",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 40,
-            fontFamily: 'Thasadith',
-          ),
-        ),
-        leading: 
-          IconButton(
+          toolbarHeight: MediaQuery.of(context).size.height / 12,
+          elevation: 0,
+          backgroundColor: const Color.fromARGB(168, 35, 187, 233),
+          title: Text("Make a Reservation",
+              style: Theme.of(context).textTheme.headlineLarge),
+          leading: IconButton(
               onPressed: () {
                 context.go("/");
                 ref.read(currentIndexProvider.notifier).state = 0;
               },
-              icon: Icon(Icons.arrow_back_ios_new , color: Colors.grey[700],))
-      ),
-      body: const Padding(
-        padding: EdgeInsets.only(left: 20.0, top: 18, right: 20),
+              icon: Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.grey[700],
+              ))),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 20.0, top: 18, right: 20),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,37 +49,22 @@ class MakeReservationPage extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    "Amenities",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 35,
-                      fontFamily: 'Thasadith',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
+                  Text("Amenities",
+                      style: Theme.of(context).textTheme.headlineLarge),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
-              SlotsListWidget(),
-              SizedBox(
+              const SlotsListWidget(),
+              const SizedBox(
                 height: 30,
               ),
-              Text(
-                "Events",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 35,
-                  fontFamily: 'Thasadith',
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              SizedBox(
+              Text("Events", style: Theme.of(context).textTheme.headlineLarge),
+              const SizedBox(
                 height: 30,
               ),
-              EventsLister(),
+              const EventsLister(),
             ],
           ),
         ),
@@ -172,17 +152,10 @@ class SlotsListWidget extends ConsumerWidget {
                         onPressed: () {
                           context.go("/new/${value[index]["id"]}");
                         },
-                        child: Text(
-                          "Book Now",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontFamily: 'Thasadith',
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFB8DCE7)),
+                        child: Text("Book Now",
+                            style: Theme.of(context).textTheme.displayMedium),
                       ),
                     )
                   ]));
@@ -214,7 +187,7 @@ class EventsLister extends ConsumerWidget {
       data: (value) {
         return value.length != 0
             ? ListView.separated(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 separatorBuilder: (BuildContext context, int index) {
                   return const SizedBox(
                     height: 30,
@@ -269,9 +242,9 @@ class EventsLister extends ConsumerWidget {
                                     value[index]["id"];
                                 ref.read(finalTeamsProvider.notifier).state =
                                     [];
-                                User user = ref.watch(userProvider);
+                                User? user = ref.watch(userProvider);
                                 var teamsasAdmin = await http.get(Uri.parse(
-                                    "${using}teamasadmin?id=${user.token}"));
+                                    "${using}teamasadmin?id=${user!.token}"));
                                 var teams = jsonDecode(teamsasAdmin.body);
                                 finalTeams.clear();
                                 for (int i = 0; i < teams.length; i++) {
@@ -284,17 +257,12 @@ class EventsLister extends ConsumerWidget {
                                     finalTeams;
                                 context.go("/event/book");
                               },
-                              child: Text(
-                                "Book",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontFamily: 'Thasadith',
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFFB8DCE7)),
+                              child: Text(
+                                "Book",
+                                style: Theme.of(context).textTheme.displayMedium
+                              ),
                             ),
                           ),
                         ],
@@ -302,15 +270,10 @@ class EventsLister extends ConsumerWidget {
                     ),
                   );
                 })
-            : const Center(
+            : Center(
                 child: Text(
                   "No Upcoming events found!",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Thasadith',
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: Theme.of(context).textTheme.displayMedium
                 ),
               );
       },
