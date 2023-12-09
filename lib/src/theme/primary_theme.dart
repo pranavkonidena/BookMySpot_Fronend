@@ -12,6 +12,8 @@ final ThemeData primaryTheme = ThemeData(
         fontWeight: FontWeight.w600),
     backgroundColor: const Color(0xff0E6BA8)
   ),
+  primaryColor: const Color(0xff0E6BA8),
+  secondaryHeaderColor: const Color.fromRGBO(247, 230, 196, 1),
   textTheme: TextTheme(
     titleLarge: GoogleFonts.poppins(
         color: Colors.black, fontSize: 29, fontWeight: FontWeight.w600),
@@ -48,6 +50,7 @@ final ThemeData primaryTheme = ThemeData(
         fontSize: 15,
         color: const Color(0xFF606C5D),
         fontWeight: FontWeight.w400),
+    labelLarge: GoogleFonts.ubuntu(color: Colors.red , fontSize: 20 , fontWeight: FontWeight.w400),
     displayMedium: GoogleFonts.thasadith(fontSize: 20)
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(

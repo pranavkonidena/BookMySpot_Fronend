@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
@@ -138,7 +139,10 @@ class EventsList extends ConsumerWidget {
     }, error: (error, stackTrace) {
       return const SizedBox();
     }, loading: () {
-      return Center(child: CircularProgressIndicator());
+      return const SpinKitFadingCircle(
+            color: Color(0xff0E6BA8),
+            size: 50.0,
+          );
     });
   }
 }

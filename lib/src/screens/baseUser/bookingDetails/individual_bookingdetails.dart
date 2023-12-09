@@ -22,7 +22,6 @@ class IndividualBookingDetails extends ConsumerWidget {
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 12,
         elevation: 0,
-        // leadingWidth: 220,
         leading: IconButton(
             onPressed: () {
               context.go("/");
@@ -37,28 +36,37 @@ class IndividualBookingDetails extends ConsumerWidget {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 18.0),
+            padding: const EdgeInsets.only(top:8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text("Time Of Slot",
-                    style: Theme.of(context).textTheme.titleMedium),
-                Text(
-                    "${booking!.timeOfSlot.day} ${months[booking.timeOfSlot.month]} ${booking.timeOfSlot.year} , ${booking.timeOfSlot.hour} : ${booking.timeOfSlot.minute} - ${booking.endOfSlot.hour} : ${booking.endOfSlot.minute}",
-                    style: Theme.of(context).textTheme.titleSmall),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 18.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text("Booked At",
-                    style: Theme.of(context).textTheme.titleMedium),
-                Text(
-                    "${booking!.timestampOfBooking.day} ${months[booking.timestampOfBooking.month]} ${booking.timestampOfBooking.year} , ${booking.timestampOfBooking.hour} : ${booking.timestampOfBooking.minute}",
-                    style: Theme.of(context).textTheme.titleSmall),
+                SizedBox(
+                  height: 60,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Time Of Slot",
+                          style: Theme.of(context).textTheme.titleMedium),
+                      Text("Booked At",
+                          style: Theme.of(context).textTheme.titleMedium),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 47,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                          "${booking!.timeOfSlot.day} ${months[booking.timeOfSlot.month]} ${booking.timeOfSlot.year} , ${booking.timeOfSlot.hour} : ${booking.timeOfSlot.minute} - ${booking.endOfSlot.hour} : ${booking.endOfSlot.minute}",
+                          style: Theme.of(context).textTheme.titleSmall),
+                      Text(
+                          "${booking!.timestampOfBooking.day} ${months[booking.timestampOfBooking.month]} ${booking.timestampOfBooking.year} , ${booking.timestampOfBooking.hour} : ${booking.timestampOfBooking.minute}",
+                          style: Theme.of(context).textTheme.titleSmall),
+                    ],
+                  ),
+                )
               ],
             ),
           ),
@@ -89,8 +97,8 @@ class IndividualBookingDetails extends ConsumerWidget {
                     ),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.only(left: 30.0, right: 30, top: 14),
+                    padding: const EdgeInsets.only(
+                        left: 30.0, right: 30, top: 14, bottom: 14),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -112,21 +120,22 @@ class IndividualBookingDetails extends ConsumerWidget {
               style: GoogleFonts.poppins(
                   fontStyle: FontStyle.italic,
                   fontWeight: FontWeight.w300,
-                  fontSize: 13),
+                  fontSize: 17),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 38.0),
+            padding: const EdgeInsets.only(top: 30.0),
             child: QrImageView(
               data: booking.id.toString(),
-              size: 300,
+              size: 370,
             ),
           ),
           Expanded(
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.all(38.0),
+                padding:
+                    const EdgeInsets.only(left: 38.0, right: 38, bottom: 20),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: ElevatedButton(
@@ -134,10 +143,6 @@ class IndividualBookingDetails extends ConsumerWidget {
                           backgroundColor:
                               const Color.fromRGBO(255, 97, 50, 1)),
                       onPressed: () async {
-                        // context.go("/");
-                        // await ref
-                        //     .read(userBookingsProvider.notifier)
-                        //     .cancelBooking(context, ref, int.parse(id));
                         showDialog(
                           context: context,
                           builder: (context) {

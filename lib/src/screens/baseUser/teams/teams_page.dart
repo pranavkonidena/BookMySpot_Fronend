@@ -1,5 +1,6 @@
 import 'package:book_my_spot_frontend/src/models/team.dart';
 import 'package:book_my_spot_frontend/src/state/teams/team_state.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,12 +42,10 @@ class TeamScreen extends ConsumerWidget {
                               userTeamsList[index].id;
                           context.go("/teamDetails${userTeamsList[index].id}");
                         },
-                        tileColor: const Color.fromRGBO(217, 217, 217, 0.3),
+                        tileColor: Theme.of(context).secondaryHeaderColor,
                         title: Center(
-                            child: Text(
-                          userTeamsList[index].name,
-                          style: Theme.of(context).textTheme.bodyLarge
-                        )),
+                            child: Text(userTeamsList[index].name,
+                                style: Theme.of(context).textTheme.bodyLarge)),
                       );
                     }),
               )));
@@ -60,7 +59,10 @@ class TeamScreen extends ConsumerWidget {
             return const SizedBox();
           }
         } else {
-          return const CircularProgressIndicator.adaptive();
+          return const SpinKitFadingCircle(
+            color: Color(0xff0E6BA8),
+            size: 50.0,
+          );
         }
       },
     );

@@ -4,6 +4,7 @@ import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:go_router/go_router.dart';
 import '../../../models/user.dart';
@@ -150,7 +151,10 @@ class SlotsListWidget extends ConsumerWidget {
       error: (error, stackTrace) {
         return const SizedBox();
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const SpinKitFadingCircle(
+            color: Color(0xff0E6BA8),
+            size: 50.0,
+          ),
     );
   }
 }

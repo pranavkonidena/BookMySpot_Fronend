@@ -3,6 +3,7 @@ import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
 import 'package:book_my_spot_frontend/src/utils/api/team_api.dart';
 import 'package:book_my_spot_frontend/src/utils/errors/team/team_errors.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/response_helper.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../models/user.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/check_slots.dart';
@@ -71,7 +72,6 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
             appBar: AppBar(
               toolbarHeight: MediaQuery.of(context).size.height / 12,
               elevation: 0,
-              backgroundColor: const Color.fromARGB(168, 35, 187, 233),
               leading: IconButton(
                   onPressed: () {
                     ref.refresh(currentStringProvider);
@@ -81,7 +81,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                   },
                   icon: Icon(
                     Icons.arrow_back_ios,
-                    color: Colors.grey[700],
+                    color: Theme.of(context).iconTheme.color,
                   )),
               title: Text(
                 "Add Participants",
@@ -549,7 +549,10 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
         return SizedBox();
       },
       loading: () {
-        return Center(child: const CircularProgressIndicator());
+        return const SpinKitFadingCircle(
+            color: Color(0xff0E6BA8),
+            size: 50.0,
+          );
       },
     );
   }

@@ -60,32 +60,11 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
               },
               icon: Icon(
                 Icons.arrow_back_ios,
-                color: Colors.grey[700],
+                color: Theme.of(context).iconTheme.color
               )),
           title: Text(widget.team!.name,
               style: Theme.of(context).textTheme.headlineLarge),
           actions: [
-            isAdmin
-                ? Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: IconButton(
-                        onPressed: () async {
-                          User? user = ref.watch(userProvider);
-                          try {
-                            await TeamAPIEndpoint.deleteTeam(
-                                widget.team!, user!.token);
-                            if (context.mounted) {
-                              context.go("/");
-                            }
-                          } on TeamException catch (e) {
-                            e.handleError(ref);
-                          }
-                        },
-                        icon: Icon(
-                          Icons.delete_forever_rounded,
-                          color: Colors.grey[600],
-                        )))
-                : const SizedBox(),
             TextButton(
                 onPressed: () async {
                   await showDialog(
@@ -122,12 +101,12 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
                     },
                   );
                 },
-                child: const Text("Leave")),
+                child: const Text("Leave" , style: TextStyle(color: Colors.black),)),
             TextButton(
                 onPressed: () {
                   context.go("/chat/${widget.team!.id}");
                 },
-                child: const Text("Chat"))
+                child: const Text("Chat" , style: TextStyle(color: Colors.black),))
           ],
         ),
         body: Column(children: [
@@ -165,6 +144,49 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
                     child: Image.network(widget.team!.admins[i].profilePic)),
               ),
             ),
+          Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await showAdaptiveDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog.adaptive(
+                          content: Text("Are you sure?"),
+                          actions: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  context.pop();
+                                },
+                                child: const Text("No")),
+                            ElevatedButton(
+                                onPressed: () async {
+                                  User? user = ref.watch(userProvider);
+                                  try {
+                                    await TeamAPIEndpoint.deleteTeam(
+                                        widget.team!, user!.token);
+                                    if (context.mounted) {
+                                      context.go("/");
+                                    }
+                                  } on TeamException catch (e) {
+                                    e.handleError(ref);
+                                  }
+                                },
+                                child: const Text("Yes"))
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                      side: const BorderSide(width: 2, color: Colors.red),
+                      backgroundColor: Colors.white10),
+                  child: Text("Delete this team",
+                      style: Theme.of(context).textTheme.labelLarge),
+                )),
+          ),
           const SizedBox(
             height: 15,
           ),
@@ -187,7 +209,7 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
                             },
                             icon: Icon(
                               Icons.add,
-                              color: Colors.grey[700],
+                              color: Theme.of(context).iconTheme.color
                             )),
                       )
                     : const SizedBox()

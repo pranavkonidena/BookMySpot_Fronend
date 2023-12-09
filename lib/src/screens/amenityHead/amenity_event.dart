@@ -6,7 +6,6 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import '../../constants/constants.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AmenityEventAdd extends ConsumerStatefulWidget {
@@ -52,13 +51,9 @@ class _AmenityEventAddState extends ConsumerState<AmenityEventAdd> {
                   onPressed: () async {
                     if (_formKey.currentState!.saveAndValidate()) {
                       final formData = _formKey.currentState!.value;
-                      print(formData);
                       final eventName = formData['event_name'];
                       final startTime = formatDateTime(formData['start_time']);
                       final endTime = formatDateTime(formData['end_time']);
-                      print(eventName);
-                      print(startTime);
-                      print(endTime);
                       var post_data = {
                         "event_name": eventName.toString(),
                         "token": StorageManager.getAdminToken().toString(),
@@ -75,7 +70,7 @@ class _AmenityEventAddState extends ConsumerState<AmenityEventAdd> {
                       }
                     }
                   },
-                  child: Text('Submit'),
+                  child: const Text('Submit'),
                 ),
               ],
             ),

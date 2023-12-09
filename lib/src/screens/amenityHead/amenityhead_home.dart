@@ -7,6 +7,7 @@ import 'package:book_my_spot_frontend/src/screens/baseUser/bookingDetails/indivi
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
@@ -44,7 +45,6 @@ class AmenityHeadHome extends ConsumerWidget {
         AppBar(
           toolbarHeight: MediaQuery.of(context).size.height / 12,
           elevation: 0,
-          backgroundColor: const Color.fromARGB(168, 35, 187, 233),
           leadingWidth: 220,
           title: const Text(
             "Add Event",
@@ -60,7 +60,6 @@ class AmenityHeadHome extends ConsumerWidget {
         AppBar(
           toolbarHeight: MediaQuery.of(context).size.height / 12,
           elevation: 0,
-          backgroundColor: const Color.fromARGB(168, 35, 187, 233),
           leadingWidth: 220,
           title: const Text(
             "Events",
@@ -76,7 +75,6 @@ class AmenityHeadHome extends ConsumerWidget {
         AppBar(
           toolbarHeight: MediaQuery.of(context).size.height / 12,
           elevation: 0,
-          backgroundColor: const Color.fromARGB(168, 35, 187, 233),
           leadingWidth: 220,
           title: const Text(
             "Profile Page",
@@ -103,7 +101,6 @@ class AmenityHeadHome extends ConsumerWidget {
               ? AppBar(
                   toolbarHeight: MediaQuery.of(context).size.height / 12,
                   elevation: 0,
-                  backgroundColor: const Color.fromARGB(168, 35, 187, 233),
                   leadingWidth: 220,
                   title: const Text(
                     "Admin Home",
@@ -279,7 +276,10 @@ class AmenityHeadHome extends ConsumerWidget {
         return const SizedBox();
       },
       loading: () {
-        return const CircularProgressIndicator.adaptive();
+       return const SpinKitFadingCircle(
+            color: Color(0xff0E6BA8),
+            size: 50.0,
+          );
       },
     );
   }
@@ -307,7 +307,7 @@ class _BottomNavWidgetState extends ConsumerState<BottomNavWidget> {
         type: BottomNavigationBarType.fixed,
         currentIndex: current_index,
         selectedItemColor: Color.fromRGBO(33, 42, 62, 1),
-        selectedFontSize: 0,
+        selectedFontSize: 12,
         unselectedItemColor: Color.fromRGBO(113, 111, 111, 1),
         onTap: (value) {
           ref.read(currentIndexHeadProvider.notifier).state = value;
@@ -318,14 +318,14 @@ class _BottomNavWidgetState extends ConsumerState<BottomNavWidget> {
                 Icons.home,
                 // color: Color.fromRGBO(113, 111, 111, 1),
               ),
-              label: ""),
+              label: "Home"),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.add_rounded,
               ),
-              label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.event), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "")
+              label: "New Event"),
+          BottomNavigationBarItem(icon: Icon(Icons.event), label: "Events"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile")
         ],
       ),
     );

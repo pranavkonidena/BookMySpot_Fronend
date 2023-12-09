@@ -51,7 +51,7 @@ class _HorizontalDatePickerState extends ConsumerState<HorizontalDatePicker> {
                       Text(
                         days[date.weekday].toString(),
                         style: Theme.of(context).textTheme.labelMedium,
-                      )
+                      ),
                     ],
                   ))),
         );

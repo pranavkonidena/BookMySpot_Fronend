@@ -18,14 +18,13 @@ class EventBookingPage extends ConsumerWidget {
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 12,
         elevation: 0,
-        backgroundColor: const Color.fromARGB(168, 35, 187, 233),
         leading: IconButton(
             onPressed: () {
               context.go("/");
             },
             icon: Icon(
               Icons.arrow_back_ios,
-              color: Colors.grey[700],
+              color: Theme.of(context).iconTheme.color,
             )),
         title: const Text(
           "Register",

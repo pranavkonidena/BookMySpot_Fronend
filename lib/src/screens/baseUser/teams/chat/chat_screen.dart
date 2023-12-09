@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:book_my_spot_frontend/src/models/user.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/teams/chat/chat_bubble.dart';
 import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -63,18 +64,17 @@ class _ChatPageState extends ConsumerState<ChatPage> {
         appBar: AppBar(
           toolbarHeight: MediaQuery.of(context).size.height / 12,
           elevation: 0,
-          backgroundColor: const Color.fromARGB(168, 35, 187, 233),
           leading: IconButton(
               onPressed: () {
                 context.go("/teamDetails${widget.id}");
               },
               icon: Icon(
                 Icons.arrow_back_ios,
-                color: Colors.grey[700],
+                color: Theme.of(context).iconTheme.color,
               )),
-          title: Text(
+          title: const Text(
             "Chat",
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.black,
               fontSize: 35,
               fontFamily: 'Thasadith',
@@ -115,15 +115,17 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                               isCurrentUser:
                                   chats[index]["sender"] == user!.name,
                               sender: chats[index]["sender"],
-                              timeStamp: DateTime.parse(chats[index]["timestamp"]));
+                              timeStamp:
+                                  DateTime.parse(chats[index]["timestamp"]));
                         },
                       ),
                     ),
                   ),
                 );
               } else {
-                return Center(
-                  child: CircularProgressIndicator.adaptive(),
+                return const SpinKitFadingCircle(
+                  color: Color(0xff0E6BA8),
+                  size: 50.0,
                 );
               }
             },
@@ -132,13 +134,18 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             padding: const EdgeInsets.only(bottom: 48.0, left: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Flexible(
                   child: TextFormField(
                     controller: _controller,
-                    decoration:
-                        const InputDecoration(labelText: 'Send a message'),
+                    decoration: InputDecoration(
+                        labelText: "Send Message",
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                          
+                        ),)
                   ),
                 ),
                 IconButton(
@@ -146,7 +153,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                   tooltip: 'Send message',
                   icon: const Icon(
                     Icons.send,
-                    size: 15,
+                    size: 25,
                   ),
                 ), // This trailing
               ],

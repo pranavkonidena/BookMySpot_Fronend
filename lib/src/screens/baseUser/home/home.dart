@@ -109,10 +109,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               children: [
                 Padding(
                   padding:
-                      const EdgeInsets.only(left: 20.0, top: 28, right: 20),
+                      const EdgeInsets.only(left: 20.0, top: 10, right: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 50 , right: 50 , top: 10),
+                        child: Divider(
+                          color: Colors.black,
+                          thickness: 1,
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 60,
+                      ),
                       Text("Today's Bookings",
                           style: Theme.of(context).textTheme.headlineLarge),
                       SizedBox(

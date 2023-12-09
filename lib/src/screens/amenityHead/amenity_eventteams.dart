@@ -8,6 +8,7 @@ import 'package:book_my_spot_frontend/src/state/teams/team_state.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/response_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import '../../constants/constants.dart';
@@ -35,14 +36,13 @@ class AmenityEventTeamsList extends ConsumerWidget {
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 12,
         elevation: 0,
-        backgroundColor: const Color.fromARGB(168, 35, 187, 233),
         leading: IconButton(
             onPressed: () {
               context.go("/head");
             },
             icon: Icon(
               Icons.arrow_back_ios_new_outlined,
-              color: Colors.grey[700],
+              color: Theme.of(context).iconTheme.color,
             )),
         title: const Text(
           "Registered Teams",
@@ -55,8 +55,9 @@ class AmenityEventTeamsList extends ConsumerWidget {
       ),
       body: teams_details.when(
         loading: () {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return const SpinKitFadingCircle(
+            color: Color(0xff0E6BA8),
+            size: 50.0,
           );
         },
         error: (error, stackTrace) {

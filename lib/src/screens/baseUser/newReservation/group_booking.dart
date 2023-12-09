@@ -40,7 +40,7 @@ class GroupBookingFinalPage extends ConsumerWidget {
             },
             icon: Icon(
               Icons.arrow_back_ios,
-              color: Colors.grey[700],
+              color: Theme.of(context).iconTheme.color,
             )),
         backgroundColor: const Color.fromARGB(168, 35, 187, 233),
         title: const Text(

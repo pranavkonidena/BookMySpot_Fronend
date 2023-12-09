@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:book_my_spot_frontend/src/services/string_extension.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:book_my_spot_frontend/src/models/booking.dart';
@@ -18,55 +17,53 @@ class GroupBookingDetails extends ConsumerWidget {
     Booking? booking = ref
         .watch(userBookingsProvider.notifier)
         .getBookingDetails(int.parse(id));
-    print(booking!.groupMembers.toString());
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 12,
-        title: Text("Booking Details"),
+        title: const Text("Booking Details"),
         leading: IconButton(
             onPressed: () {
               context.go("/");
             },
             icon: Icon(
               Icons.arrow_back_ios_new,
-              color: Colors.grey.shade700,
+              color: Theme.of(context).iconTheme.color
             )),
       ),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 18.0),
+            padding: const EdgeInsets.only(top:8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
-                  "Time Of Slot",
-                  style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w400, fontSize: 18),
+                SizedBox(
+                  height: 60,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Time Of Slot",
+                          style: Theme.of(context).textTheme.titleMedium),
+                      Text("Booked At",
+                          style: Theme.of(context).textTheme.titleMedium),
+                    ],
+                  ),
                 ),
-                Text(
-                  "${booking!.timeOfSlot.day} ${months[booking.timeOfSlot.month]} ${booking.timeOfSlot.year} , ${booking.timeOfSlot.hour} : ${booking.timeOfSlot.minute} - ${booking.endOfSlot.hour} : ${booking.endOfSlot.minute}",
-                  style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w400, fontSize: 18),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 18.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  "Booked At",
-                  style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w400, fontSize: 18),
-                ),
-                Text(
-                  "${booking!.timestampOfBooking.day} ${months[booking.timestampOfBooking.month]} ${booking.timestampOfBooking.year} , ${booking.timestampOfBooking.hour} : ${booking.timestampOfBooking.minute}",
-                  style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w400, fontSize: 18),
-                ),
+                SizedBox(
+                  height: 47,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                          "${booking!.timeOfSlot.day} ${months[booking.timeOfSlot.month]} ${booking.timeOfSlot.year} , ${booking.timeOfSlot.hour} : ${booking.timeOfSlot.minute} - ${booking.endOfSlot.hour} : ${booking.endOfSlot.minute}",
+                          style: Theme.of(context).textTheme.titleSmall),
+                      Text(
+                          "${booking!.timestampOfBooking.day} ${months[booking.timestampOfBooking.month]} ${booking.timestampOfBooking.year} , ${booking.timestampOfBooking.hour} : ${booking.timestampOfBooking.minute}",
+                          style: Theme.of(context).textTheme.titleSmall),
+                    ],
+                  ),
+                )
               ],
             ),
           ),
@@ -185,33 +182,33 @@ class GroupBookingDetails extends ConsumerWidget {
                           },
                         );
                       },
-                      child: Text("View Members"))
+                      child: const Text("View Members"))
                 ],
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 36.0),
+            padding: const EdgeInsets.only(top: 14.0),
             child: Text(
               "Present this QR to avail booking",
               style: GoogleFonts.poppins(
                   fontStyle: FontStyle.italic,
                   fontWeight: FontWeight.w300,
-                  fontSize: 13),
+                  fontSize: 17),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 18.0),
+            padding: const EdgeInsets.only(top: 5.0),
             child: QrImageView(
               data: booking.id.toString(),
-              size: 300,
+              size: 370,
             ),
           ),
           Expanded(
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.all(38.0),
+                padding: const EdgeInsets.only(left: 38.0 ,right: 38 , bottom: 20),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: ElevatedButton(

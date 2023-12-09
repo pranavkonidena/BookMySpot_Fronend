@@ -1,9 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/state/bookings/booking_state.dart';
+import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:book_my_spot_frontend/src/models/booking.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:book_my_spot_frontend/src/services/string_extension.dart';
 
@@ -14,7 +16,7 @@ class BookingsListView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Future<List<Booking>?> bookings =
         ref.watch(userBookingsProvider.notifier).getUserBookings(context, ref);
-    
+
     Widget bookingsWidget;
     return FutureBuilder(
       future: bookings,
@@ -41,91 +43,100 @@ class BookingsListView extends ConsumerWidget {
               shrinkWrap: true,
               itemCount: bookings.length,
               itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    ref.read(groupidProvider.notifier).state =
-                        bookings[index].id;
-                    ref.read(dataIndexProvider.notifier).state =
-                        bookings[index].id;
-                    if (bookings[index].type == "individual") {
-                      context.go("/booking/individual/${bookings[index].id}");
-                    } else {
-                      context.go("/booking/group/${bookings[index].id}");
-                    }
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 130,
-                    color: const Color.fromRGBO(247, 230, 196, 1),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.network(
-                                  "https://github-production-user-asset-6210df.s3.amazonaws.com/122373207/275466089-4e5a891c-8afd-4e9b-a0da-04ff0c39687c.png",
-                                  height: 30),
-                            )
-                          ],
-                        ),
-                        const SizedBox(width: 20,),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AutoSizeText(
-                                bookings[index].amenityName,
-                                style: Theme.of(context).textTheme.bodyLarge,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              AutoSizeText(
-                                "${bookings[index].timeOfSlot.hour}:${bookings[index].timeOfSlot.minute}-${bookings[index].endOfSlot.hour}:${bookings[index].endOfSlot.minute}",
-                                style: Theme.of(context).textTheme.bodyMedium,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              AutoSizeText(
-                                bookings[index].amenityVenue,
-                                style: Theme.of(context).textTheme.bodySmall,
-                                overflow: TextOverflow.ellipsis,
-                                minFontSize: 10,
-                              )
-                            ],
+                return Stack(alignment: Alignment.center, children: [
+                  InkWell(
+                    onTap: () {
+                      ref.read(groupidProvider.notifier).state =
+                          bookings[index].id;
+                      ref.read(dataIndexProvider.notifier).state =
+                          bookings[index].id;
+                      if (bookings[index].type == "individual") {
+                        context.go("/booking/individual/${bookings[index].id}");
+                      } else {
+                        context.go("/booking/group/${bookings[index].id}");
+                      }
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 130,
+                      color: Theme.of(context).secondaryHeaderColor,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(
+                            width: 20,
                           ),
-                        ),
-                        const VerticalDivider(
-                          color: Color(0xFF606C5D),
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: AutoSizeText(
-                                  bookings[index].type.toString().capitalize(),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AutoSizeText(
+                                  bookings[index].amenityName,
                                   style: Theme.of(context).textTheme.bodyLarge,
-                                  minFontSize: 15,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                              )
-                            ],
+                                AutoSizeText(
+                                  "${bookings[index].timeOfSlot.hour}:${bookings[index].timeOfSlot.minute}-${bookings[index].endOfSlot.hour}:${bookings[index].endOfSlot.minute}",
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                AutoSizeText(
+                                  bookings[index].amenityVenue,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  overflow: TextOverflow.ellipsis,
+                                  minFontSize: 10,
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                          // const VerticalDivider(
+
+                          //   color: Color(0xFF606C5D),
+                          // ),
+                          const Dash(
+                              direction: Axis.vertical,
+                              length: 130,
+                              dashLength: 15,
+                              dashColor: Colors.grey),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: AutoSizeText(
+                                    bookings[index].type.toString().capitalize(),
+                                    style: Theme.of(context).textTheme.bodyLarge,
+                                    minFontSize: 15,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                );
+                  Positioned(
+                      right: -5,
+                      child: Container(
+                        height: 25,
+                        width: 25,
+                        decoration: const BoxDecoration(
+                            color: Color.fromRGBO(234, 234, 234, 1), shape: BoxShape.circle),
+                      )),
+                ]);
               },
             );
           }
         } else {
-          bookingsWidget =
-              const Center(child: CircularProgressIndicator.adaptive());
+          bookingsWidget = const SpinKitFadingCircle(
+            color: Color(0xff0E6BA8),
+            size: 50.0,
+          );
         }
         return bookingsWidget;
       },

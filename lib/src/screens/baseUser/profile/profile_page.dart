@@ -2,6 +2,7 @@ import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
 import 'package:book_my_spot_frontend/src/utils/api/user_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../models/user.dart';
 import 'package:go_router/go_router.dart';
 
@@ -13,16 +14,18 @@ class ProfileScreen extends ConsumerWidget {
     User? user = ref.watch(userProvider);
 
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: MediaQuery.of(context).size.height / 12,
+        elevation: 0,
+        leading: IconButton(onPressed: (){context.go("/");}, icon: Icon(Icons.arrow_back_ios , color: Theme.of(context).iconTheme.color,)),
+        title: Text(
+          "Profile",
+          style: GoogleFonts.openSans(),
+        )),
         body: Column(children: [
       const SizedBox(
         height: 40,
       ),
-      Row(children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: IconButton(onPressed: (){context.go("/");}, icon: const Icon(Icons.arrow_back_ios)),
-        )
-      ],),
       Container(
         clipBehavior: Clip.antiAlias,
         decoration: const BoxDecoration(

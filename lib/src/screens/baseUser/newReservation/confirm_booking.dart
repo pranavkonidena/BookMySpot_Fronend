@@ -3,6 +3,7 @@ import 'package:book_my_spot_frontend/src/state/navbar/navbar_state.dart';
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
@@ -162,9 +163,10 @@ class ConfirmBooking extends ConsumerWidget {
         future: fetchData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-                child:
-                    CircularProgressIndicator()); // Show a loading indicator.
+           return const SpinKitFadingCircle(
+            color: Color(0xff0E6BA8),
+            size: 50.0,
+          );// Show a loading indicator.
           } else if (snapshot.hasError) {
             return Text("Error: ${snapshot.error}");
           } else {

@@ -36,12 +36,12 @@ class ChatBubble extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(12),
             child: SizedBox(
-              width: 130,
+              width: 0.7*MediaQuery.of(context).size.width,
               child: Column(
                 children: [
                   Align(
                     alignment: Alignment.topLeft,
-                    child: Text(sender , style: TextStyle(fontSize: 10),)),
+                    child: Text(sender , style: const TextStyle(fontSize: 10),)),
                   Text(
                     text,
                   ),
