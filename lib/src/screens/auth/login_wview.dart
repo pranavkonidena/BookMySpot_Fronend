@@ -18,22 +18,22 @@ class WebViewLogin extends ConsumerStatefulWidget {
 }
 
 class _WebViewLoginState extends ConsumerState<WebViewLogin> {
-  // @override
-  // initState() {
-  //   ref.refresh(authTokenProvider);
-  //   ref.refresh(uriProvider);
-  //   super.initState();
-  // }
+  @override
+  initState() {
+    ref.refresh(authTokenProvider);
+    ref.refresh(uriProvider);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final uri = ref.watch(uriProvider);
     AsyncValue<Response?> response = ref.watch(authTokenProvider);
-    response.whenData((response) {
+    response.whenData((response) async {
       if (response == null) {
       } else {
         try {
-          UserAPIEndpoint.userLogin(response);
+          await UserAPIEndpoint.userLogin(response, ref);
           Future.microtask(() => context.go("/"));
         } on AuthException catch (e) {
           e.errorHandler(ref);

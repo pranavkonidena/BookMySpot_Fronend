@@ -10,7 +10,7 @@ final ThemeData primaryTheme = ThemeData(
         color: const Color.fromRGBO(37, 42, 52, 1),
         fontSize: 30,
         fontWeight: FontWeight.w600),
-    backgroundColor: Color(0xff06BCC1),
+    backgroundColor: const Color(0xff0E6BA8)
   ),
   textTheme: TextTheme(
     titleLarge: GoogleFonts.poppins(

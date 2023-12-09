@@ -20,7 +20,7 @@ class BookingAPIEndpoint {
       throw UserException(ErrorTypes.noSlotSelected, "No slot selected");
     } else {
       var postData = {
-        "id_user": getToken().toString(),
+        "id_user": StorageManager.getToken().toString(),
         "date": "${date.year}-${date.month}-${date.day}",
         "amenity_id": data[0]["amenity_id"].toString(),
         "start_time": data[ref.read(indexProvider)]["start_time"].toString(),

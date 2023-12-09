@@ -28,9 +28,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   void initState() {
-    String token = getToken();
+    String token = StorageManager.getToken().toString();
     if (token == "null") {
       context.go("/login");
+    } else if (StorageManager.getAdminToken().toString() != "null") {
+      context.go("/head");
     }
     super.initState();
   }
@@ -75,7 +77,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     appBarWidgets.add(AppBar(
       toolbarHeight: MediaQuery.of(context).size.height / 12,
       elevation: 0,
-      backgroundColor: const Color.fromARGB(168, 35, 187, 233),
       leadingWidth: 220,
       title: Text(
         "Make a reservation",
@@ -97,61 +98,72 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ],
       title: Text("Teams", style: Theme.of(context).textTheme.headlineLarge),
     ));
-    
-    bodyWidgets.add(Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SizedBox(height: 70, child: HorizontalDatePicker()),
-        SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0, top: 28, right: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Today's Bookings",
-                        style: Theme.of(context).textTheme.headlineLarge),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 32,
-                    ),
-                    Visibility(
-                        visible: isCalendarOpen,
-                        child: TableCalendar(
-                          focusedDay: _selectedDay,
-                          firstDay: DateTime(2023, 10, 1),
-                          lastDay: DateTime.now().add(const Duration(days: 7)),
-                          selectedDayPredicate: (day) {
-                            return isSameDay(_selectedDay, day);
-                          },
-                          onDaySelected: (selectedDay, focusedDay) {
-                            if (!isSameDay(_selectedDay, selectedDay)) {
-                              ref.read(focusedProvider.notifier).state =
-                                  focusedDay;
-                              setState(() {
-                                isCalendarOpen = false;
-                                _selectedDay = selectedDay;
-                              });
-                            }
-                          },
-                        )),
-                    const BookingsListView(),
-                  ],
+
+    bodyWidgets.add(
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(height: 70, child: HorizontalDatePicker()),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 20.0, top: 28, right: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Today's Bookings",
+                          style: Theme.of(context).textTheme.headlineLarge),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 32,
+                      ),
+                      Visibility(
+                          visible: isCalendarOpen,
+                          child: TableCalendar(
+                            focusedDay: _selectedDay,
+                            firstDay: DateTime(2023, 10, 1),
+                            lastDay:
+                                DateTime.now().add(const Duration(days: 7)),
+                            selectedDayPredicate: (day) {
+                              return isSameDay(_selectedDay, day);
+                            },
+                            onDaySelected: (selectedDay, focusedDay) {
+                              if (!isSameDay(_selectedDay, selectedDay)) {
+                                ref.read(focusedProvider.notifier).state =
+                                    focusedDay;
+                                setState(() {
+                                  isCalendarOpen = false;
+                                  _selectedDay = selectedDay;
+                                });
+                              }
+                            },
+                          )),
+                      const BookingsListView(),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
-    ));
+        ],
+      ),
+    );
     bodyWidgets.add(const MakeReservationPage());
     bodyWidgets.add(const TeamScreen());
-    
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(234, 234, 234, 1),
       appBar: appBarWidgets[currentIndex],
       body: bodyWidgets[currentIndex],
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color(0xff0E6BA8),
+        onPressed: () {
+          ref.read(currentIndexProvider.notifier).state = 1;
+        },
+        child: const Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: const BottomNavBar(),
     );
   }

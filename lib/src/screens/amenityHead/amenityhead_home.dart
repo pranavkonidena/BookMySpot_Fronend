@@ -13,8 +13,9 @@ import 'package:http/http.dart' as http;
 import '../../constants/constants.dart';
 
 final allBookingsProvider = FutureProvider<dynamic>((ref) async {
-  var response = await http
-      .get(Uri.parse(using + "amenity/getAllBookings?id=${getAdminToken()}"));
+  var token = StorageManager.getAdminToken();
+  var response =
+      await http.get(Uri.parse(using + "amenity/getAllBookings?id=${token}"));
   var data = jsonDecode(response.body);
   for (int i = 0; i < data.length; i++) {
     data[i]["time_of_slot"] = DateTime.parse(data[i]["time_of_slot"]);
@@ -89,7 +90,7 @@ class AmenityHeadHome extends ConsumerWidget {
       );
       return l;
     });
-    String admintoken = getAdminToken();
+    String admintoken = StorageManager.getAdminToken();
     if (admintoken == "null") {
       context.go("/login");
     }
@@ -116,7 +117,6 @@ class AmenityHeadHome extends ConsumerWidget {
               : ref.read(appBarProvider)[index - 1],
           body: index == 0
               ? SingleChildScrollView(
-                
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20.0, top: 15),
                     child: Column(
@@ -213,17 +213,33 @@ class AmenityHeadHome extends ConsumerWidget {
                                                             "Individual") {
                                                           print(value[index]
                                                               ["id"]);
+                                                          var deleteData = {
+                                                            "booking_id":
+                                                                value[index]
+                                                                        ["id"]
+                                                                    .toString()
+                                                          };
                                                           var response =
-                                                              await http.get(Uri
-                                                                  .parse(using +
-                                                                      "booking/individual/cancelSlot?booking_id=${value[index]["id"]}"));
+                                                              await http.delete(
+                                                                  Uri.parse(using +
+                                                                      "booking/individual/cancelSlot"),
+                                                                  body:
+                                                                      deleteData);
                                                           ref.refresh(
                                                               allBookingsProvider);
                                                         } else {
+                                                          var deleteData = {
+                                                            "booking_id":
+                                                                value[index]
+                                                                        ["id"]
+                                                                    .toString()
+                                                          };
                                                           var response =
-                                                              await http.get(Uri
-                                                                  .parse(using +
-                                                                      "booking/group/cancelSlot?booking_id=${value[index]["id"]}"));
+                                                              await http.delete(
+                                                                  Uri.parse(using +
+                                                                      "booking/group/cancelSlot"),
+                                                                  body:
+                                                                      deleteData);
                                                           ref.refresh(
                                                               allBookingsProvider);
                                                         }

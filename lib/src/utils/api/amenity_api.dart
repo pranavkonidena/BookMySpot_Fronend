@@ -18,7 +18,7 @@ class AmenityAPIEndpoint {
         RequestTypes.post, RequestGroup.amenity, "head/auth", authHeader);
 
     if (response.statusCode == 200) {
-      saveAdminToken(response.data);
+      StorageManager.saveAdminToken(response.data);
       Future.microtask(() => context.go("/head"));
     } else {
       throw AuthException("Invalid Credentials");

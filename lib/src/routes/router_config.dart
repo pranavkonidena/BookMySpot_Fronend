@@ -16,6 +16,7 @@ import 'package:book_my_spot_frontend/src/screens/baseUser/profile/profile_page.
 import 'package:book_my_spot_frontend/src/screens/baseUser/teams/teams_detail.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/teams/teams_page.dart';
 import 'package:book_my_spot_frontend/src/screens/splash/splash_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../screens/baseUser/home/home.dart';
 import '../screens/auth/login_wview.dart';
@@ -23,117 +24,396 @@ import '../screens/auth/login_wview.dart';
 final router = GoRouter(
     initialLocation: "/loadingscreen",
     errorBuilder: (context, state) {
-      return GoRouteNotFoundPage();
+      return const GoRouteNotFoundPage();
     },
     routes: [
       GoRoute(
         path: "/initial",
-        builder: (context, state) {
-          return InitialScreen();
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: const InitialScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
         },
       ),
       GoRoute(
-          name: "home", path: "/", builder: (context, state) => HomeScreen()),
+        name: "home",
+        path: "/",
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: const HomeScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
+        },
+      ),
       GoRoute(
-          name: "new", path: "/new", builder: (context, state) => MakeReservationPage()),
-      GoRoute(path: "/home", builder: (context, state) => HomeScreen()),
+        name: "new",
+        path: "/new",
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: const MakeReservationPage(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
+        },
+      ),
       GoRoute(
-          name: "login",
-          path: "/login",
-          builder: (context, state) {
-            return LoginScreen();
-          }),
+        path: "/home",
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: const HomeScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
+        },
+      ),
       GoRoute(
-          name: "webview",
-          path: "/webview",
-          builder: (context, state) => const WebViewLogin()),
+        name: "login",
+        path: "/login",
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: LoginScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
+        },
+      ),
       GoRoute(
-          name: "loading",
-          path: "/loading",
-          builder: (context, state) => const WebViewLogin()),
+        name: "webview",
+        path: "/webview",
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: const WebViewLogin(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
+        },
+      ),
       GoRoute(
-          path: "/new",
-          builder: (context, state) => const MakeReservationPage()),
-      GoRoute(path: "/team", builder: (context, state) => const TeamScreen()),
+        name: "loading",
+        path: "/loading",
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: const WebViewLogin(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
+        },
+      ),
       GoRoute(
-          path: "/profile", builder: (context, state) => const ProfileScreen()),
+        path: "/team",
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: const TeamScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
+        },
+      ),
+      GoRoute(
+        path: "/profile",
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: const ProfileScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
+        },
+      ),
       GoRoute(
         path: "/new/:id",
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final id = state.pathParameters["id"];
-          return ConfirmBooking(id);
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: ConfirmBooking(id),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
         },
       ),
       GoRoute(
         path: "/checkSlots",
-        builder: (context, state) {
-          return BookingPageFinal();
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: const BookingPageFinal(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
         },
       ),
       GoRoute(
         path: "/booking/individual/:id",
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final id = state.pathParameters["id"];
-          return IndividualBookingDetails(id.toString());
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: IndividualBookingDetails(id.toString()),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
         },
       ),
       GoRoute(
         path: "/booking/group/:id",
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final id = state.pathParameters["id"];
-          return GroupBookingDetails(id.toString());
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: GroupBookingDetails(id.toString()),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
         },
       ),
       GoRoute(
         path: "/head",
-        builder: (context, state) {
-          return AmenityHeadHome();
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: const AmenityHeadHome(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
         },
       ),
       GoRoute(
         path: "/grpcreate/:fallBack",
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final fallBack = '/' + state.pathParameters["fallBack"]!;
-
-          return GroupCreatePage(fallBack);
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: GroupCreatePage(fallBack),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
         },
       ),
       GoRoute(
         path: "/grpbooking",
-        builder: (context, state) {
-          return GroupBookingFinalPage();
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: const GroupBookingFinalPage(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
         },
       ),
       GoRoute(
         path: "/teamDetails:id",
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final id = state.pathParameters["id"];
-          return TeamDetails(id);
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: TeamDetails(id),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
         },
       ),
       GoRoute(
         path: "/event/book",
-        builder: (context, state) {
-          return EventBookingPage();
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: const EventBookingPage(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
         },
       ),
       GoRoute(
         path: "/head/event/teams",
-        builder: (context, state) {
-          return AmenityEventTeamsList();
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: const AmenityEventTeamsList(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
         },
       ),
       GoRoute(
         path: "/chat/:id",
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final id = state.pathParameters["id"];
-          return ChatPage(id.toString());
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: ChatPage(id.toString()),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
         },
       ),
       GoRoute(
         path: "/loadingscreen",
-        builder: (context, state) {
-          return LoadingScreen();
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 750),
+            child: const LoadingScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity:
+                    CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+                child: child,
+              );
+            },
+          );
         },
       ),
     ]);

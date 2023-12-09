@@ -1,7 +1,6 @@
 import 'package:book_my_spot_frontend/src/models/team.dart';
 import 'package:book_my_spot_frontend/src/models/user.dart';
 import 'package:book_my_spot_frontend/src/utils/api/team_api.dart';
-import 'package:book_my_spot_frontend/src/utils/api/user_api.dart';
 import 'package:book_my_spot_frontend/src/utils/errors/team/team_errors.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/response_helper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

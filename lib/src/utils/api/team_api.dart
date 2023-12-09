@@ -12,7 +12,7 @@ class TeamAPIEndpoint {
   TeamAPIEndpoint._();
 
   static fetchUserTeams() async {
-    var token = getToken();
+    var token = StorageManager.getToken();
     Response response = await HttpHelper.makeRequest(
         RequestTypes.get, RequestGroup.other, "team?id=$token");
     if (response.statusCode == 200) {
@@ -42,7 +42,7 @@ class TeamAPIEndpoint {
   }
 
   static leaveTeam(Team team) async {
-    String memberId = getToken();
+    String memberId = StorageManager.getToken();
     var postData = {
       "member_id": memberId,
       "team_id": team.id.toString(),
@@ -61,7 +61,7 @@ class TeamAPIEndpoint {
   static removeMember(Team team, String removedUser) async {
     var postData = {
       "team_id": team.id.toString(),
-      "id": getToken(),
+      "id": StorageManager.getToken(),
       "member_id": removedUser,
     };
     Response response = await HttpHelper.makeRequest(
@@ -77,7 +77,7 @@ class TeamAPIEndpoint {
     if (teamName == "") {
       throw TeamException(ErrorTypes.invalidTeamName);
     }
-    var postData = {"id": getToken(), "name": teamName};
+    var postData = {"id": StorageManager.getToken(), "name": teamName};
     Response response = await HttpHelper.makeRequest(
         RequestTypes.post, RequestGroup.team, "create", postData);
     if (response.statusCode == 200) {

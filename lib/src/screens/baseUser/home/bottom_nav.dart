@@ -13,13 +13,15 @@ class _BottomNavBarState extends ConsumerState<BottomNavBar> {
   Widget build(BuildContext context) {
     final currentIndex = ref.watch(currentIndexProvider);
     return BottomNavigationBar(
-      
       type: BottomNavigationBarType.fixed,
       currentIndex: currentIndex,
-      backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-      selectedIconTheme: Theme.of(context).bottomNavigationBarTheme.selectedIconTheme,
-      selectedFontSize: 0,
-      unselectedIconTheme: Theme.of(context).bottomNavigationBarTheme.unselectedIconTheme,
+      backgroundColor:
+          Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+      selectedIconTheme:
+          Theme.of(context).bottomNavigationBarTheme.selectedIconTheme,
+      selectedFontSize: 12,
+      unselectedIconTheme:
+          Theme.of(context).bottomNavigationBarTheme.unselectedIconTheme,
       onTap: (value) {
         ref.read(currentIndexProvider.notifier).state = value;
       },
@@ -28,9 +30,15 @@ class _BottomNavBarState extends ConsumerState<BottomNavBar> {
             icon: Icon(
               Icons.home,
             ),
+            label: "Home"),
+         BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              size: 0,
+              color: Colors.white,
+            ),
             label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.add), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.groups), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.groups), label: "Teams"),
       ],
     );
   }

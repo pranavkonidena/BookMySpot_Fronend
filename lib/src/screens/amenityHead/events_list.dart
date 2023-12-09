@@ -12,7 +12,7 @@ final selectedEventIDProvider = StateProvider<List<dynamic>>((ref) {
 });
 
 final eventsListProvider = FutureProvider<dynamic>((ref) async {
-  var token = getAdminToken().toString();
+  var token = StorageManager.getAdminToken().toString();
   var response = await http.get(Uri.parse(using + "event/getAll?id=${token}"));
   var data = jsonDecode(response.body);
   // value[index]["time_of_occourence_start"] =

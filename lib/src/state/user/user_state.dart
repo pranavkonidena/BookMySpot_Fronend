@@ -32,10 +32,10 @@ final allUsersProvider = StateNotifierProvider<UserNotifier, List<User>>((ref) {
 });
 
 final userFutureProvider = FutureProvider<User>((ref) async {
-  User u = User(getToken());
+  User u = User(StorageManager.getToken().toString());
   return await u.userFromJSON();
 });
 
 final userProvider = StateProvider<User>((ref) {
-  return User(getToken());
+  return User(StorageManager.getToken().toString());
 });

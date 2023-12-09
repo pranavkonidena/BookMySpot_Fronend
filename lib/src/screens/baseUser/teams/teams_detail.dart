@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:book_my_spot_frontend/src/models/team.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/teams/teams_page.dart';
-import 'package:book_my_spot_frontend/src/screens/splash/splash_screen.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:book_my_spot_frontend/src/state/teams/team_state.dart';
 import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
@@ -22,6 +21,7 @@ bool isAdmin = false;
 class TeamDetails extends ConsumerStatefulWidget {
   TeamDetails(this.id, {super.key});
   String? id;
+  Team? team;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _TeamDetailsState();
@@ -30,26 +30,29 @@ class TeamDetails extends ConsumerStatefulWidget {
 class _TeamDetailsState extends ConsumerState<TeamDetails> {
   @override
   void initState() {
-    // TODO: implement initState
+    isAdmin = false;
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Team? team =
+  void didChangeDependencies() {
+    widget.team =
         ref.watch(teamsProvider.notifier).getTeamDetails(int.parse(widget.id!));
-    print("DATA FETCHED!");
-    for (int i = 0; i < team!.admins.length; i++) {
-      if (team.admins[i].token == getToken()) {
+    for (int i = 0; i < widget.team!.admins.length; i++) {
+      if (widget.team!.admins[i].token ==
+          StorageManager.getToken().toString()) {
         isAdmin = true;
         break;
       }
     }
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: MediaQuery.of(context).size.height / 12,
           elevation: 0,
-          backgroundColor: const Color.fromARGB(168, 35, 187, 233),
           leading: IconButton(
               onPressed: () {
                 ref.refresh(teamIDProvider);
@@ -59,8 +62,8 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
                 Icons.arrow_back_ios,
                 color: Colors.grey[700],
               )),
-          title:
-              Text(team.name, style: Theme.of(context).textTheme.headlineLarge),
+          title: Text(widget.team!.name,
+              style: Theme.of(context).textTheme.headlineLarge),
           actions: [
             isAdmin
                 ? Padding(
@@ -69,7 +72,8 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
                         onPressed: () async {
                           User? user = ref.watch(userProvider);
                           try {
-                            await TeamAPIEndpoint.deleteTeam(team, user!.token);
+                            await TeamAPIEndpoint.deleteTeam(
+                                widget.team!, user!.token);
                             if (context.mounted) {
                               context.go("/");
                             }
@@ -98,7 +102,7 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
                           ElevatedButton(
                               onPressed: () async {
                                 try {
-                                  await TeamAPIEndpoint.leaveTeam(team);
+                                  await TeamAPIEndpoint.leaveTeam(widget.team!);
                                   if (context.mounted) {
                                     context.go("/");
                                   }
@@ -121,7 +125,7 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
                 child: const Text("Leave")),
             TextButton(
                 onPressed: () {
-                  context.go("/chat/${team.id}");
+                  context.go("/chat/${widget.team!.id}");
                 },
                 child: const Text("Chat"))
           ],
@@ -139,7 +143,7 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
           const SizedBox(
             height: 15,
           ),
-          for (int i = 0; i < team.admins.length; i++)
+          for (int i = 0; i < widget.team!.admins.length; i++)
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
@@ -147,7 +151,7 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
                   padding: const EdgeInsets.only(left: 18.0),
                   child: Row(
                     children: [
-                      Text(team.admins[i].name),
+                      Text(widget.team!.admins[i].name),
                     ],
                   ),
                 ),
@@ -158,7 +162,7 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
                     ),
                     height: 56,
                     width: 56,
-                    child: Image.network(team.admins[i].profilePic)),
+                    child: Image.network(widget.team!.admins[i].profilePic)),
               ),
             ),
           const SizedBox(
@@ -193,7 +197,7 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
           const SizedBox(
             height: 10,
           ),
-          for (int i = 0; i < team.members.length; i++)
+          for (int i = 0; i < widget.team!.members.length; i++)
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
@@ -204,7 +208,7 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
                     children: [
                       Expanded(
                         child: AutoSizeText(
-                          team.members[i].name,
+                          widget.team!.members[i].name,
                         ),
                       ),
                       isAdmin
@@ -212,8 +216,10 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
                               onPressed: () async {
                                 try {
                                   await TeamAPIEndpoint.removeMember(
-                                      team, team.members[i].token);
-                                  team.members.remove(team.members[i]);
+                                      widget.team!,
+                                      widget.team!.members[i].token);
+                                  widget.team!.members
+                                      .remove(widget.team!.members[i]);
                                   setState(() {});
                                 } on TeamException catch (e) {
                                   e.handleError(ref);
@@ -232,7 +238,7 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
                   ),
                   height: 56,
                   width: 56,
-                  child: Image.network(team.members[i].profilePic),
+                  child: Image.network(widget.team!.members[i].profilePic),
                 ),
               ),
             )

@@ -59,7 +59,7 @@ class EventBookingPage extends ConsumerWidget {
                             child: ListTile(
                               onTap: () async {
                                 var post_data = {
-                                  "id": getToken(),
+                                  "id": StorageManager.getToken().toString(),
                                   "team_id": data[index]["id"].toString(),
                                   "name": data[index]["name"].toString(),
                                   "event_id": ref

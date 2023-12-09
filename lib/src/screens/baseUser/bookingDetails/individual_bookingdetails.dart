@@ -22,7 +22,6 @@ class IndividualBookingDetails extends ConsumerWidget {
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 12,
         elevation: 0,
-        backgroundColor: const Color.fromARGB(168, 35, 187, 233),
         // leadingWidth: 220,
         leading: IconButton(
             onPressed: () {

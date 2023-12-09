@@ -63,7 +63,7 @@ class GroupBookingFinalPage extends ConsumerWidget {
                   grpMembers.add(id);
                 }
                 print(grpMembers);
-                grpMembers.add(getToken());
+                grpMembers.add(StorageManager.getToken().toString());
                 var grp_data = {
                   "name": grp_name,
                   "id": jsonEncode(grpMembers).toString(),

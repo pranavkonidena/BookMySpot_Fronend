@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:book_my_spot_frontend/src/services/string_extension.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:book_my_spot_frontend/src/models/booking.dart';
@@ -174,7 +175,7 @@ class GroupBookingDetails extends ConsumerWidget {
                                               ),
                                             ),
                                           ),
-                                          Text(booking.groupMembers[i].name)
+                                          Text(booking.groupMembers[i].name , style: Theme.of(context).textTheme.labelMedium,)
                                         ],
                                       )
                                   ],

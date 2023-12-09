@@ -12,7 +12,7 @@ class User {
   User(String tokenGiven) {
     token = tokenGiven;
   }
-
+  
   _fetchUserData() async {
     print("FETCH CALLED");
     dynamic response = await http.get(Uri.parse(using + "user?id=${token}"));
@@ -20,7 +20,7 @@ class User {
     return data;
   }
 
-  userFromJSON() async {
+  Future<User> userFromJSON() async {
     dynamic data = await _fetchUserData();
     User u = User(token);
     u.branchName = data[0]["branch"];

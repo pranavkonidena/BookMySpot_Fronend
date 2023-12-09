@@ -18,7 +18,7 @@ class _AmenityHeadProfileState extends ConsumerState<AmenityHeadProfile> {
       body: Center(
           child: ElevatedButton(
               onPressed: () {
-                deleteAdminToken();
+                StorageManager.deleteAdminToken();
                 context.go("/login");
               },
               child: Text("Logout"))),

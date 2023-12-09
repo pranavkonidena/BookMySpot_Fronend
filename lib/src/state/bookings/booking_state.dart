@@ -36,7 +36,7 @@ class BookingNotifier extends StateNotifier<List<Booking>> {
         e.errorHandler(ref);
       }
     } catch (e) {
-      print("Error handline!");
+      debugPrint("Error handling!");
     }
     return null;
   }

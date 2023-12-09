@@ -61,7 +61,7 @@ class _AmenityEventAddState extends ConsumerState<AmenityEventAdd> {
                       print(endTime);
                       var post_data = {
                         "event_name": eventName.toString(),
-                        "token": getAdminToken().toString(),
+                        "token": StorageManager.getAdminToken().toString(),
                         "time_start": startTime.toString(),
                         "time_end": endTime.toString(),
                       };

@@ -17,16 +17,18 @@ import '../enums/request_groups.dart';
 class UserAPIEndpoint {
   UserAPIEndpoint._();
 
-  static userLogin(Response response) {
+  static userLogin(Response response, WidgetRef ref) async {
     if (response.statusCode == 200) {
-      saveToken(response.data);
+      StorageManager.saveToken(response.data);
+      User user = await ref.watch(userFutureProvider.future);
+      ref.read(userProvider.notifier).state = user;
     } else {
       throw AuthException(response.data);
     }
   }
 
   static userLogout(BuildContext context, WidgetRef ref) {
-    deleteToken();
+    StorageManager.deleteToken();
     ref.watch(currentIndexProvider.notifier).state = 0;
     context.go("/login");
   }

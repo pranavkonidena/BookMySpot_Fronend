@@ -19,8 +19,8 @@ class _LoadingScreenState extends ConsumerState<LoadingScreen> {
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 2), () async {
-      String? token = getToken();
-      String? admintoken = getAdminToken();
+      String? token = StorageManager.getToken().toString();
+      String? admintoken = StorageManager.getAdminToken().toString();
       if (admintoken != "null") {
         context.go("/head");
       } else if (token != "null") {
@@ -36,7 +36,7 @@ class _LoadingScreenState extends ConsumerState<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(80, 207, 246, 1),
+      backgroundColor: const Color(0xff0E6BA8),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.max,
