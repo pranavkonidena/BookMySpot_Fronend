@@ -4,6 +4,7 @@ import 'package:book_my_spot_frontend/src/utils/enums/request_groups.dart';
 import 'package:book_my_spot_frontend/src/utils/enums/request_types.dart';
 import 'package:book_my_spot_frontend/src/utils/errors/amenity/amenity_exception.dart';
 import 'package:book_my_spot_frontend/src/utils/errors/auth/auth_errors.dart';
+import 'package:book_my_spot_frontend/src/utils/errors/user/user_errors.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/http_helper.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/response_helper.dart';
 import 'package:flutter/material.dart';
@@ -34,5 +35,33 @@ class AmenityAPIEndpoint {
     if (response.statusCode != 200) {
       throw AmenityException(ErrorTypes.eventCreation);
     }
+  }
+
+  static Future<Response> fetchAmenityBookigs() async {
+    var token = StorageManager.getAdminToken();
+    var response = await HttpHelper.makeRequest(
+        RequestTypes.get, RequestGroup.amenity, "getAllBookings?id=$token");
+    for (int i = 0; i < response.data.length; i++) {
+      response.data[i]["time_of_slot"] =
+          DateTime.parse(response.data[i]["time_of_slot"]);
+      response.data[i]["end_time"] = response.data[i]["time_of_slot"]
+          .add(Duration(minutes: response.data[i]["duration_of_booking"]));
+    }
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      throw UserException(
+          ErrorTypes.bookings, "Error while fetching amenity bookings");
+    }
+  }
+
+  static Future<void> revokeIndividualBooking(var deleteData) async {
+    await HttpHelper.makeRequest(
+        RequestTypes.delete, RequestGroup.booking, "individual/cancelSlot" , deleteData);
+  }
+
+  static Future<void> revokeGroupBooking(var deleteData) async {
+    await HttpHelper.makeRequest(
+        RequestTypes.delete, RequestGroup.booking, "group/cancelSlot" , deleteData);
   }
 }

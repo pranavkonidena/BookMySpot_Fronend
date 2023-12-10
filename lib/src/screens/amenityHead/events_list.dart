@@ -54,12 +54,7 @@ class EventsList extends ConsumerWidget {
                                   children: [
                                     Text(
                                       events[index].name,
-                                      style: const TextStyle(
-                                        color: Color(0xFF606C5D),
-                                        fontSize: 30,
-                                        fontFamily: 'Thasadith',
-                                        fontWeight: FontWeight.w400,
-                                      ),
+                                      style: Theme.of(context).textTheme.bodyLarge
                                     ),
                                     Row(
                                       children: [
@@ -67,33 +62,19 @@ class EventsList extends ConsumerWidget {
                                           events[index]
                                               .timeOfOccourenceStart
                                               .toString(),
-                                          style: const TextStyle(
-                                            color: Color(0xFF606C5D),
-                                            fontSize: 25,
-                                            fontFamily: 'Thasadith',
-                                            fontWeight: FontWeight.w400,
-                                          ),
+                                          style: Theme.of(context).textTheme.bodyMedium
                                         ),
-                                        const Text(
-                                          "  to  ",
-                                          style: TextStyle(
-                                            color: Color(0xFF606C5D),
-                                            fontSize: 25,
-                                            fontFamily: 'Thasadith',
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
+                                        Text("  to  ",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium),
                                         Text(
-                                          events[index]
-                                              .timeOfOccourenceEnd
-                                              .toString(),
-                                          style: const TextStyle(
-                                            color: Color(0xFF606C5D),
-                                            fontSize: 25,
-                                            fontFamily: 'Thasadith',
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
+                                            events[index]
+                                                .timeOfOccourenceEnd
+                                                .toString(),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium),
                                       ],
                                     )
                                   ],
@@ -103,18 +84,11 @@ class EventsList extends ConsumerWidget {
                           ),
                         );
                       })
-                  : const Row(
+                  : Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          "No events found",
-                          style: TextStyle(
-                            color: Color(0xFF606C5D),
-                            fontSize: 25,
-                            fontFamily: 'Thasadith',
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
+                        Text("No events found",
+                            style: Theme.of(context).textTheme.bodyMedium),
                       ],
                     ),
             ));

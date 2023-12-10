@@ -87,11 +87,12 @@ class EventBookingPage extends ConsumerWidget {
 
                                 print(post_data);
                               },
-                              tileColor: Color.fromRGBO(217, 217, 217, 0.3),
+                              tileColor:
+                                  const Color.fromRGBO(217, 217, 217, 0.3),
                               title: Center(
                                   child: Text(
                                 data[index]["name"],
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 35,
                                   fontFamily: 'Thasadith',
@@ -101,8 +102,8 @@ class EventBookingPage extends ConsumerWidget {
                           );
                         },
                       )
-                    : Text("Please create a new team to register")
-                : Text("Please create a new team to register!")
+                    : const Text("Please create a new team to register")
+                : const Text("Please create a new team to register!")
           ],
         ),
       ),

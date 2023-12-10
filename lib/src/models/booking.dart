@@ -25,7 +25,7 @@ class Booking {
     b.amenityVenue = data["amenity"]["venue"];
     b.endOfSlot =
         b.timeOfSlot.add(Duration(minutes: data["duration_of_booking"]));
-    if (b.type != "individual") {
+    if (b.type != "Individual") {
       b.groupName = data["group"]["name"];
       for (int i = 0; i < data["group"]["members"].length; i++) {
         String uid = data["group"]["members"][i].toString();

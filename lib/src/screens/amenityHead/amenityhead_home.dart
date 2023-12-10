@@ -1,28 +1,14 @@
-import 'dart:convert';
+import 'package:book_my_spot_frontend/src/models/booking.dart';
 import 'package:book_my_spot_frontend/src/screens/amenityHead/amenity_event.dart';
 import 'package:book_my_spot_frontend/src/screens/amenityHead/events_list.dart';
 import 'package:book_my_spot_frontend/src/screens/amenityHead/amenity_profile.dart';
+import 'package:book_my_spot_frontend/src/screens/loading/loading_widget.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
+import 'package:book_my_spot_frontend/src/state/amenityhead/amenityhead_state.dart';
+import 'package:book_my_spot_frontend/src/utils/api/amenity_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
-import '../../constants/constants.dart';
-
-final allBookingsProvider = FutureProvider<dynamic>((ref) async {
-  var token = StorageManager.getAdminToken();
-  var response =
-      await http.get(Uri.parse(using + "amenity/getAllBookings?id=${token}"));
-  var data = jsonDecode(response.body);
-  for (int i = 0; i < data.length; i++) {
-    data[i]["time_of_slot"] = DateTime.parse(data[i]["time_of_slot"]);
-    data[i]["end_time"] = data[i]["time_of_slot"]
-        .add(Duration(minutes: data[i]["duration_of_booking"]));
-  }
-  print(data);
-  return data;
-});
 
 class AmenityHeadHome extends ConsumerWidget {
   const AmenityHeadHome({super.key});
@@ -31,9 +17,9 @@ class AmenityHeadHome extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bodyWidgetProvider = Provider<List<Widget>>((ref) {
       List<Widget> l = [];
-      l.add(AmenityEventAdd());
-      l.add(EventsList());
-      l.add(AmenityHeadProfile());
+      l.add(const AmenityEventAdd());
+      l.add(const EventsList());
+      l.add(const AmenityHeadProfile());
       return l;
     });
     final appBarProvider = Provider<List<AppBar>>((ref) {
@@ -43,14 +29,8 @@ class AmenityHeadHome extends ConsumerWidget {
           toolbarHeight: MediaQuery.of(context).size.height / 12,
           elevation: 0,
           leadingWidth: 220,
-          title: const Text(
-            "Add Event",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 40,
-              fontFamily: 'Thasadith',
-            ),
-          ),
+          title: Text("Add Event",
+              style: Theme.of(context).textTheme.headlineLarge),
         ),
       );
       l.add(
@@ -58,14 +38,8 @@ class AmenityHeadHome extends ConsumerWidget {
           toolbarHeight: MediaQuery.of(context).size.height / 12,
           elevation: 0,
           leadingWidth: 220,
-          title: const Text(
-            "Events",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 40,
-              fontFamily: 'Thasadith',
-            ),
-          ),
+          title:
+              Text("Events", style: Theme.of(context).textTheme.headlineLarge),
         ),
       );
       l.add(
@@ -73,14 +47,8 @@ class AmenityHeadHome extends ConsumerWidget {
           toolbarHeight: MediaQuery.of(context).size.height / 12,
           elevation: 0,
           leadingWidth: 220,
-          title: const Text(
-            "Profile Page",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 40,
-              fontFamily: 'Thasadith',
-            ),
-          ),
+          title: Text("Profile Page",
+              style: Theme.of(context).textTheme.headlineLarge),
         ),
       );
       return l;
@@ -89,195 +57,154 @@ class AmenityHeadHome extends ConsumerWidget {
     if (admintoken == "null") {
       context.go("/login");
     }
-    final data = ref.watch(allBookingsProvider);
     final index = ref.watch(currentIndexHeadProvider);
-    return data.when(
-      data: (value) {
-        return Scaffold(
-          appBar: index == 0
-              ? AppBar(
-                  toolbarHeight: MediaQuery.of(context).size.height / 12,
-                  elevation: 0,
-                  leadingWidth: 220,
-                  title: const Text(
-                    "Admin Home",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 40,
-                      fontFamily: 'Thasadith',
-                    ),
-                  ),
-                )
-              : ref.read(appBarProvider)[index - 1],
-          body: index == 0
-              ? SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0, top: 15),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Upcoming Reservations",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 35,
-                              fontFamily: 'Thasadith',
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          value.length != 0
-                              ? ListView.separated(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return const SizedBox(
-                                      height: 30,
-                                    );
-                                  },
-                                  shrinkWrap: true,
-                                  itemCount: value.length,
-                                  itemBuilder: (context, index) {
-                                    return InkWell(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10, right: 18),
-                                        child: Container(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          height: 130,
-                                          color:
-                                              Theme.of(context).secondaryHeaderColor,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Column(
+    Future<List<Booking>> bookings =
+        ref.watch(amenityHeadProvider.notifier).fetchAmenityBookings();
+    return FutureBuilder(
+      future: bookings,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data != null) {
+            List<Booking>? bookings = snapshot.data;
+            return Scaffold(
+              appBar: index == 0
+                  ? AppBar(
+                      toolbarHeight: MediaQuery.of(context).size.height / 12,
+                      elevation: 0,
+                      leadingWidth: 220,
+                      title: Text("Admin Home",
+                          style: Theme.of(context).textTheme.headlineLarge),
+                    )
+                  : ref.read(appBarProvider)[index - 1],
+              body: index == 0
+                  ? SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20.0, top: 15),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Upcoming Reservations",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineLarge),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              bookings!.isNotEmpty
+                                  ? ListView.separated(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      separatorBuilder:
+                                          (BuildContext context, int index) {
+                                        return const SizedBox(
+                                          height: 30,
+                                        );
+                                      },
+                                      shrinkWrap: true,
+                                      itemCount: bookings.length,
+                                      itemBuilder: (context, index) {
+                                        return InkWell(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 10, right: 18),
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: 130,
+                                              color: Theme.of(context)
+                                                  .secondaryHeaderColor,
+                                              child: Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Image.network(
-                                                      "https://github-production-user-asset-6210df.s3.amazonaws.com/122373207/275466089-4e5a891c-8afd-4e9b-a0da-04ff0c39687c.png",
-                                                      height: 30)
-                                                ],
-                                              ),
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                    CrossAxisAlignment.center,
                                                 children: [
-                                                  Text(
-                                                    "${value[index]["time_of_slot"].hour}:${value[index]["time_of_slot"].minute}-${value[index]["end_time"].hour}:${value[index]["end_time"].minute}",
-                                                    style: const TextStyle(
-                                                      color: Color(0xFF606C5D),
-                                                      fontSize: 25,
-                                                      fontFamily: 'Thasadith',
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
+                                                  Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                          "${bookings[index].timeOfSlot.hour}:${bookings[index].timeOfSlot.minute}-${bookings[index].endOfSlot.hour}:${bookings[index].endOfSlot.minute}",
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodyMedium),
+                                                      Text(
+                                                          // ignore: unnecessary_string_interpolations
+                                                          "${bookings[index].type}",
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodyMedium)
+                                                    ],
                                                   ),
-                                                  Text(
-                                                    "${value[index]["type"]}",
-                                                    style: const TextStyle(
-                                                      color: Color(0xFF606C5D),
-                                                      fontSize: 25,
-                                                      fontFamily: 'Thasadith',
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  )
+                                                  const VerticalDivider(
+                                                    color: Color(0xFF606C5D),
+                                                  ),
+                                                  Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      ElevatedButton(
+                                                          style: ElevatedButton.styleFrom(
+                                                              backgroundColor:
+                                                                  Theme.of(
+                                                                          context)
+                                                                      .primaryColor),
+                                                          onPressed: () async {
+                                                            var deleteData = {
+                                                              "booking_id":
+                                                                  bookings[
+                                                                          index]
+                                                                      .id
+                                                                      .toString()
+                                                            };
+                                                            if (bookings[index]
+                                                                    .type ==
+                                                                "Individual") {
+                                                              await AmenityAPIEndpoint
+                                                                  .revokeIndividualBooking(
+                                                                      deleteData);
+                                                            } else {
+                                                              await AmenityAPIEndpoint
+                                                                  .revokeGroupBooking(
+                                                                      deleteData);
+                                                            }
+                                                          },
+                                                          child: const Text(
+                                                              "Revoke"))
+                                                    ],
+                                                  ),
                                                 ],
                                               ),
-                                              const VerticalDivider(
-                                                color: Color(0xFF606C5D),
-                                              ),
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  ElevatedButton(
-                                                    style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).primaryColor),
-                                                      onPressed: () async {
-                                                        if (value[index]
-                                                                ["type"] ==
-                                                            "Individual") {
-                                                          print(value[index]
-                                                              ["id"]);
-                                                          var deleteData = {
-                                                            "booking_id":
-                                                                value[index]
-                                                                        ["id"]
-                                                                    .toString()
-                                                          };
-                                                          var response =
-                                                              await http.delete(
-                                                                  Uri.parse(using +
-                                                                      "booking/individual/cancelSlot"),
-                                                                  body:
-                                                                      deleteData);
-                                                          ref.refresh(
-                                                              allBookingsProvider);
-                                                        } else {
-                                                          var deleteData = {
-                                                            "booking_id":
-                                                                value[index]
-                                                                        ["id"]
-                                                                    .toString()
-                                                          };
-                                                          var response =
-                                                              await http.delete(
-                                                                  Uri.parse(using +
-                                                                      "booking/group/cancelSlot"),
-                                                                  body:
-                                                                      deleteData);
-                                                          ref.refresh(
-                                                              allBookingsProvider);
-                                                        }
-                                                      },
-                                                      child: Text("Revoke"))
-                                                ],
-                                              ),
-                                            ],
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                )
-                              : const Text(
-                                  "No active booking in amenity",
-                                  style: TextStyle(
-                                    fontFamily: "Thasadith",
-                                    fontSize: 25,
-                                  ),
-                                )
-
-                          // ElevatedButton(
-                          //     onPressed: () {
-                          //       deleteAdminToken();
-                          //       context.go("/login");
-                          //     },
-                          //     child: Text("Logout"))
-                        ]),
-                  ),
-                )
-              : ref.read(bodyWidgetProvider)[index - 1],
-          bottomNavigationBar: BottomNavWidget(),
-        );
-      },
-      error: (error, stackTrace) {
-        return const SizedBox();
-      },
-      loading: () {
-       return const SpinKitFadingCircle(
-            color: Color(0xff0E6BA8),
-            size: 50.0,
-          );
+                                        );
+                                      },
+                                    )
+                                  : Text("No active booking in amenity",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium)
+                            ]),
+                      ),
+                    )
+                  : ref.read(bodyWidgetProvider)[index - 1],
+              bottomNavigationBar: const BottomNavWidget(),
+            );
+          } else {
+            return const LoadingWidget();
+          }
+        } else {
+          return const LoadingWidget();
+        }
       },
     );
   }
@@ -298,15 +225,15 @@ final currentIndexHeadProvider = StateProvider<int>((ref) {
 class _BottomNavWidgetState extends ConsumerState<BottomNavWidget> {
   @override
   Widget build(BuildContext context) {
-    final current_index = ref.watch(currentIndexHeadProvider);
+    final currentIndex = ref.watch(currentIndexHeadProvider);
     return Theme(
-      data: Theme.of(context).copyWith(canvasColor: Color(0xFFF6F1F1)),
+      data: Theme.of(context).copyWith(canvasColor: const Color(0xFFF6F1F1)),
       child: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: current_index,
-        selectedItemColor: Color.fromRGBO(33, 42, 62, 1),
+        currentIndex: currentIndex,
+        selectedItemColor: const Color.fromRGBO(33, 42, 62, 1),
         selectedFontSize: 12,
-        unselectedItemColor: Color.fromRGBO(113, 111, 111, 1),
+        unselectedItemColor: const Color.fromRGBO(113, 111, 111, 1),
         onTap: (value) {
           ref.read(currentIndexHeadProvider.notifier).state = value;
         },

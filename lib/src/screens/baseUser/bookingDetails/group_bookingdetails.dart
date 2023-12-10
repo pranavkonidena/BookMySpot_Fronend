@@ -8,6 +8,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import '../../../constants/constants.dart';
 import 'package:go_router/go_router.dart';
 
+// ignore: must_be_immutable
 class GroupBookingDetails extends ConsumerWidget {
   GroupBookingDetails(this.id, {super.key});
   String id;
@@ -25,15 +26,13 @@ class GroupBookingDetails extends ConsumerWidget {
             onPressed: () {
               context.go("/");
             },
-            icon: Icon(
-              Icons.arrow_back_ios_new,
-              color: Theme.of(context).iconTheme.color
-            )),
+            icon: Icon(Icons.arrow_back_ios_new,
+                color: Theme.of(context).iconTheme.color)),
       ),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top:8.0),
+            padding: const EdgeInsets.only(top: 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -59,7 +58,7 @@ class GroupBookingDetails extends ConsumerWidget {
                           "${booking!.timeOfSlot.day} ${months[booking.timeOfSlot.month]} ${booking.timeOfSlot.year} , ${booking.timeOfSlot.hour} : ${booking.timeOfSlot.minute} - ${booking.endOfSlot.hour} : ${booking.endOfSlot.minute}",
                           style: Theme.of(context).textTheme.titleSmall),
                       Text(
-                          "${booking!.timestampOfBooking.day} ${months[booking.timestampOfBooking.month]} ${booking.timestampOfBooking.year} , ${booking.timestampOfBooking.hour} : ${booking.timestampOfBooking.minute}",
+                          "${booking.timestampOfBooking.day} ${months[booking.timestampOfBooking.month]} ${booking.timestampOfBooking.year} , ${booking.timestampOfBooking.hour} : ${booking.timestampOfBooking.minute}",
                           style: Theme.of(context).textTheme.titleSmall),
                     ],
                   ),
@@ -145,7 +144,7 @@ class GroupBookingDetails extends ConsumerWidget {
                                     onPressed: () {
                                       context.pop();
                                     },
-                                    child: Text("Ok"))
+                                    child: const Text("Ok"))
                               ],
                               content: SingleChildScrollView(
                                 child: Column(
@@ -172,7 +171,12 @@ class GroupBookingDetails extends ConsumerWidget {
                                               ),
                                             ),
                                           ),
-                                          Text(booking.groupMembers[i].name , style: Theme.of(context).textTheme.labelMedium,)
+                                          Text(
+                                            booking.groupMembers[i].name,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelMedium,
+                                          )
                                         ],
                                       )
                                   ],
@@ -208,7 +212,8 @@ class GroupBookingDetails extends ConsumerWidget {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.only(left: 38.0 ,right: 38 , bottom: 20),
+                padding:
+                    const EdgeInsets.only(left: 38.0, right: 38, bottom: 20),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: ElevatedButton(

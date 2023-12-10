@@ -1,14 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/utils/api/amenity_api.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../services/storageManager.dart';
 import 'package:book_my_spot_frontend/src/utils/errors/auth/auth_errors.dart';
 
+// ignore: must_be_immutable
 class LoginScreen extends ConsumerStatefulWidget {
   LoginScreen({super.key});
 

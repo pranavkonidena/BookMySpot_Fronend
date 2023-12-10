@@ -25,13 +25,9 @@ class AmenityEventTeamsList extends ConsumerWidget {
                 Icons.arrow_back_ios_new_outlined,
                 color: Theme.of(context).iconTheme.color,
               )),
-          title: const Text(
+          title:  Text(
             "Registered Teams",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 40,
-              fontFamily: 'Thasadith',
-            ),
+            style: Theme.of(context).textTheme.headlineLarge
           ),
         ),
         body: event!.teams.isNotEmpty
@@ -134,11 +130,7 @@ class AmenityEventTeamsList extends ConsumerWidget {
                         title: Center(
                             child: Text(
                           event.teams[index].name,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 35,
-                            fontFamily: 'Thasadith',
-                          ),
+                          style: Theme.of(context).textTheme.headlineLarge
                         )),
                       );
                     },

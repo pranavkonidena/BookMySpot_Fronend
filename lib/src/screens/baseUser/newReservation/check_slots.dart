@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/confirm_booking.dart';
 import 'package:book_my_spot_frontend/src/state/navbar/navbar_state.dart';
 import 'package:book_my_spot_frontend/src/utils/api/booking_api.dart';
@@ -125,7 +127,7 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
                               ref.invalidate(timeProvider);
                               Future.microtask(() => context.go("/"));
                             } on UserException catch (e) {
-                              print(e.errorMessage());
+                              debugPrint(e.errorMessage());
                               e.errorHandler(ref);
                             }
                           },
@@ -209,12 +211,10 @@ class _BookingPageFinalState extends ConsumerState<BookingPageFinal> {
                         ref.refresh(timeProvider);
                         context.go("/");
                       },
-                      child: Text("Cancel")),
-                  data.length != 0
+                      child: const Text("Cancel")),
+                  data.isNotEmpty
                       ? ElevatedButton(
                           onPressed: () async {
-                            final date = ref.watch(selectedDateProvider);
-                            final data = ref.watch(slotsProviderAmenity);
                             if (ref.read(indexProvider) < 0) {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);

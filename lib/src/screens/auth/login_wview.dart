@@ -20,7 +20,9 @@ class WebViewLogin extends ConsumerStatefulWidget {
 class _WebViewLoginState extends ConsumerState<WebViewLogin> {
   @override
   initState() {
+    // ignore: unused_result
     ref.refresh(authTokenProvider);
+    // ignore: unused_result
     ref.refresh(uriProvider);
     super.initState();
   }
