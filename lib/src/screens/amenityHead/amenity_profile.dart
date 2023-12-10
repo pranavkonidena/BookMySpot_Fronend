@@ -16,12 +16,17 @@ class _AmenityHeadProfileState extends ConsumerState<AmenityHeadProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: ElevatedButton(
+          child: Column(
+        children: [
+          ElevatedButton(
               onPressed: () {
                 StorageManager.deleteAdminToken();
                 context.go("/login");
               },
-              child: const Text("Logout"))),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              child: const Text("Logout")),
+        ],
+      )),
     );
   }
 }

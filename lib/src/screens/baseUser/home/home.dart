@@ -1,5 +1,6 @@
 import 'package:book_my_spot_frontend/src/screens/baseUser/home/bookings_list.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/home/bottom_nav.dart';
+import 'package:book_my_spot_frontend/src/screens/baseUser/home/custompainter_bottomnav.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/home/horizontal_calendar.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/make_reservation.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/teams/teams_page.dart';
@@ -166,12 +167,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       backgroundColor: const Color.fromRGBO(234, 234, 234, 1),
       appBar: appBarWidgets[currentIndex],
       body: bodyWidgets[currentIndex],
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xff0E6BA8),
-        onPressed: () {
-          ref.read(currentIndexProvider.notifier).state = 1;
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: CustomPaint(
+        painter: CirclePainter(),
+        child: SizedBox(
+          height: 120,
+          child: FloatingActionButton(
+            backgroundColor: const Color(0xff0E6BA8),
+            elevation: 0,
+            onPressed: () {
+              ref.read(currentIndexProvider.notifier).state = 1;
+            },
+            child: const Icon(Icons.add),
+          ),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: const BottomNavBar(),

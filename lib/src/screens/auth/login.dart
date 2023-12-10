@@ -174,7 +174,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         onPressed: () async {
                           try {
                             await AmenityAPIEndpoint.amenityAuth(
-                                context, widget.email, widget.password);
+                                context,  ref, widget.email, widget.password);
                           } on AuthException catch (e) {
                             Future.microtask(() => e.errorHandler(ref));
                           }

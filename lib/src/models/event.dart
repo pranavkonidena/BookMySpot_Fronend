@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:book_my_spot_frontend/src/models/team.dart';
 import 'package:book_my_spot_frontend/src/state/teams/team_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

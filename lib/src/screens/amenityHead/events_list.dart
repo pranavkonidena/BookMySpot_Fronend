@@ -1,4 +1,5 @@
 import 'package:book_my_spot_frontend/src/models/event.dart';
+import 'package:book_my_spot_frontend/src/screens/loading/loading_widget.dart';
 import 'package:book_my_spot_frontend/src/state/events/events_state.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
@@ -26,15 +27,17 @@ class EventsList extends ConsumerWidget {
                 body: Padding(
               padding: const EdgeInsets.only(top: 30.0, left: 8, right: 8),
               child: events.isNotEmpty
-                  ? ListView.separated(
-                      physics: const NeverScrollableScrollPhysics(),
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const SizedBox(
-                          height: 30,
-                        );
-                      },
+                  ? GridView.builder(
                       shrinkWrap: true,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 1,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 5,
+                        mainAxisExtent: MediaQuery.of(context).size.height / 4,
+                      ),
                       itemCount: events.length,
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
@@ -42,45 +45,35 @@ class EventsList extends ConsumerWidget {
                                 events[index].teams;
                             context.go("/head/event/teams/${events[index].id}");
                           },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 130,
-                            color: const Color.fromRGBO(247, 230, 196, 1),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      events[index].name,
-                                      style: Theme.of(context).textTheme.bodyLarge
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          events[index]
-                                              .timeOfOccourenceStart
-                                              .toString(),
-                                          style: Theme.of(context).textTheme.bodyMedium
-                                        ),
-                                        Text("  to  ",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium),
-                                        Text(
-                                            events[index]
-                                                .timeOfOccourenceEnd
-                                                .toString(),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium),
-                                      ],
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
+                          child: Card(
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            shape: RoundedRectangleBorder(
+                                side: const BorderSide(color: Colors.black),
+                                borderRadius: BorderRadius.circular(20)),
+                            // color: Theme.of(context).secondaryHeaderColor,
+                            child: Column(children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(events[index].name),
+                              ),
+                              const Divider(
+                                thickness: 1,
+                                color: Colors.black,
+                              ),
+                              Text(
+                                  events[index]
+                                      .timeOfOccourenceStart
+                                      .toString(),
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium),
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Icon(Icons.arrow_downward),
+                              ),
+                              Text(events[index].timeOfOccourenceEnd.toString(),
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium),
+                            ]),
                           ),
                         );
                       })
@@ -99,10 +92,7 @@ class EventsList extends ConsumerWidget {
             );
           }
         } else {
-          return const SpinKitFadingCircle(
-            color: Color(0xff0E6BA8),
-            size: 50.0,
-          );
+          return const LoadingWidget();
         }
       },
     );

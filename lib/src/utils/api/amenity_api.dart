@@ -1,4 +1,6 @@
+import 'package:book_my_spot_frontend/src/models/moduser.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
+import 'package:book_my_spot_frontend/src/state/amenityhead/amenityhead_state.dart';
 import 'package:book_my_spot_frontend/src/utils/enums/error_types.dart';
 import 'package:book_my_spot_frontend/src/utils/enums/request_groups.dart';
 import 'package:book_my_spot_frontend/src/utils/enums/request_types.dart';
@@ -8,19 +10,23 @@ import 'package:book_my_spot_frontend/src/utils/errors/user/user_errors.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/http_helper.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/response_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class AmenityAPIEndpoint {
   AmenityAPIEndpoint._();
 
-  static Future<void> amenityAuth(
-      BuildContext context, String email, String password) async {
+  static Future<void> amenityAuth(BuildContext context, WidgetRef ref,
+      String email, String password) async {
     var authHeader = {"email": email, "password": password};
     Response response = await HttpHelper.makeRequest(
         RequestTypes.post, RequestGroup.amenity, "head/auth", authHeader);
 
     if (response.statusCode == 200) {
       StorageManager.saveAdminToken(response.data);
+      ModUser modUser = ModUser(response.data);
+      modUser.email = email;
+      ref.read(modUserProvider.notifier).state = modUser;
       Future.microtask(() => context.go("/head"));
     } else {
       throw AuthException("Invalid Credentials");
@@ -56,12 +62,12 @@ class AmenityAPIEndpoint {
   }
 
   static Future<void> revokeIndividualBooking(var deleteData) async {
-    await HttpHelper.makeRequest(
-        RequestTypes.delete, RequestGroup.booking, "individual/cancelSlot" , deleteData);
+    await HttpHelper.makeRequest(RequestTypes.delete, RequestGroup.booking,
+        "individual/cancelSlot", deleteData);
   }
 
   static Future<void> revokeGroupBooking(var deleteData) async {
-    await HttpHelper.makeRequest(
-        RequestTypes.delete, RequestGroup.booking, "group/cancelSlot" , deleteData);
+    await HttpHelper.makeRequest(RequestTypes.delete, RequestGroup.booking,
+        "group/cancelSlot", deleteData);
   }
 }

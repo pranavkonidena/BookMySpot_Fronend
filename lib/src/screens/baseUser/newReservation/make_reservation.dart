@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -152,9 +153,9 @@ class SlotsListWidget extends ConsumerWidget {
         return const SizedBox();
       },
       loading: () => const SpinKitFadingCircle(
-            color: Color(0xff0E6BA8),
-            size: 50.0,
-          ),
+        color: Color(0xff0E6BA8),
+        size: 50.0,
+      ),
     );
   }
 }
@@ -174,95 +175,131 @@ class EventsLister extends ConsumerWidget {
     return data.when(
       data: (value) {
         return value.length != 0
-            ? ListView.separated(
+            ? GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
-                separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(
-                    height: 30,
-                  );
-                },
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 1,
+                  crossAxisSpacing: 0,
+                  mainAxisSpacing: 5,
+                  mainAxisExtent: MediaQuery.of(context).size.height / 4,
+                ),
                 shrinkWrap: true,
                 itemCount: value.length,
                 itemBuilder: (context, index) {
                   return InkWell(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 130,
-                      color: const Color.fromRGBO(247, 230, 196, 1),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Wrap(children: [
-                                  Text(
-                                    value[index]["name"],
-                                    style: const TextStyle(
-                                      color: Color(0xFF606C5D),
-                                      fontSize: 25,
-                                      fontFamily: 'Thasadith',
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  )
-                                ]),
-                                Text(
-                                  "${DateTime.parse(value[index]["time_of_occourence_start"]).day} ${months[DateTime.parse(value[index]["time_of_occourence_start"]).month]} ${DateTime.parse(value[index]["time_of_occourence_start"]).year} - ${DateTime.parse(value[index]["time_of_occourence_end"]).day} ${months[DateTime.parse(value[index]["time_of_occourence_end"]).month]} ${DateTime.parse(value[index]["time_of_occourence_end"]).year} ",
-                                  style: const TextStyle(
-                                    color: Color(0xFF606C5D),
-                                    fontSize: 25,
-                                    fontFamily: 'Thasadith',
-                                    fontWeight: FontWeight.w400,
+                    child: FlipCard(
+                      direction: FlipDirection.HORIZONTAL,
+                      autoFlipDuration: const Duration(seconds: 5),
+                      front: Card(
+                          color: Theme.of(context).secondaryHeaderColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              side: const BorderSide(color: Colors.black)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(child: Text(value[index]["name"])),
+                          )),
+                      back: Card(
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20)),
+                            side: BorderSide(color: Colors.black)),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text(DateTime.parse(value[index]
+                                              ["time_of_occourence_start"])
+                                          .day
+                                          .toString()),
+                                      Text(months[DateTime.parse(value[index]
+                                              ["time_of_occourence_start"])
+                                          .month]!),
+                                      Text(DateTime.parse(value[index]
+                                              ["time_of_occourence_start"])
+                                          .year
+                                          .toString()),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const VerticalDivider(
-                            color: Color(0xFF606C5D),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                ref.read(selectedEventProvider.notifier).state =
-                                    value[index]["id"];
-                                ref.read(finalTeamsProvider.notifier).state =
-                                    [];
-                                User? user = ref.watch(userProvider);
-                                var teamsasAdmin = await http.get(Uri.parse(
-                                    "${using}teamasadmin?id=${user!.token}"));
-                                var teams = jsonDecode(teamsasAdmin.body);
-                                finalTeams.clear();
-                                for (int i = 0; i < teams.length; i++) {
-                                  if (!value[index]["team"]
-                                      .contains(teams[i]["id"])) {
-                                    finalTeams.add(teams[i]);
-                                  }
-                                }
-                                ref.read(finalTeamsProvider.notifier).state =
-                                    finalTeams;
-                                context.go("/event/book");
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFB8DCE7)),
-                              child: Text(
-                                "Book",
-                                style: Theme.of(context).textTheme.displayMedium
+                                  const Icon(Icons.arrow_right_outlined),
+                                  Column(
+                                    children: [
+                                      Text(DateTime.parse(value[index]
+                                              ["time_of_occourence_end"])
+                                          .day
+                                          .toString()),
+                                      Text(months[DateTime.parse(value[index]
+                                              ["time_of_occourence_end"])
+                                          .month]!),
+                                      Text(DateTime.parse(value[index]
+                                              ["time_of_occourence_end"])
+                                          .year
+                                          .toString()),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
-                        ],
+                            const SizedBox(
+                              height: 40,
+                            ),
+                            Expanded(
+                              child: InkWell(
+                                onTap: () async {
+                                  if (context.mounted) {
+                                    ref
+                                        .read(selectedEventProvider.notifier)
+                                        .state = value[index]["id"];
+                                    ref
+                                        .read(finalTeamsProvider.notifier)
+                                        .state = [];
+                                    User? user = ref.watch(userProvider);
+                                    var teamsasAdmin = await http.get(Uri.parse(
+                                        "${using}teamasadmin?id=${user!.token}"));
+                                    var teams = jsonDecode(teamsasAdmin.body);
+                                    finalTeams.clear();
+                                    for (int i = 0; i < teams.length; i++) {
+                                      if (!value[index]["team"]
+                                          .contains(teams[i]["id"])) {
+                                        finalTeams.add(teams[i]);
+                                      }
+                                    }
+                                    ref
+                                        .read(finalTeamsProvider.notifier)
+                                        .state = finalTeams;
+                                    Future.microtask(
+                                        () => context.go("/event/book"));
+                                  }
+                                },
+                                child: Container(
+                                  color: Theme.of(context).primaryColor,
+                                  child: Center(
+                                      child: Text(
+                                    "Book Now",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium,
+                                  )),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   );
                 })
             : Center(
-                child: Text(
-                  "No Upcoming events found!",
-                  style: Theme.of(context).textTheme.displayMedium
-                ),
+                child: Text("No Upcoming events found!",
+                    style: Theme.of(context).textTheme.displayMedium),
               );
       },
       error: (error, stackTrace) {

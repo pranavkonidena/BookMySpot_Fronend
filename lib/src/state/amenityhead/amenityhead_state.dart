@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:book_my_spot_frontend/src/models/booking.dart';
+import 'package:book_my_spot_frontend/src/models/moduser.dart';
 import 'package:book_my_spot_frontend/src/utils/api/amenity_api.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/response_helper.dart';
 import 'package:flutter/material.dart';
@@ -37,4 +38,8 @@ class AmenityHeadNotifier extends StateNotifier<List<Booking>> {
 final amenityHeadProvider =
     StateNotifierProvider<AmenityHeadNotifier, List<Booking>>((ref) {
   return AmenityHeadNotifier();
+});
+
+final modUserProvider = StateProvider<ModUser?>((ref) {
+  return null;
 });

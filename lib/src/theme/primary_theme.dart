@@ -54,7 +54,7 @@ final ThemeData primaryTheme = ThemeData(
     displayMedium: GoogleFonts.thasadith(fontSize: 20)
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: Color.fromRGBO(241, 239, 239, 1),
+    backgroundColor: Colors.white,
     selectedItemColor: Color.fromRGBO(33, 42, 62, 1),
     unselectedItemColor: Color.fromRGBO(113, 111, 111, 1),
   ),
