@@ -1,20 +1,13 @@
 import 'dart:convert';
-import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
+import 'package:book_my_spot_frontend/src/state/teams/team_state.dart';
 import 'package:book_my_spot_frontend/src/utils/api/team_api.dart';
 import 'package:book_my_spot_frontend/src/utils/errors/team/team_errors.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/response_helper.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
-import '../../../models/user.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/check_slots.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/teams/teams_detail.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/teams/teams_page.dart';
-import 'package:book_my_spot_frontend/src/services/providers.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
-import 'package:easy_search_bar/easy_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_storage/get_storage.dart';
 import '../../../constants/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:go_router/go_router.dart';
@@ -83,7 +76,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                     Icons.arrow_back_ios,
                     color: Theme.of(context).iconTheme.color,
                   )),
-              title: Text(
+              title: const Text(
                 "Add Participants",
                 style: TextStyle(
                   color: Colors.black,
@@ -118,6 +111,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                               .get(Uri.parse(using + "team/i?id=$id"));
                           var data = jsonDecode(response.body.toString());
                           var team_name = data[0]["name"];
+                          var team_id = data[0]["id"];
                           for (int i = 0;
                               i <
                                   ref
@@ -134,6 +128,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                               "name": team_name,
                               "member_id": member_id,
                               "admin": admin,
+                              "team_id": team_id.toString()
                             };
 
                             var response = await http.post(
@@ -143,6 +138,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                             print(data);
                           }
                           ref.refresh(groupselectedProvider);
+                          await ref.watch(teamsProvider.notifier).getTeams(ref);
                           context.go("/teamDetails$id");
                         } else if (widget.fallbackRoute.contains("/home")) {
                           TextEditingController _textFieldController =
@@ -193,7 +189,9 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                                 var admin = entry["admin"];
 
                                                 var post_data = {
-                                                  "id": StorageManager.getToken().toString(),
+                                                  "id":
+                                                      StorageManager.getToken()
+                                                          .toString(),
                                                   "team_id":
                                                       response.data.toString(),
                                                   "name":
@@ -201,7 +199,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                                   "member_id": member_id,
                                                   "admin": admin,
                                                 };
-
+                                                print(post_data);
                                                 var responses = await http.post(
                                                     Uri.parse(
                                                         using + "team/add"),
@@ -250,30 +248,33 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
             ),
             body: Column(
               children: [
-                TextField(
-                  decoration: const InputDecoration(
-                    labelText: "Search name",
-                    suffixIcon: Icon(Icons.search),
-                  ),
-                  onChanged: (value) {
-                    var all_players = ref.read(itemsProvider);
-                    List<Map> filtered_players = [];
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      labelText: "Search name",
+                      suffixIcon: Icon(Icons.search),
+                    ),
+                    onChanged: (value) {
+                      var all_players = ref.read(itemsProvider);
+                      List<Map> filtered_players = [];
 
-                    if (value.isEmpty) {
-                      filtered_players = all_players;
-                    } else {
-                      filtered_players = all_players
-                          .where((element) => element["name"]
-                              .toLowerCase()
-                              .contains(value.toLowerCase()))
-                          .toList();
-                    }
-                    ref.read(filtereditemsProvider.notifier).state =
-                        filtered_players;
-                  },
+                      if (value.isEmpty) {
+                        filtered_players = all_players;
+                      } else {
+                        filtered_players = all_players
+                            .where((element) => element["name"]
+                                .toLowerCase()
+                                .contains(value.toLowerCase()))
+                            .toList();
+                      }
+                      ref.read(filtereditemsProvider.notifier).state =
+                          filtered_players;
+                    },
+                  ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 10,
                 ),
                 Visibility(
                     visible: ref
@@ -307,8 +308,11 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                         height: 56,
                                         width: 56,
                                       ),
-                                      Text(ref.read(groupselectedProvider)[i]
-                                          ["name"])
+                                      Text(
+                                        ref.read(groupselectedProvider)[i]
+                                            ["name"],
+                                        overflow: TextOverflow.ellipsis,
+                                      )
                                     ],
                                   ),
                                 )
@@ -331,8 +335,11 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                           width: 56,
                                         ),
                                       ),
-                                      Text(ref.read(groupselectedProvider)[i]
-                                          ["name"])
+                                      Text(
+                                        ref.read(groupselectedProvider)[i]
+                                            ["name"],
+                                        overflow: TextOverflow.ellipsis,
+                                      )
                                     ],
                                   ),
                                 )
@@ -502,6 +509,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                 );
                               }
                             },
+                            
                             leading: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
@@ -532,8 +540,11 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                             ),
                             title: Row(
                               children: [
-                                Text(ref.watch(filtereditemsProvider)[index]
-                                    ["name"]),
+                                Text(
+                                  ref.watch(filtereditemsProvider)[index]
+                                      ["name"],
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ],
                             ),
                           ),
@@ -550,9 +561,9 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
       },
       loading: () {
         return const SpinKitFadingCircle(
-            color: Color(0xff0E6BA8),
-            size: 50.0,
-          );
+          color: Color(0xff0E6BA8),
+          size: 50.0,
+        );
       },
     );
   }

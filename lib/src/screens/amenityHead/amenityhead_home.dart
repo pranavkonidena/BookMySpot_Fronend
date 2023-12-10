@@ -1,14 +1,11 @@
 import 'dart:convert';
-
 import 'package:book_my_spot_frontend/src/screens/amenityHead/amenity_event.dart';
 import 'package:book_my_spot_frontend/src/screens/amenityHead/events_list.dart';
 import 'package:book_my_spot_frontend/src/screens/amenityHead/amenity_profile.dart';
-import 'package:book_my_spot_frontend/src/screens/baseUser/bookingDetails/individual_bookingdetails.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import '../../constants/constants.dart';
@@ -133,7 +130,7 @@ class AmenityHeadHome extends ConsumerWidget {
                           ),
                           value.length != 0
                               ? ListView.separated(
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   separatorBuilder:
                                       (BuildContext context, int index) {
                                     return const SizedBox(
@@ -152,7 +149,7 @@ class AmenityHeadHome extends ConsumerWidget {
                                               MediaQuery.of(context).size.width,
                                           height: 130,
                                           color:
-                                              Color.fromRGBO(247, 230, 196, 1),
+                                              Theme.of(context).secondaryHeaderColor,
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
@@ -204,6 +201,7 @@ class AmenityHeadHome extends ConsumerWidget {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   ElevatedButton(
+                                                    style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).primaryColor),
                                                       onPressed: () async {
                                                         if (value[index]
                                                                 ["type"] ==

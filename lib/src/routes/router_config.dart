@@ -362,12 +362,13 @@ final router = GoRouter(
         },
       ),
       GoRoute(
-        path: "/head/event/teams",
+        path: "/head/event/teams/:id",
         pageBuilder: (context, state) {
+          final id = state.pathParameters["id"];
           return CustomTransitionPage(
             key: state.pageKey,
             transitionDuration: const Duration(milliseconds: 750),
-            child: const AmenityEventTeamsList(),
+            child: AmenityEventTeamsList(int.parse(id!)),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               return FadeTransition(

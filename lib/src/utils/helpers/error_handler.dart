@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:book_my_spot_frontend/src/constants/snackbars/booking_snackbar.dart';
 import 'package:book_my_spot_frontend/src/constants/snackbars/deleteteam_snackbar.dart';
+import 'package:book_my_spot_frontend/src/constants/snackbars/eventcreation_snackbar.dart';
 import 'package:book_my_spot_frontend/src/constants/snackbars/fetchingteams_snackbar.dart';
 import 'package:book_my_spot_frontend/src/constants/snackbars/insufcred_snackbar.dart';
 import 'package:book_my_spot_frontend/src/constants/snackbars/invalidteamname_snackbar.dart';
@@ -87,6 +88,11 @@ class ErrorManager {
         case ErrorTypes.teamCreation:
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(teamcreationSnackbar);
+          }
+          break;
+        case ErrorTypes.eventCreation:
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(eventCreationSnackbar);
           }
           break;
         default:

@@ -48,7 +48,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height / 13,
+                  height: MediaQuery.of(context).size.height / 33,
+                ),
+                Center(
+                    child: Text(
+                  "For amenity admins",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                )),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 33,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 28.0),
@@ -124,7 +132,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       color: Color.fromRGBO(200, 227, 255, 1), thickness: 1),
                 ),
                 const SizedBox(
-                  height: 68,
+                  height: 14,
+                ),
+                Center(
+                    child: Text(
+                  "For students",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                )),
+                const SizedBox(
+                  height: 34,
                 ),
                 Center(
                   child: InkWell(
@@ -158,7 +174,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             backgroundColor: const Color(0xFF4898C6)),
                         onPressed: () async {
                           try {
-                            await AmenityAPIEndpoint.AmenityAuth(
+                            await AmenityAPIEndpoint.amenityAuth(
                                 context, widget.email, widget.password);
                           } on AuthException catch (e) {
                             Future.microtask(() => e.errorHandler(ref));

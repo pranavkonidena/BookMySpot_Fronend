@@ -34,7 +34,8 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
     super.initState();
   }
 
-  void didChangeDependencies() {
+  @override
+  void didChangeDependencies(){
     widget.team =
         ref.watch(teamsProvider.notifier).getTeamDetails(int.parse(widget.id!));
     for (int i = 0; i < widget.team!.admins.length; i++) {
@@ -49,6 +50,10 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
 
   @override
   Widget build(BuildContext context) {
+    if(widget.team == null){
+      widget.team =
+        ref.watch(teamsProvider.notifier).getTeamDetails(int.parse(widget.id!));
+    }
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: MediaQuery.of(context).size.height / 12,
@@ -182,7 +187,7 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
                   },
                   style: ElevatedButton.styleFrom(
                       side: const BorderSide(width: 2, color: Colors.red),
-                      backgroundColor: Colors.white10),
+                      backgroundColor: Colors.white),
                   child: Text("Delete this team",
                       style: Theme.of(context).textTheme.labelLarge),
                 )),

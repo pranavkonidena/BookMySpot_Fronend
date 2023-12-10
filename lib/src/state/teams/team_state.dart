@@ -41,6 +41,35 @@ class TeamNotifier extends StateNotifier<List<Team>> {
     }
   }
 
+  Future<Team?> fetchTeamFromServer(int teamId, WidgetRef ref) async {
+    try {
+      Response response = await TeamAPIEndpoint.fetchTeamFromServer(teamId);
+      Team team = Team();
+      team.id = response.data[0]["id"];
+      team.name = response.data[0]["name"];
+      List<User> members = [];
+      List<User> admins = [];
+      for (int j = 0; j < response.data[0]["members_id"].length; j++) {
+        String uid = response.data[0]["members_id"][j];
+        User user = User(uid);
+        user = await user.userFromJSON();
+        members.add(user);
+      }
+      for (int j = 0; j < response.data[0]["admin_id"].length; j++) {
+        String uid = response.data[0]["admin_id"][j];
+        User user = User(uid);
+        user = await user.userFromJSON();
+        admins.add(user);
+      }
+      team.members = members;
+      team.admins = admins;
+      return team;
+    } on TeamException catch (e) {
+      e.handleError(ref);
+      return null;
+    }
+  }
+
   Team? getTeamDetails(int id) {
     for (Team team in state) {
       if (team.id == id) {

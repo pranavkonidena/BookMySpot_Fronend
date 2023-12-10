@@ -17,7 +17,7 @@ import '../enums/request_groups.dart';
 class UserAPIEndpoint {
   UserAPIEndpoint._();
 
-  static userLogin(Response response, WidgetRef ref) async {
+  static Future<void> userLogin(Response response, WidgetRef ref) async {
     if (response.statusCode == 200) {
       StorageManager.saveToken(response.data);
       User user = await ref.watch(userFutureProvider.future);
@@ -27,13 +27,13 @@ class UserAPIEndpoint {
     }
   }
 
-  static userLogout(BuildContext context, WidgetRef ref) {
+  static void userLogout(BuildContext context, WidgetRef ref) {
     StorageManager.deleteToken();
     ref.watch(currentIndexProvider.notifier).state = 0;
     context.go("/login");
   }
 
-  static fetchUserBookings(WidgetRef ref) async {
+  static Future<Response> fetchUserBookings(WidgetRef ref) async {
     User? user = ref.watch(userProvider);
     String token = user!.token;
     final date = ref.watch(focusedProvider);
@@ -48,17 +48,7 @@ class UserAPIEndpoint {
       throw UserException(
           ErrorTypes.bookings, "Error while fetching bookings!");
     } else {
-      return response.data;
-    }
-  }
-
-  static fetchUserDetails(String uid) async {
-    Response response = await HttpHelper.makeRequest(
-        RequestTypes.get, RequestGroup.user, "?id=$uid");
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw UserException(ErrorTypes.unknown, "Error fetching user data!");
+      return response;
     }
   }
 }

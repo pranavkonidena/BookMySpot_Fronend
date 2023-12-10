@@ -37,7 +37,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   @override
   void initState() {
     channel =
-        WebSocketChannel.connect(Uri.parse("ws://${IP}/ws/chat/${widget.id}"));
+        WebSocketChannel.connect(Uri.parse("ws://${iP}/ws/chat/${widget.id}"));
     super.initState();
   }
 
@@ -138,15 +138,14 @@ class _ChatPageState extends ConsumerState<ChatPage> {
               children: [
                 Flexible(
                   child: TextFormField(
-                    controller: _controller,
-                    decoration: InputDecoration(
+                      controller: _controller,
+                      decoration: InputDecoration(
                         labelText: "Send Message",
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25.0),
-                          
-                        ),)
-                  ),
+                        ),
+                      )),
                 ),
                 IconButton(
                   onPressed: _sendMessage,

@@ -5,6 +5,7 @@ import 'package:book_my_spot_frontend/src/utils/enums/request_groups.dart';
 import 'package:book_my_spot_frontend/src/utils/enums/request_types.dart';
 import 'package:book_my_spot_frontend/src/utils/errors/user/user_errors.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/http_helper.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/response_helper.dart';
@@ -12,10 +13,9 @@ import 'package:book_my_spot_frontend/src/utils/helpers/response_helper.dart';
 class BookingAPIEndpoint {
   BookingAPIEndpoint._();
 
-  static makeBooking(WidgetRef ref) async {
+  static Future<Response> makeBooking(WidgetRef ref) async {
     final date = ref.watch(selectedDateProvider);
     final data = ref.watch(slotsProviderAmenity);
-    print(ref.watch(indexProvider));
     if (ref.watch(indexProvider) < 0) {
       throw UserException(ErrorTypes.noSlotSelected, "No slot selected");
     } else {
@@ -34,7 +34,7 @@ class BookingAPIEndpoint {
         ref.invalidate(durationProvider);
         ref.invalidate(selectedDateProvider);
         ref.invalidate(timeProvider);
-        print("Error thrown , insuff credits");
+        debugPrint("Error thrown , insuff credits");
         throw UserException(
             ErrorTypes.insufficientCredits, "Insufficient Credits");
       } else {
@@ -47,7 +47,7 @@ class BookingAPIEndpoint {
     }
   }
 
-  static cancelIndividualBooking(int bookingId) async {
+  static Future<void> cancelIndividualBooking(int bookingId) async {
     var deleteData = {"booking_id": bookingId.toString()};
     Response response = await HttpHelper.makeRequest(RequestTypes.delete,
         RequestGroup.booking, "individual/cancelSlot", deleteData);
@@ -56,22 +56,12 @@ class BookingAPIEndpoint {
     }
   }
 
-  static cancelGroupBooking(int bookingId) async {
+  static Future<void> cancelGroupBooking(int bookingId) async {
     var deleteData = {"booking_id": bookingId.toString()};
     Response response = await HttpHelper.makeRequest(RequestTypes.delete,
         RequestGroup.booking, "group/cancelSlot", deleteData);
     if (response.statusCode != 200) {
       throw UserException(ErrorTypes.unknown, "Unknown Error occoured!");
-    }
-  }
-
-  static fetchBooking(int bookingId) async {
-    Response response = await HttpHelper.makeRequest(
-        RequestTypes.get, RequestGroup.user, "getBooking?id=$bookingId");
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw UserException(ErrorTypes.bookings, "Error fetching bookings!");
     }
   }
 }

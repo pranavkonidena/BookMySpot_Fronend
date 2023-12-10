@@ -11,7 +11,7 @@ import 'package:book_my_spot_frontend/src/utils/helpers/response_helper.dart';
 class TeamAPIEndpoint {
   TeamAPIEndpoint._();
 
-  static fetchUserTeams() async {
+  static Future<Response> fetchUserTeams() async {
     var token = StorageManager.getToken();
     Response response = await HttpHelper.makeRequest(
         RequestTypes.get, RequestGroup.other, "team?id=$token");
@@ -22,7 +22,7 @@ class TeamAPIEndpoint {
     }
   }
 
-  static deleteTeam(Team team, String token) async {
+  static Future<Response> deleteTeam(Team team, String token) async {
     var postData = {
       "team_id": team.id.toString(),
       "id": token,
@@ -41,7 +41,7 @@ class TeamAPIEndpoint {
     }
   }
 
-  static leaveTeam(Team team) async {
+  static Future<Response> leaveTeam(Team team) async {
     String memberId = StorageManager.getToken();
     var postData = {
       "member_id": memberId,
@@ -58,7 +58,7 @@ class TeamAPIEndpoint {
     }
   }
 
-  static removeMember(Team team, String removedUser) async {
+  static Future<Response> removeMember(Team team, String removedUser) async {
     var postData = {
       "team_id": team.id.toString(),
       "id": StorageManager.getToken(),
@@ -73,7 +73,7 @@ class TeamAPIEndpoint {
     }
   }
 
-  static createTeam(String teamName) async {
+  static Future<Response> createTeam(String teamName) async {
     if (teamName == "") {
       throw TeamException(ErrorTypes.invalidTeamName);
     }
@@ -84,6 +84,16 @@ class TeamAPIEndpoint {
       return response;
     } else {
       throw TeamException(ErrorTypes.teamCreation);
+    }
+  }
+
+  static Future<Response> fetchTeamFromServer(int teamId) async {
+    Response response = await HttpHelper.makeRequest(
+        RequestTypes.get, RequestGroup.team, "i?id=$teamId");
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      throw TeamException(ErrorTypes.fetchingTeams);
     }
   }
 }

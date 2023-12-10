@@ -21,7 +21,7 @@ class _AmenityHeadProfileState extends ConsumerState<AmenityHeadProfile> {
                 StorageManager.deleteAdminToken();
                 context.go("/login");
               },
-              child: Text("Logout"))),
+              child: const Text("Logout"))),
     );
   }
 }

@@ -12,23 +12,23 @@ class User {
   User(String tokenGiven) {
     token = tokenGiven;
   }
-  
-  _fetchUserData() async {
-    print("FETCH CALLED");
-    dynamic response = await http.get(Uri.parse(using + "user?id=${token}"));
-    dynamic data = jsonDecode(response.body.toString());
+
+  Future<Map<String, dynamic>> _fetchUserData() async {
+    dynamic response = await http.get(Uri.parse("${using}user?id=$token"));
+    var data = jsonDecode(response.body.toString());
+    data = data[0];
     return data;
   }
 
   Future<User> userFromJSON() async {
     dynamic data = await _fetchUserData();
     User u = User(token);
-    u.branchName = data[0]["branch"];
-    u.enrollNumber = data[0]["enroll_number"];
-    u.name = data[0]["name"];
-    u.profilePic = data[0]["profile_pic"].contains("github")
-        ? data[0]["profile_pic"]
-        : "https://channeli.in" + data[0]["profile_pic"];
+    u.branchName = data["branch"];
+    u.enrollNumber = data["enroll_number"];
+    u.name = data["name"];
+    u.profilePic = data["profile_pic"].contains("github")
+        ? data["profile_pic"]
+        : "https://channeli.in${data["profile_pic"]}";
     return u;
   }
 }

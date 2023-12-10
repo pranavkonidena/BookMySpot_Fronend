@@ -10,5 +10,6 @@ enum ErrorTypes{
   notAdmin,
   removingUserfromTeam,
   invalidTeamName,
-  teamCreation
+  teamCreation,
+  eventCreation
 }

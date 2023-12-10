@@ -2,6 +2,7 @@ import 'package:book_my_spot_frontend/src/models/booking.dart';
 import 'package:book_my_spot_frontend/src/utils/api/booking_api.dart';
 import 'package:book_my_spot_frontend/src/utils/api/user_api.dart';
 import 'package:book_my_spot_frontend/src/utils/errors/user/user_errors.dart';
+import 'package:book_my_spot_frontend/src/utils/helpers/response_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:convert';
@@ -12,12 +13,13 @@ class BookingNotifier extends StateNotifier<List<Booking>> {
   Future<List<Booking>?> getUserBookings(
       BuildContext context, WidgetRef ref) async {
     try {
-      var data = await UserAPIEndpoint.fetchUserBookings(ref);
+      Response responseData = await UserAPIEndpoint.fetchUserBookings(ref);
+      var data = responseData.data;
       for (int i = 0; i < data.length; i++) {
         try {
           data[i] = jsonDecode(data[i].toString());
         } catch (e) {
-          print("ERROR");
+          debugPrint("ERROR");
         }
         data[i]["time_of_slot"] = DateTime.parse(data[i]["time_of_slot"]);
         data[i]["end_time"] = data[i]["time_of_slot"]
@@ -78,7 +80,6 @@ class BookingNotifier extends StateNotifier<List<Booking>> {
 
   Booking? getBookingDetails(int bookingID) {
     for (Booking booking in state) {
-      print(booking.timeOfSlot);
       if (booking.id == bookingID) {
         return booking;
       }
