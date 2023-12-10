@@ -153,7 +153,7 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
             padding: const EdgeInsets.all(18.0),
             child: SizedBox(
                 width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
+                child: isAdmin ? ElevatedButton(
                   onPressed: () async {
                     await showAdaptiveDialog(
                       context: context,
@@ -190,7 +190,8 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
                       backgroundColor: Colors.white),
                   child: Text("Delete this team",
                       style: Theme.of(context).textTheme.labelLarge),
-                )),
+                ) : const SizedBox()
+            ),
           ),
           const SizedBox(
             height: 15,
