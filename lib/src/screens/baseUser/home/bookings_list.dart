@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:book_my_spot_frontend/src/models/booking.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
-import 'package:book_my_spot_frontend/src/services/string_extension.dart';
 
 class BookingsListView extends ConsumerWidget {
   const BookingsListView({super.key});
@@ -50,7 +49,7 @@ class BookingsListView extends ConsumerWidget {
                           bookings[index].id;
                       ref.read(dataIndexProvider.notifier).state =
                           bookings[index].id;
-                      if (bookings[index].type == "individual") {
+                      if (bookings[index].type.toLowerCase() == "individual") {
                         context.go("/booking/individual/${bookings[index].id}");
                       } else {
                         context.go("/booking/group/${bookings[index].id}");
@@ -76,17 +75,20 @@ class BookingsListView extends ConsumerWidget {
                                 children: [
                                   AutoSizeText(
                                     bookings[index].amenityName,
-                                    style: Theme.of(context).textTheme.bodyLarge,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   AutoSizeText(
                                     "${bookings[index].timeOfSlot.hour}:${bookings[index].timeOfSlot.minute}-${bookings[index].endOfSlot.hour}:${bookings[index].endOfSlot.minute}",
-                                    style: Theme.of(context).textTheme.bodyMedium,
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   AutoSizeText(
                                     bookings[index].amenityVenue,
-                                    style: Theme.of(context).textTheme.bodySmall,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                     overflow: TextOverflow.ellipsis,
                                     minFontSize: 10,
                                   )
@@ -110,8 +112,9 @@ class BookingsListView extends ConsumerWidget {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: AutoSizeText(
-                                    bookings[index].type.toString().capitalize(),
-                                    style: Theme.of(context).textTheme.bodyLarge,
+                                    bookings[index].type.toString(),
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
                                     minFontSize: 15,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -129,7 +132,8 @@ class BookingsListView extends ConsumerWidget {
                         height: 25,
                         width: 25,
                         decoration: const BoxDecoration(
-                            color: Color.fromRGBO(234, 234, 234, 1), shape: BoxShape.circle),
+                            color: Color.fromRGBO(234, 234, 234, 1),
+                            shape: BoxShape.circle),
                       )),
                 ]);
               },

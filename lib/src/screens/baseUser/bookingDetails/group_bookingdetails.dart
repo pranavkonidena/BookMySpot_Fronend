@@ -1,4 +1,3 @@
-import 'package:book_my_spot_frontend/src/services/string_extension.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:book_my_spot_frontend/src/models/booking.dart';
 import 'package:book_my_spot_frontend/src/state/bookings/booking_state.dart';
@@ -110,7 +109,7 @@ class GroupBookingDetails extends ConsumerWidget {
                           style: GoogleFonts.poppins(
                               fontSize: 16, fontWeight: FontWeight.w300),
                         ),
-                        Text(booking.type.capitalize(),
+                        Text(booking.type,
                             style: GoogleFonts.poppins(
                                 fontSize: 16, fontWeight: FontWeight.w300)),
                       ],

@@ -1,7 +1,6 @@
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
 import 'package:book_my_spot_frontend/src/models/booking.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
-import 'package:book_my_spot_frontend/src/services/string_extension.dart';
 import 'package:book_my_spot_frontend/src/state/bookings/booking_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -104,7 +103,7 @@ class IndividualBookingDetails extends ConsumerWidget {
                       children: [
                         Text("Type",
                             style: Theme.of(context).textTheme.headlineSmall),
-                        Text(booking.type.capitalize(),
+                        Text(booking.type,
                             style: Theme.of(context).textTheme.headlineSmall),
                       ],
                     ),

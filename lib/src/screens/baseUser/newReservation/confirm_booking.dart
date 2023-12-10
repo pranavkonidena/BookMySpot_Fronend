@@ -7,10 +7,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 
-const List<DropdownMenuItem> slotDurations = [
-  DropdownMenuItem(child: Text('15')),
-  DropdownMenuItem(child: Text('30')),
-];
 
 const List<Widget> bookingTypes = <Widget>[
   Text(
@@ -142,13 +138,9 @@ class ConfirmBooking extends ConsumerWidget {
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 12,
         elevation: 0,
-        title: const Text(
+        title: Text(
           "Confirm Slot",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 40,
-            fontFamily: 'Thasadith',
-          ),
+          style: Theme.of(context).textTheme.headlineLarge
         ),
       ),
       body: FutureBuilder(
@@ -179,12 +171,7 @@ class ConfirmBooking extends ConsumerWidget {
                         children: [
                           Text(
                             data[0]["name"],
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 30,
-                              fontFamily: 'Thasadith',
-                              fontWeight: FontWeight.w400,
-                            ),
+                            style: Theme.of(context).textTheme.headlineLarge
                           ),
                         ],
                       ),
@@ -194,12 +181,7 @@ class ConfirmBooking extends ConsumerWidget {
                       children: [
                         Text(
                           data[0]["venue"],
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 30,
-                            fontFamily: 'Thasadith',
-                            fontWeight: FontWeight.w400,
-                          ),
+                          style: Theme.of(context).textTheme.headlineMedium
                         )
                       ],
                     ),

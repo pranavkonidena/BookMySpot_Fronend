@@ -29,7 +29,7 @@ class AmenityHeadHome extends ConsumerWidget {
           toolbarHeight: MediaQuery.of(context).size.height / 12,
           elevation: 0,
           leadingWidth: 220,
-          title: Text("Add Event",
+          title: Text("New Event",
               style: Theme.of(context).textTheme.headlineLarge),
         ),
       );
