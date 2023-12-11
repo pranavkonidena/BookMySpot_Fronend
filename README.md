@@ -61,13 +61,6 @@
   </ol>
 </details>
 
-### Built With
-
- <img src = "https://static.djangoproject.com/img/logos/django-logo-negative.svg" height = 40 width = 155>
- <img src = "https://storage.googleapis.com/cms-storage-bucket/847ae81f5430402216fd.svg" height = 40 width = 120>
- <img src = "https://omniport.readthedocs.io/en/latest/_images/op_wordmark.png" height = 40 width = 120>
- 
-
 <!-- GETTING STARTED -->
 ## Getting Started
 Please follow the instructions for setting up the frontend locally, Also go through the [Backend](https://github.com/pranavkonidena/Bookify_Backend) for instructions to create local databases and run the server
@@ -93,42 +86,54 @@ Flutter is required for setting up the frontend locally
 
 
 <!-- USAGE EXAMPLES -->
-## Usage and Features
+## Some Screens and Features
 This app is mainly divided into 2 sections:
 
 * For Students
 * For Amenity Heads
-
-
-<img src = "https://github.com/pranavkonidena/Bookify_Frontend/assets/122373207/67c8d1a1-29e4-454c-8d28-36a4f81a62f3" height = 350 width= 175>
-<br>
 <br>
 Amenity heads are the person's who manage all the things related to an amenity (eg Table Tennis Court) such as Adding new events, scheduling downtime for an amenity etc. They will also handle the booking and check whether these amenities will be available for booking or not. Amenity Heads have to login via their email and password whereas students can login using the Omniport OAuth2 by just tapping on the Channeli button.
 <br>
 <br>
+<img src = "https://github.com/pranavkonidena/Bookify_Frontend/assets/122373207/67c8d1a1-29e4-454c-8d28-36a4f81a62f3" height = 350 width= 175>
 <img src = "https://github.com/pranavkonidena/Bookify_Frontend/assets/122373207/5c9d0982-cca4-4c06-881c-d9c0e21057c9" height = 350 width= 175>
-<br>
-<br>
-After logging in , a student's home screen looks like this. Starting from the app bar , a student can access his/her profile by clicking on the display picture in the top right of the appbar. 
-<br>
-<br>
-
-<br>
-<br>
-A user can see his bookings for a range of one week in the future by using the scrolling widget and tapping on the required day. For eg, we can see one booking on 11th Dec , 2023. On clicking on any of the bookings, the user can view multiple details of the booking and has the option to cancel his/her booking also. <u>To redeem a booking , at the amenity the user must scan the QR displayed on this page</u>
-<br>
-<br>
+<img src = "https://github.com/pranavkonidena/Bookify_Frontend/assets/122373207/0e425f6e-b089-487c-8c3e-38c5f9489d12" height = 350 width= 175>
+<img src = "https://github.com/pranavkonidena/Bookify_Frontend/assets/122373207/58683db6-1746-4e11-a21d-0621fcfcac78" height = 350 width= 175>
+<img src = "https://github.com/pranavkonidena/Bookify_Frontend/assets/122373207/c5ccd0f1-b25a-4f66-a057-b39ba6db0c60" height = 350 width= 175>
 <img src = "https://github.com/pranavkonidena/Bookify_Frontend/assets/122373207/727110bb-a0df-4f25-8682-5c080bc3b9ed" height = 350 width= 175>
-<br>
-<br>
-This is the profile screen of a student , he/she can see their name , enrollment number , branch and an option to Log Out here.
-<br>
-<br>
-
+<img src = "https://github.com/pranavkonidena/Bookify_Frontend/assets/122373207/263cb540-5f41-49a7-bc79-df2a01445eee" height = 350 width= 175>
+<img src = "https://github.com/pranavkonidena/Bookify_Frontend/assets/122373207/b92b7a04-8188-423c-b662-f536ae7337f5" height = 350 width= 175>
+<img src = "https://github.com/pranavkonidena/Bookify_Frontend/assets/122373207/e7ecd4bd-419f-4064-87eb-9f9f303d4ee9" height = 350 width= 175>
+<img src = "https://github.com/pranavkonidena/Bookify_Frontend/assets/122373207/8907dfec-60d9-4912-9f09-0f95678a08d1" height = 350 width= 175>
 <br>
 <br>
 
 
+### Booking and Cancellation
+Users can reserve slots in student clubs and sports facilities based on their availability, and they can also cancel these reservations.
+<br>
+
+
+### Groups 
+Users can form groups and book for a slot collectively, and every group member will receive the booking details.
+<br>
+
+
+### Teams
+Users can create teams to provide events. The user who creates the team is assigned as the team admin of the team, and he can add further admins.
+<br>
+
+### Admin Dashboard
+The admin can see all the booking details of these amenities and can revoke them.
+<br>
+
+### Event Creation
+Team admin can create events and assign slots for booking of these events.
+<br>
+
+
+### Team Chat
+All the team members can also contact and chat with each other in a team.
 
 
 <!-- CONTRIBUTING -->
@@ -153,6 +158,12 @@ Pranav Konidena - [@pranavkonidena](https://instagram.com/pranavkonidena) - pran
 [https://github.com/pranavkonidena/Bookify_Frontend](https://github.com/pranavkonidena/Bookify_Frontend)
 
 
+## Built With
+
+ <img src = "https://static.djangoproject.com/img/logos/django-logo-negative.svg" height = 40 width = 120>
+ <img src = "https://storage.googleapis.com/cms-storage-bucket/847ae81f5430402216fd.svg" height = 40 width = 120>
+ <img src = "https://omniport.readthedocs.io/en/latest/_images/op_wordmark.png" height = 40 width = 120>
+ 
 
 
 <!-- ACKNOWLEDGMENTS -->
