@@ -7,7 +7,7 @@ name: Bookify CI
 
 on:
   push:
-    branches: [ "release" ]
+    branches: [ "main" ]
 
 jobs:
   build:
