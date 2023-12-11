@@ -21,7 +21,6 @@ final initialdataProvider = FutureProvider<String>((ref) async {
   Uri uri = ref.watch(uriProvider);
   if (!uri.toString().contains("channeli")) {
     var response = await http.get(uri);
-    print(response.statusCode);
     if (response.statusCode == 200) {
       String token = jsonDecode(response.body).toString();
       return token;

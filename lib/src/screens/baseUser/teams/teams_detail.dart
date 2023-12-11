@@ -1,7 +1,9 @@
+// ignore_for_file: unused_result
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:book_my_spot_frontend/src/models/team.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/teams/teams_page.dart';
-import 'package:book_my_spot_frontend/src/services/storageManager.dart';
+import 'package:book_my_spot_frontend/src/services/storage_manager.dart';
 import 'package:book_my_spot_frontend/src/state/teams/team_state.dart';
 import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
 import 'package:book_my_spot_frontend/src/utils/api/team_api.dart';
@@ -18,6 +20,7 @@ final teamidChatProvider = StateProvider<int>((ref) {
 
 bool isAdmin = false;
 
+// ignore: must_be_immutable
 class TeamDetails extends ConsumerStatefulWidget {
   TeamDetails(this.id, {super.key});
   String? id;
@@ -35,7 +38,7 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
   }
 
   @override
-  void didChangeDependencies(){
+  void didChangeDependencies() {
     widget.team =
         ref.watch(teamsProvider.notifier).getTeamDetails(int.parse(widget.id!));
     for (int i = 0; i < widget.team!.admins.length; i++) {
@@ -50,10 +53,8 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
 
   @override
   Widget build(BuildContext context) {
-    if(widget.team == null){
-      widget.team =
+    widget.team ??=
         ref.watch(teamsProvider.notifier).getTeamDetails(int.parse(widget.id!));
-    }
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: MediaQuery.of(context).size.height / 12,
@@ -63,10 +64,8 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
                 ref.refresh(teamIDProvider);
                 context.go("/");
               },
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Theme.of(context).iconTheme.color
-              )),
+              icon: Icon(Icons.arrow_back_ios,
+                  color: Theme.of(context).iconTheme.color)),
           title: Text(widget.team!.name,
               style: Theme.of(context).textTheme.headlineLarge),
           actions: [
@@ -96,8 +95,7 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
                                   }
                                   e.errorHandler(ref);
                                 } catch (e) {
-                                  print(
-                                      "Unknown error occoured!" + e.toString());
+                                  debugPrint("Unknown error occoured!$e");
                                 }
                               },
                               child: const Text("Yes"))
@@ -106,12 +104,18 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
                     },
                   );
                 },
-                child: const Text("Leave" , style: TextStyle(color: Colors.black),)),
+                child: const Text(
+                  "Leave",
+                  style: TextStyle(color: Colors.black),
+                )),
             TextButton(
                 onPressed: () {
                   context.go("/chat/${widget.team!.id}");
                 },
-                child: const Text("Chat" , style: TextStyle(color: Colors.black),))
+                child: const Text(
+                  "Chat",
+                  style: TextStyle(color: Colors.black),
+                ))
           ],
         ),
         body: Column(children: [
@@ -153,45 +157,46 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
             padding: const EdgeInsets.all(18.0),
             child: SizedBox(
                 width: MediaQuery.of(context).size.width,
-                child: isAdmin ? ElevatedButton(
-                  onPressed: () async {
-                    await showAdaptiveDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog.adaptive(
-                          content: Text("Are you sure?"),
-                          actions: [
-                            ElevatedButton(
-                                onPressed: () {
-                                  context.pop();
-                                },
-                                child: const Text("No")),
-                            ElevatedButton(
-                                onPressed: () async {
-                                  User? user = ref.watch(userProvider);
-                                  try {
-                                    await TeamAPIEndpoint.deleteTeam(
-                                        widget.team!, user!.token);
-                                    if (context.mounted) {
-                                      context.go("/");
-                                    }
-                                  } on TeamException catch (e) {
-                                    e.handleError(ref);
-                                  }
-                                },
-                                child: const Text("Yes"))
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                      side: const BorderSide(width: 2, color: Colors.red),
-                      backgroundColor: Colors.white),
-                  child: Text("Delete this team",
-                      style: Theme.of(context).textTheme.labelLarge),
-                ) : const SizedBox()
-            ),
+                child: isAdmin
+                    ? ElevatedButton(
+                        onPressed: () async {
+                          await showAdaptiveDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog.adaptive(
+                                content: const Text("Are you sure?"),
+                                actions: [
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        context.pop();
+                                      },
+                                      child: const Text("No")),
+                                  ElevatedButton(
+                                      onPressed: () async {
+                                        User? user = ref.watch(userProvider);
+                                        try {
+                                          await TeamAPIEndpoint.deleteTeam(
+                                              widget.team!, user!.token);
+                                          if (context.mounted) {
+                                            context.go("/");
+                                          }
+                                        } on TeamException catch (e) {
+                                          e.handleError(ref);
+                                        }
+                                      },
+                                      child: const Text("Yes"))
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                            side: const BorderSide(width: 2, color: Colors.red),
+                            backgroundColor: Colors.white),
+                        child: Text("Delete this team",
+                            style: Theme.of(context).textTheme.labelLarge),
+                      )
+                    : const SizedBox()),
           ),
           const SizedBox(
             height: 15,
@@ -213,10 +218,8 @@ class _TeamDetailsState extends ConsumerState<TeamDetails> {
                               }
                               setState(() {});
                             },
-                            icon: Icon(
-                              Icons.add,
-                              color: Theme.of(context).iconTheme.color
-                            )),
+                            icon: Icon(Icons.add,
+                                color: Theme.of(context).iconTheme.color)),
                       )
                     : const SizedBox()
               ],

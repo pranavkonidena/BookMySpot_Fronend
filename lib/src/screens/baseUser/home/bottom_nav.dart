@@ -1,4 +1,3 @@
-import 'package:book_my_spot_frontend/src/screens/baseUser/home/custompainter_bottomnav.dart';
 import 'package:book_my_spot_frontend/src/state/navbar/navbar_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';

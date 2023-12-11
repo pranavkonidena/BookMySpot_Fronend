@@ -1,6 +1,8 @@
+// ignore_for_file: unused_result
+
 import 'package:book_my_spot_frontend/src/screens/baseUser/newReservation/make_reservation.dart';
 import 'package:book_my_spot_frontend/src/services/providers.dart';
-import 'package:book_my_spot_frontend/src/services/storageManager.dart';
+import 'package:book_my_spot_frontend/src/services/storage_manager.dart';
 import 'package:book_my_spot_frontend/src/state/navbar/navbar_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -57,7 +59,7 @@ class EventBookingPage extends ConsumerWidget {
                                 const EdgeInsets.only(left: 16.0, right: 16),
                             child: ListTile(
                               onTap: () async {
-                                var post_data = {
+                                var postData = {
                                   "id": StorageManager.getToken().toString(),
                                   "team_id": data[index]["id"].toString(),
                                   "name": data[index]["name"].toString(),
@@ -66,26 +68,31 @@ class EventBookingPage extends ConsumerWidget {
                                       .toString(),
                                 };
                                 var response = await http.post(
-                                    Uri.parse(using + "event/register"),
-                                    body: post_data);
+                                    Uri.parse("${using}event/register"),
+                                    body: postData);
                                 if (response.statusCode == 500) {
                                   SnackBar snackBar = const SnackBar(
                                       content: Text("You are not an admin!"));
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                  }
                                 } else {
                                   SnackBar snackBar = SnackBar(
                                       content: Text(
                                           "Registration for Team ${data[index]["name"]} succesfull"));
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                  }
+
                                   ref.refresh(currentIndexProvider);
                                   ref.refresh(finalTeamsProvider);
                                   ref.refresh(eventsProvider);
-                                  context.go("/");
+                                  Future.microtask(() => context.go("/"));
                                 }
 
-                                print(post_data);
+                                debugPrint(postData.toString());
                               },
                               tileColor:
                                   const Color.fromRGBO(217, 217, 217, 0.3),

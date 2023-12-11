@@ -8,9 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:book_my_spot_frontend/src/constants/constants.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 
+// ignore: must_be_immutable
 class ChatPage extends ConsumerStatefulWidget {
   ChatPage(this.id, {super.key});
   String id;
@@ -37,7 +36,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   @override
   void initState() {
     channel =
-        WebSocketChannel.connect(Uri.parse("ws://${iP}/ws/chat/${widget.id}"));
+        WebSocketChannel.connect(Uri.parse("ws://$iP/ws/chat/${widget.id}"));
     super.initState();
   }
 
@@ -88,8 +87,9 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.active) {
                 final chats = jsonDecode(snapshot.data.toString());
-                for (int i = 0; i < chats.length; i++)
+                for (int i = 0; i < chats.length; i++) {
                   chats[i] = jsonDecode(chats[i].toString());
+                }
                 User? user = ref.watch(userProvider);
                 return Expanded(
                   child: Align(
@@ -105,7 +105,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                         reverse: true,
                         itemCount: chats.length,
                         separatorBuilder: (context, index) {
-                          return SizedBox(
+                          return const SizedBox(
                             height: 20,
                           );
                         },

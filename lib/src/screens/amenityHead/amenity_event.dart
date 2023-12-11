@@ -1,5 +1,5 @@
 import 'package:book_my_spot_frontend/src/screens/amenityHead/amenityhead_home.dart';
-import 'package:book_my_spot_frontend/src/services/storageManager.dart';
+import 'package:book_my_spot_frontend/src/services/storage_manager.dart';
 import 'package:book_my_spot_frontend/src/utils/api/amenity_api.dart';
 import 'package:book_my_spot_frontend/src/utils/errors/amenity/amenity_exception.dart';
 import 'package:flutter/material.dart';

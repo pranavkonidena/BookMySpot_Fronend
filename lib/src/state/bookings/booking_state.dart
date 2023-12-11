@@ -56,7 +56,7 @@ class BookingNotifier extends StateNotifier<List<Booking>> {
           if (booking.id != bookingId) booking
       ];
     } on UserException catch (e) {
-      print("ERROR HANDLING IN PLACE");
+      debugPrint("ERROR HANDLING IN PLACE");
       if (context.mounted) {
         e.errorHandler(ref);
       }

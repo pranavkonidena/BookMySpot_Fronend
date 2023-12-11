@@ -1,4 +1,3 @@
-import 'package:book_my_spot_frontend/src/services/storageManager.dart';
 import 'package:flutter/material.dart';
 
 class ChatBubble extends StatelessWidget {
@@ -30,25 +29,32 @@ class ChatBubble extends StatelessWidget {
         child: DecoratedBox(
           // chat bubble decoration
           decoration: BoxDecoration(
-            color: isCurrentUser ? const Color.fromARGB(168, 35, 187, 233) : Colors.grey[300],
+            color: isCurrentUser
+                ? const Color.fromARGB(168, 35, 187, 233)
+                : Colors.grey[300],
             borderRadius: BorderRadius.circular(16),
           ),
           child: Padding(
             padding: const EdgeInsets.all(12),
             child: SizedBox(
-              width: 0.7*MediaQuery.of(context).size.width,
+              width: 0.7 * MediaQuery.of(context).size.width,
               child: Column(
                 children: [
                   Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(sender , style: const TextStyle(fontSize: 10),)),
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        sender,
+                        style: const TextStyle(fontSize: 10),
+                      )),
                   Text(
                     text,
                   ),
                   Align(
                     alignment: Alignment.bottomRight,
                     child: Text(
-                        "${timeStamp.day}/${timeStamp.month}/${timeStamp.year} ${timeStamp.hour} ${timeStamp.minute}" , style: TextStyle(fontSize: 10),),
+                      "${timeStamp.day}/${timeStamp.month}/${timeStamp.year} ${timeStamp.hour} ${timeStamp.minute}",
+                      style: const TextStyle(fontSize: 10),
+                    ),
                   )
                 ],
               ),

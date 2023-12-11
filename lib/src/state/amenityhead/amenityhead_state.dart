@@ -25,7 +25,7 @@ class AmenityHeadNotifier extends StateNotifier<List<Booking>> {
     List<Booking> amenityBookings = [];
     for (int i = 0; i < data.length; i++) {
       Booking booking = Booking();
-      print(data[i]);
+      debugPrint(data[i]);
       booking = await booking.bookingFromJson(data[i]);
       amenityBookings.add(booking);
     }

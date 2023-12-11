@@ -4,7 +4,7 @@ import 'package:book_my_spot_frontend/src/state/user/user_state.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:book_my_spot_frontend/src/services/storageManager.dart';
+import 'package:book_my_spot_frontend/src/services/storage_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LoadingScreen extends ConsumerStatefulWidget {

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'dart:convert';
 import 'package:book_my_spot_frontend/src/state/teams/team_state.dart';
 import 'package:book_my_spot_frontend/src/utils/api/team_api.dart';
@@ -5,7 +7,7 @@ import 'package:book_my_spot_frontend/src/utils/errors/team/team_errors.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/response_helper.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/teams/teams_page.dart';
-import 'package:book_my_spot_frontend/src/services/storageManager.dart';
+import 'package:book_my_spot_frontend/src/services/storage_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../constants/constants.dart';
@@ -31,7 +33,7 @@ final itemsProvider = StateProvider<List<Map>>((ref) {
 });
 
 final usersAllProvider = FutureProvider<dynamic>((ref) async {
-  var response = await http.get(Uri.parse(using + "user"));
+  var response = await http.get(Uri.parse("${using}user"));
   var data = jsonDecode(response.body.toString());
   for (int i = 0; i < data.length; i++) {
     var entry = {};
@@ -46,6 +48,7 @@ final usersAllProvider = FutureProvider<dynamic>((ref) async {
   return data;
 });
 
+// ignore: must_be_immutable
 class GroupCreatePage extends ConsumerStatefulWidget {
   GroupCreatePage(this.fallbackRoute, {super.key});
   String fallbackRoute;
@@ -108,10 +111,10 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                             .contains("teamDetails")) {
                           var id = ref.watch(teamIDProvider);
                           var response = await http
-                              .get(Uri.parse(using + "team/i?id=$id"));
+                              .get(Uri.parse("${using}team/i?id=$id"));
                           var data = jsonDecode(response.body.toString());
-                          var team_name = data[0]["name"];
-                          var team_id = data[0]["id"];
+                          var teamName = data[0]["name"];
+                          var teamId = data[0]["id"];
                           for (int i = 0;
                               i <
                                   ref
@@ -120,61 +123,57 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                       .length;
                               i++) {
                             var entry = ref.watch(groupselectedProvider)[i];
-                            var member_id = entry["id"];
+                            var memberId = entry["id"];
                             var admin = entry["admin"];
 
-                            var post_data = {
+                            var postData = {
                               "id": StorageManager.getToken().toString(),
-                              "name": team_name,
-                              "member_id": member_id,
+                              "name": teamName,
+                              "member_id": memberId,
                               "admin": admin,
-                              "team_id": team_id.toString()
+                              "team_id": teamId.toString()
                             };
 
                             var response = await http.post(
-                                Uri.parse(using + "team/add"),
-                                body: post_data);
+                                Uri.parse("${using}team/add"),
+                                body: postData);
                             var data = jsonDecode(response.body.toString());
-                            print(data);
+                            debugPrint(data);
                           }
                           ref.refresh(groupselectedProvider);
                           await ref.watch(teamsProvider.notifier).getTeams(ref);
-                          context.go("/teamDetails$id");
+                          Future.microtask(() => context.go("/teamDetails$id"));
                         } else if (widget.fallbackRoute.contains("/home")) {
-                          TextEditingController _textFieldController =
+                          TextEditingController textFieldController =
                               TextEditingController();
                           showAdaptiveDialog(
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text('Enter Team Name'),
+                                title: const Text('Enter Team Name'),
                                 content: TextField(
-                                  controller: _textFieldController,
-                                  decoration: InputDecoration(
+                                  controller: textFieldController,
+                                  decoration: const InputDecoration(
                                       hintText: "Team name here"),
                                 ),
                                 actions: <Widget>[
                                   ElevatedButton(
-                                    child: Text('CANCEL'),
+                                    child: const Text('CANCEL'),
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
                                   ),
                                   ElevatedButton(
-                                    child: Text('OK'),
+                                    child: const Text('OK'),
                                     onPressed: () async {
-                                      SnackBar snackBar = SnackBar(
-                                          content: Text(
-                                              "Please enter a non empty team name"));
                                       try {
                                         Response response =
                                             await TeamAPIEndpoint.createTeam(
-                                                _textFieldController.text);
+                                                textFieldController.text);
                                         try {
                                           if (ref
-                                                  .read(groupselectedProvider)
-                                                  .length !=
-                                              0) {
+                                              .read(groupselectedProvider)
+                                              .isNotEmpty) {
                                             if (response.statusCode == 200) {
                                               for (int i = 0;
                                                   i <
@@ -185,43 +184,52 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                                   i++) {
                                                 var entry = ref.watch(
                                                     groupselectedProvider)[i];
-                                                var member_id = entry["id"];
+                                                var memberId = entry["id"];
                                                 var admin = entry["admin"];
 
-                                                var post_data = {
+                                                var postData = {
                                                   "id":
                                                       StorageManager.getToken()
                                                           .toString(),
                                                   "team_id":
                                                       response.data.toString(),
                                                   "name":
-                                                      _textFieldController.text,
-                                                  "member_id": member_id,
+                                                      textFieldController.text,
+                                                  "member_id": memberId,
                                                   "admin": admin,
                                                 };
-                                                print(post_data);
-                                                var responses = await http.post(
+                                                debugPrint(postData.toString());
+                                                await http.post(
                                                     Uri.parse(
-                                                        using + "team/add"),
-                                                    body: post_data);
+                                                        "${using}team/add"),
+                                                    body: postData);
                                               }
-                                              context.go("/");
-                                              Navigator.pop(context);
+                                              Future.microtask(
+                                                  () => context.go("/"));
+                                              if (context.mounted) {
+                                                Navigator.pop(context);
+                                              }
                                             } else {
                                               SnackBar snackBar = const SnackBar(
                                                   content: Text(
                                                       "Error occoured while creating team!"));
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(snackBar);
+                                              if (context.mounted) {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(snackBar);
+                                              }
                                             }
                                           } else {
                                             SnackBar snackBar = const SnackBar(
                                                 content: Text(
                                                     "Please selct atleast one member before proceeding!"));
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(snackBar);
+                                            if (context.mounted) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBar);
+                                            }
                                           }
-                                        } catch (e) {}
+                                        } catch (e) {
+                                          debugPrint(e.toString());
+                                        }
                                       } on TeamException catch (e) {
                                         e.handleError(ref);
                                       }
@@ -256,20 +264,20 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                       suffixIcon: Icon(Icons.search),
                     ),
                     onChanged: (value) {
-                      var all_players = ref.read(itemsProvider);
-                      List<Map> filtered_players = [];
+                      var allPlayers = ref.read(itemsProvider);
+                      List<Map> filteredPlayers = [];
 
                       if (value.isEmpty) {
-                        filtered_players = all_players;
+                        filteredPlayers = allPlayers;
                       } else {
-                        filtered_players = all_players
+                        filteredPlayers = allPlayers
                             .where((element) => element["name"]
                                 .toLowerCase()
                                 .contains(value.toLowerCase()))
                             .toList();
                       }
                       ref.read(filtereditemsProvider.notifier).state =
-                          filtered_players;
+                          filteredPlayers;
                     },
                   ),
                 ),
@@ -278,10 +286,9 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                 ),
                 Visibility(
                     visible: ref
-                            .watch(groupselectedProvider.notifier)
-                            .state
-                            .length !=
-                        0,
+                        .watch(groupselectedProvider.notifier)
+                        .state
+                        .isNotEmpty,
                     child: Wrap(
                       direction: Axis.horizontal,
                       children: [
@@ -326,6 +333,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                           shape: BoxShape.circle,
                                         ),
                                         child: Image.network(
+                                          // ignore: prefer_interpolation_to_compose_strings
                                           "https://channeli.in" +
                                               ref
                                                   .read(groupselectedProvider
@@ -393,13 +401,13 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                     return Visibility(
                                       visible: true,
                                       child: Dialog(
-                                        child: Container(
+                                        child: SizedBox(
                                             height: 100,
                                             child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceEvenly,
                                               children: [
-                                                Text("Select Role"),
+                                                const Text("Select Role"),
                                                 Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
@@ -451,7 +459,8 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                                               .pop();
                                                           setState(() {});
                                                         },
-                                                        child: Text("Admin")),
+                                                        child: const Text(
+                                                            "Admin")),
                                                     ElevatedButton(
                                                         onPressed: () {
                                                           var entry = {};
@@ -498,7 +507,8 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                                           Navigator.of(context)
                                                               .pop();
                                                         },
-                                                        child: Text("Member"))
+                                                        child: const Text(
+                                                            "Member"))
                                                   ],
                                                 )
                                               ],
@@ -509,7 +519,6 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                 );
                               }
                             },
-                            
                             leading: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
@@ -531,6 +540,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                                           shape: BoxShape.circle,
                                         ),
                                         child: Image.network(
+                                          // ignore: prefer_interpolation_to_compose_strings
                                           "https://channeli.in" +
                                               ref.watch(filtereditemsProvider)[
                                                   index]["dp"],
@@ -557,7 +567,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
             ));
       },
       error: (error, stackTrace) {
-        return SizedBox();
+        return const SizedBox();
       },
       loading: () {
         return const SpinKitFadingCircle(

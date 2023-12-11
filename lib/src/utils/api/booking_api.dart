@@ -7,7 +7,7 @@ import 'package:book_my_spot_frontend/src/utils/errors/user/user_errors.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/http_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:book_my_spot_frontend/src/services/storageManager.dart';
+import 'package:book_my_spot_frontend/src/services/storage_manager.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/response_helper.dart';
 
 class BookingAPIEndpoint {

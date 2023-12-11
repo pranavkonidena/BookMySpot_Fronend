@@ -1,4 +1,4 @@
-import 'package:book_my_spot_frontend/src/screens/error/404_screen.dart';
+import 'package:book_my_spot_frontend/src/screens/error/error_screen.dart';
 import 'package:book_my_spot_frontend/src/screens/amenityHead/amenity_eventteams.dart';
 import 'package:book_my_spot_frontend/src/screens/amenityHead/amenityhead_home.dart';
 import 'package:book_my_spot_frontend/src/screens/baseUser/teams/chat/chat_screen.dart';
@@ -290,7 +290,7 @@ final router = GoRouter(
       GoRoute(
         path: "/grpcreate/:fallBack",
         pageBuilder: (context, state) {
-          final fallBack = '/' + state.pathParameters["fallBack"]!;
+          final fallBack = '/${state.pathParameters["fallBack"]!}';
           return CustomTransitionPage(
             key: state.pageKey,
             transitionDuration: const Duration(milliseconds: 750),

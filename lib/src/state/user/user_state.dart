@@ -4,7 +4,7 @@ import 'package:book_my_spot_frontend/src/utils/helpers/http_helper.dart';
 import 'package:book_my_spot_frontend/src/utils/helpers/response_helper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:book_my_spot_frontend/src/models/user.dart';
-import 'package:book_my_spot_frontend/src/services/storageManager.dart';
+import 'package:book_my_spot_frontend/src/services/storage_manager.dart';
 
 class UserNotifier extends StateNotifier<List<User>> {
   UserNotifier() : super([]);

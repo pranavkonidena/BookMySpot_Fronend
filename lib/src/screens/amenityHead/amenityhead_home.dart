@@ -3,7 +3,7 @@ import 'package:book_my_spot_frontend/src/screens/amenityHead/amenity_event.dart
 import 'package:book_my_spot_frontend/src/screens/amenityHead/events_list.dart';
 import 'package:book_my_spot_frontend/src/screens/amenityHead/amenity_profile.dart';
 import 'package:book_my_spot_frontend/src/screens/loading/loading_widget.dart';
-import 'package:book_my_spot_frontend/src/services/storageManager.dart';
+import 'package:book_my_spot_frontend/src/services/storage_manager.dart';
 import 'package:book_my_spot_frontend/src/state/amenityhead/amenityhead_state.dart';
 import 'package:book_my_spot_frontend/src/utils/api/amenity_api.dart';
 import 'package:flutter/material.dart';

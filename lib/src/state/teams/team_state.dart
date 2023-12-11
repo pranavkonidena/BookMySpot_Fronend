@@ -38,6 +38,7 @@ class TeamNotifier extends StateNotifier<List<Team>> {
       return userTeams;
     } on TeamException catch (e) {
       e.handleError(ref);
+      return null;
     }
   }
 
@@ -85,9 +86,7 @@ class TeamNotifier extends StateNotifier<List<Team>> {
       if (team.id == teamId) {
         User user = User(uid);
         user = await user.userFromJSON();
-        print(team.members.length);
         team.members.add(user);
-        print(team.members.length);
         teams.add(team);
       } else {
         teams.add(team);

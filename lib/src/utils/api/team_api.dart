@@ -1,5 +1,5 @@
 import 'package:book_my_spot_frontend/src/models/team.dart';
-import 'package:book_my_spot_frontend/src/services/storageManager.dart';
+import 'package:book_my_spot_frontend/src/services/storage_manager.dart';
 import 'package:book_my_spot_frontend/src/utils/enums/error_types.dart';
 import 'package:book_my_spot_frontend/src/utils/enums/request_groups.dart';
 import 'package:book_my_spot_frontend/src/utils/enums/request_types.dart';

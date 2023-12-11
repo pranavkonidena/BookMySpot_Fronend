@@ -7,9 +7,7 @@ class StorageManager {
     final box = GetStorage();
     box.write("token", null);
     String? token = box.read("token");
-    if (token == null) {
-      print("TOKEN IS NULL");
-    }
+    if (token == null) {}
   }
 
   static void saveToken(token) async {
@@ -31,9 +29,7 @@ class StorageManager {
     final box = GetStorage();
     box.write("admintoken", null);
     String? token = box.read("admintoken");
-    if (token == null) {
-      print("TOKEN IS NULL");
-    }
+    if (token == null) {}
   }
 
   static void saveAdminToken(token) {
