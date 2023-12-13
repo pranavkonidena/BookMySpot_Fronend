@@ -169,7 +169,7 @@ Pranav Konidena - [@pranavkonidena](https://instagram.com/pranavkonidena) - pran
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-[Aryan](https://github.com/just-ary27) , [Akhil]()
+[Aryan](https://github.com/just-ary27) , [Akhil](https://github.com/Ak216puniA)
 
 Made with ♥ , Pranav Konidena
 
