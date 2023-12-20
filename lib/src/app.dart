@@ -9,6 +9,8 @@ class Bookify extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ///The build fn returns a material app router with the theme defined and the debug banner removed 
+    ///It also initializes my ErrorManagementSystem and then proceeds to move to the home screen
     return MaterialApp.router(
       theme: primaryTheme,
       debugShowCheckedModeBanner: false,

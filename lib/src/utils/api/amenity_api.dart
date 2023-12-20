@@ -14,8 +14,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class AmenityAPIEndpoint {
+  ///Call private constructor for this class
   AmenityAPIEndpoint._();
 
+  ///Faciliates auth with email and password for Amenity Admins
   static Future<void> amenityAuth(BuildContext context, WidgetRef ref,
       String email, String password) async {
     var authHeader = {"email": email, "password": password};
@@ -33,6 +35,7 @@ class AmenityAPIEndpoint {
     }
   }
 
+  ///Facilitates creation of an event by the amenity admin
   static Future<void> createEvent(var postData) async {
     debugPrint("RE");
     Response response = await HttpHelper.makeRequest(
@@ -43,6 +46,7 @@ class AmenityAPIEndpoint {
     }
   }
 
+  ///Fetches all the bookings in an amenity for the amenity admin's persual , displayed in the dashboard
   static Future<Response> fetchAmenityBookigs() async {
     var token = StorageManager.getAdminToken();
     var response = await HttpHelper.makeRequest(
@@ -61,11 +65,13 @@ class AmenityAPIEndpoint {
     }
   }
 
+  ///Used by the amenity admin to revoke a booking of type individual
   static Future<void> revokeIndividualBooking(var deleteData) async {
     await HttpHelper.makeRequest(RequestTypes.delete, RequestGroup.booking,
         "individual/cancelSlot", deleteData);
   }
 
+  ///Used by the amenity admin to revoke a booking of type group
   static Future<void> revokeGroupBooking(var deleteData) async {
     await HttpHelper.makeRequest(RequestTypes.delete, RequestGroup.booking,
         "group/cancelSlot", deleteData);
